@@ -23,6 +23,7 @@
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/invoiceContext" />
+            <option value="$PROJECT_DIR$/invoicingContext" />
             <option value="$PROJECT_DIR$/landsideContext" />
             <option value="$PROJECT_DIR$/warehouseContext" />
             <option value="$PROJECT_DIR$/watersideContext" />
