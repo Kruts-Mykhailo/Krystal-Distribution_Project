@@ -1,8 +1,9 @@
-rootProject.name = 'template'
+rootProject.name = 'backend'
 
 include 'application'
 include 'common'
-include 'boundedContextA'
-include 'boundedContextB'
 include 'landsideContext'
+include 'watersideContext'
+include 'invoiceContext'
+include 'warehouseContext'
 

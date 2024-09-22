@@ -1,0 +1,9 @@
+server:
+  port: ${PORT:8094}
+  servlet:
+    context-path: /wsc
+
+
+spring:
+  config:
+    additional-location: ${SPRING_CONFIG_ADDITIONAL_LOCATION}

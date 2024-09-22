@@ -20,11 +20,12 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/application" />
-            <option value="$PROJECT_DIR$/boundedContextA" />
-            <option value="$PROJECT_DIR$/boundedContextB" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/invoiceContext" />
             <option value="$PROJECT_DIR$/landsideContext" />
+            <option value="$PROJECT_DIR$/warehouseContext" />
+            <option value="$PROJECT_DIR$/watersideContext" />
           </set>
         </option>
       </GradleProjectSettings>
