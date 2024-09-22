@@ -4,3 +4,5 @@ include 'application'
 include 'common'
 include 'boundedContextA'
 include 'boundedContextB'
+include 'landsideContext'
+
