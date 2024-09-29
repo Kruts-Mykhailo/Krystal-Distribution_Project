@@ -23,7 +23,8 @@ public class AppointmentCreatedAdapter implements AppointmentCreatedPort {
                 appointment.getMaterialType().name(),
                 appointment.getWarehouseId(),
                 appointment.getAppointmentDateTime(),
-                appointment.getWarehouseNumber()
+                appointment.getWarehouseNumber(),
+                appointment.getAppointmentStatus().name()
         );
         appointmentJpaEntity.setSchedule(new ScheduleJpaEntity(scheduleId));
         appointmentJpaRepository.save(appointmentJpaEntity);

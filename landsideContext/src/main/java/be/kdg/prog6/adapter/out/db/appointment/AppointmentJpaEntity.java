@@ -32,15 +32,19 @@ public class AppointmentJpaEntity {
     @Column(name = "warehouse_number", nullable = false)
     private int warehouseNumber;
 
+    @Column(nullable = false)
+    private String status;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private ScheduleJpaEntity schedule;
 
-    public AppointmentJpaEntity(String licensePlate, String materialType, UUID warehouseId, LocalDateTime appointmentDateTime, int warehouseNumber) {
+    public AppointmentJpaEntity(String licensePlate, String materialType, UUID warehouseId, LocalDateTime appointmentDateTime, int warehouseNumber, String status) {
         this.licensePlate = licensePlate;
         this.materialType = materialType;
         this.warehouseId = warehouseId;
         this.appointmentDateTime = appointmentDateTime;
         this.warehouseNumber = warehouseNumber;
+        this.status = status;
     }
 
     public AppointmentJpaEntity() {

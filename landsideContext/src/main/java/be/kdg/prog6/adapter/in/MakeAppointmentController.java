@@ -23,15 +23,14 @@ public class MakeAppointmentController {
         this.makeAppointmentUseCase = makeAppointmentUseCase;
     }
 
-    @PostMapping("/{customerId}/{scheduleDate}")
+    @PostMapping("/{customerId}")
     public ResponseEntity<?> makeAppointment(@RequestBody AppointmentRequestDTO appointmentRequestDTO,
-                                                          @PathVariable UUID customerId,
-                                                          @PathVariable LocalDate scheduleDate) {
+                                                          @PathVariable UUID customerId) {
         CreateAppointmentCommand command = new CreateAppointmentCommand(
                 MaterialType.valueOf(appointmentRequestDTO.getMaterialType()),
                 new LicensePlate(appointmentRequestDTO.getLicensePlate()),
                 new Seller.SellerId(customerId),
-                scheduleDate);
+                appointmentRequestDTO.getScheduleDateTime());
 
         Optional<Appointment> appointment = makeAppointmentUseCase.makeAppointment(command);
 

@@ -31,8 +31,9 @@ public class MakeAppointmentUseCaseImpl implements MakeAppointmentUseCase {
                 createAppointmentCommand.sellerId(),
                 createAppointmentCommand.materialType()
         );
-        DaySchedule schedule = scheduleDetailsPort.loadScheduleByDate(createAppointmentCommand.scheduleDate());
+        DaySchedule schedule = scheduleDetailsPort.loadScheduleByDate(createAppointmentCommand.scheduleDateTime().toLocalDate());
         Optional<Appointment> appointment = schedule.scheduleAppointment(
+                createAppointmentCommand.scheduleDateTime(),
                 createAppointmentCommand.licensePlate(),
                 createAppointmentCommand.materialType(),
                 warehouseInfo.warehouseId(),

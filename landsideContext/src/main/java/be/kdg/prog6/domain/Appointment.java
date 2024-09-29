@@ -10,6 +10,7 @@ public class Appointment {
     private LocalDateTime appointmentDateTime;
     private UUID warehouseId;
     private int warehouseNumber;
+    private AppointmentStatus appointmentStatus;
 
     public Appointment(LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime appointmentDateTime, UUID warehouseId, int warehouseNumber) {
         this.truckLicensePlate = truckLicensePlate;
@@ -17,6 +18,23 @@ public class Appointment {
         this.appointmentDateTime = appointmentDateTime;
         this.warehouseId = warehouseId;
         this.warehouseNumber = warehouseNumber;
+    }
+
+    public Appointment(LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime appointmentDateTime, UUID warehouseId, int warehouseNumber, AppointmentStatus appointmentStatus) {
+        this.truckLicensePlate = truckLicensePlate;
+        this.materialType = materialType;
+        this.appointmentDateTime = appointmentDateTime;
+        this.warehouseId = warehouseId;
+        this.warehouseNumber = warehouseNumber;
+        this.appointmentStatus = appointmentStatus;
+    }
+
+    public AppointmentStatus getAppointmentStatus() {
+        return appointmentStatus;
+    }
+
+    public void setAppointmentStatus(AppointmentStatus appointmentStatus) {
+        this.appointmentStatus = appointmentStatus;
     }
 
     public int getWarehouseNumber() {

@@ -36,29 +36,25 @@ public class DaySchedule {
         return id;
     }
 
-    // Find the first hour for which the amount of trucks is scheduled less than truckAmountPerWindow
-    private Optional<LocalDateTime> getTimeWindow(){
+    private boolean isTimeWindowAvailable(LocalDateTime desiredScheduleDateTime) {
         Map<LocalDateTime, Long> appointmentCountByHour = appointments.stream()
                 .collect(Collectors.groupingBy(
                         appointment -> appointment.getAppointmentDateTime().withMinute(0).withSecond(0).withNano(0),
                         Collectors.counting()
                 ));
-
-        for (int hour = 0; hour < 24; hour++) {
-            LocalDateTime currentHour = scheduleDate.atTime(hour, 0);
-            long trucksScheduled = appointmentCountByHour.getOrDefault(currentHour, 0L);
-
-            if (trucksScheduled < truckAmountPerWindow) {
-                return Optional.of(currentHour);  // Return the first available time window
-            }
-        }
-
-        return Optional.empty();
+        long trucksScheduled = appointmentCountByHour.getOrDefault(desiredScheduleDateTime, 0L);
+        return trucksScheduled < truckAmountPerWindow;
     }
 
-    public Optional<Appointment> scheduleAppointment(LicensePlate truckLicensePlate, MaterialType materialType, UUID warehouseId, int warehouseNumber) {
-        Optional<LocalDateTime> timeWindow = getTimeWindow();
-        return timeWindow.map(localDateTime -> new Appointment(truckLicensePlate, materialType, localDateTime,warehouseId, warehouseNumber));
+    public Optional<Appointment> scheduleAppointment(LocalDateTime scheduleDateTime,
+                                                     LicensePlate truckLicensePlate,
+                                                     MaterialType materialType,
+                                                     UUID warehouseId,
+                                                     int warehouseNumber) {
+        if (isTimeWindowAvailable(scheduleDateTime)) {
+            return Optional.of(new Appointment(truckLicensePlate, materialType, scheduleDateTime, warehouseId, warehouseNumber, AppointmentStatus.SCHEDULED));
+        }
+        return Optional.empty();
 
     }
 

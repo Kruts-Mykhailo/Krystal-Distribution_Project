@@ -2,12 +2,19 @@ package be.kdg.prog6.domain;
 
 public class Truck {
     private LicensePlate licensePlate;
+
     private MaterialType materialType;
+    private String status;
 
     public Truck(LicensePlate licensePlate, MaterialType materialType) {
         this.licensePlate = licensePlate;
         this.materialType = materialType;
     }
+
+    // PlaceMaterial on conveyor belt()
+    // status -> belt -> deliverd
+
+    // delivering
 
     public LicensePlate getLicensePlate() {
         return licensePlate;
