@@ -1,4 +1,6 @@
 package be.kdg.prog6.domain;
 
-public class MaterialType {
+public enum MaterialType {
+    GYPSUM, IRON_ORE, CEMENT, PETROULEUM_COKE, SLAG
+
 }

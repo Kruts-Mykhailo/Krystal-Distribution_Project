@@ -1,15 +1,30 @@
 package be.kdg.prog6.domain;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 public class Appointment {
 
     private LicensePlate truckLicensePlate;
     private MaterialType materialType;
-    private Window arrivalWindow;
+    private LocalDateTime appointmentDateTime;
+    private UUID warehouseId;
+    private int warehouseNumber;
 
-    public Appointment(LicensePlate truckLicensePlate, MaterialType materialType, Window arrivalWindow) {
+    public Appointment(LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime appointmentDateTime, UUID warehouseId, int warehouseNumber) {
         this.truckLicensePlate = truckLicensePlate;
         this.materialType = materialType;
-        this.arrivalWindow = arrivalWindow;
+        this.appointmentDateTime = appointmentDateTime;
+        this.warehouseId = warehouseId;
+        this.warehouseNumber = warehouseNumber;
+    }
+
+    public int getWarehouseNumber() {
+        return warehouseNumber;
+    }
+
+    public void setWarehouseNumber(int warehouseNumber) {
+        this.warehouseNumber = warehouseNumber;
     }
 
     public LicensePlate getTruckLicensePlate() {
@@ -28,20 +43,21 @@ public class Appointment {
         this.materialType = materialType;
     }
 
-    public Window getArrivalWindow() {
-        return arrivalWindow;
+
+    public LocalDateTime getAppointmentDateTime() {
+        return appointmentDateTime;
     }
 
-    public void setArrivalWindow(Window arrivalWindow) {
-        this.arrivalWindow = arrivalWindow;
+    public void setAppointmentDateTime(LocalDateTime appointmentDateTime) {
+        this.appointmentDateTime = appointmentDateTime;
     }
 
-    @Override
-    public String toString() {
-        return "Appointment{" +
-                "truckLicensePlate=" + truckLicensePlate +
-                ", materialType=" + materialType +
-                ", arrivalWindow=" + arrivalWindow +
-                '}';
+    public UUID getWarehouseId() {
+        return warehouseId;
     }
+
+    public void setWarehouseId(UUID warehouseId) {
+        this.warehouseId = warehouseId;
+    }
+
 }

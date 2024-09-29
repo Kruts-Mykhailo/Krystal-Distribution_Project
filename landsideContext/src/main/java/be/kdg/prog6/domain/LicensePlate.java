@@ -1,4 +1,4 @@
 package be.kdg.prog6.domain;
 
-public class LicensePlate {
+public record LicensePlate(String licensePlate) {
 }
