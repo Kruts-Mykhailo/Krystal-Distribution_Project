@@ -26,12 +26,15 @@ public class MakeAppointmentUseCaseImpl implements MakeAppointmentUseCase {
 
     @Override
     public Optional<Appointment> makeAppointment(CreateAppointmentCommand createAppointmentCommand) {
-
         WarehouseInfo warehouseInfo = warehouseInfoPort.getWarehouse(
                 createAppointmentCommand.sellerId(),
                 createAppointmentCommand.materialType()
         );
-        DaySchedule schedule = scheduleDetailsPort.loadScheduleByDate(createAppointmentCommand.scheduleDateTime().toLocalDate());
+
+        DaySchedule schedule = scheduleDetailsPort.createOrLoadScheduleByDate(createAppointmentCommand
+                .scheduleDateTime()
+                .toLocalDate());
+
         Optional<Appointment> appointment = schedule.scheduleAppointment(
                 createAppointmentCommand.scheduleDateTime(),
                 createAppointmentCommand.licensePlate(),

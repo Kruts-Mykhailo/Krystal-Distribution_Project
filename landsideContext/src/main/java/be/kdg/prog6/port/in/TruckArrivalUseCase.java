@@ -1,9 +1,10 @@
 package be.kdg.prog6.port.in;
 
-import be.kdg.prog6.domain.Truck;
+import be.kdg.prog6.domain.*;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public interface TruckArrivalUseCase {
-    void arriveToFacility(Truck truck, LocalDateTime arrivalTime);
+    Optional<TruckActivity> arriveToFacility(LicensePlate licensePlate, LocalDateTime arrivalTime);
 }

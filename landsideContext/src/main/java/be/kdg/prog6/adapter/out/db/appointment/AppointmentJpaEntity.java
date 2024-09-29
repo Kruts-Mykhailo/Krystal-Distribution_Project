@@ -14,7 +14,7 @@ import java.util.UUID;
 public class AppointmentJpaEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(nullable = false)
     private UUID appointmentId;
 
     @Column(nullable = false)
@@ -29,6 +29,9 @@ public class AppointmentJpaEntity {
     @Column(nullable = false)
     private LocalDateTime appointmentDateTime;
 
+    @Column(nullable = false)
+    private LocalDateTime appointmentEndDateTime;
+
     @Column(name = "warehouse_number", nullable = false)
     private int warehouseNumber;
 
@@ -38,11 +41,13 @@ public class AppointmentJpaEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private ScheduleJpaEntity schedule;
 
-    public AppointmentJpaEntity(String licensePlate, String materialType, UUID warehouseId, LocalDateTime appointmentDateTime, int warehouseNumber, String status) {
+    public AppointmentJpaEntity(UUID appointmentId, String licensePlate, String materialType, UUID warehouseId, LocalDateTime appointmentDateTime, int warehouseNumber, String status) {
+        this.appointmentId = appointmentId;
         this.licensePlate = licensePlate;
         this.materialType = materialType;
         this.warehouseId = warehouseId;
         this.appointmentDateTime = appointmentDateTime;
+        this.appointmentEndDateTime = appointmentDateTime.plusHours(1);
         this.warehouseNumber = warehouseNumber;
         this.status = status;
     }

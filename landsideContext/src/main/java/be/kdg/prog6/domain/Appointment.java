@@ -5,6 +5,7 @@ import java.util.UUID;
 
 public class Appointment {
 
+    private UUID id;
     private LicensePlate truckLicensePlate;
     private MaterialType materialType;
     private LocalDateTime appointmentDateTime;
@@ -12,21 +13,32 @@ public class Appointment {
     private int warehouseNumber;
     private AppointmentStatus appointmentStatus;
 
-    public Appointment(LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime appointmentDateTime, UUID warehouseId, int warehouseNumber) {
-        this.truckLicensePlate = truckLicensePlate;
-        this.materialType = materialType;
-        this.appointmentDateTime = appointmentDateTime;
-        this.warehouseId = warehouseId;
-        this.warehouseNumber = warehouseNumber;
-    }
-
     public Appointment(LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime appointmentDateTime, UUID warehouseId, int warehouseNumber, AppointmentStatus appointmentStatus) {
+        this.id = UUID.randomUUID();
         this.truckLicensePlate = truckLicensePlate;
         this.materialType = materialType;
         this.appointmentDateTime = appointmentDateTime;
         this.warehouseId = warehouseId;
         this.warehouseNumber = warehouseNumber;
         this.appointmentStatus = appointmentStatus;
+    }
+
+    public Appointment(UUID id, LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime appointmentDateTime, UUID warehouseId, int warehouseNumber, AppointmentStatus appointmentStatus) {
+        this.id = id;
+        this.truckLicensePlate = truckLicensePlate;
+        this.materialType = materialType;
+        this.appointmentDateTime = appointmentDateTime;
+        this.warehouseId = warehouseId;
+        this.warehouseNumber = warehouseNumber;
+        this.appointmentStatus = appointmentStatus;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public AppointmentStatus getAppointmentStatus() {

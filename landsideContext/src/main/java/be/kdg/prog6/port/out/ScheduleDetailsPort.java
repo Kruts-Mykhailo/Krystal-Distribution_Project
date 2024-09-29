@@ -6,5 +6,6 @@ import java.time.LocalDate;
 
 public interface ScheduleDetailsPort {
     DaySchedule loadScheduleByDate(LocalDate date);
+    DaySchedule createOrLoadScheduleByDate(LocalDate date);
 
 }
