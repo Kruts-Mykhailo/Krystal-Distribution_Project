@@ -4,6 +4,7 @@ import be.kdg.prog6.domain.*;
 import be.kdg.prog6.port.in.TruckArrivalUseCase;
 import be.kdg.prog6.port.out.AppointmentUpdatedPort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -21,6 +22,7 @@ public class TruckArrivalUseCaseImpl implements TruckArrivalUseCase {
     }
 
     @Override
+    @Transactional
     public Optional<AppointmentActivity> arriveToFacility(LicensePlate licensePlate, LocalDateTime arrivalTime) {
         Optional<Appointment> appointment = appointmentUpdatedPort.getAppointmentByArrivalTime(licensePlate, arrivalTime);
 

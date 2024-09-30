@@ -2,6 +2,7 @@ package be.kdg.prog6.adapter.out.db.appointment;
 
 import be.kdg.prog6.adapter.out.db.appointmentActivity.AppointmentActivityJpaEntity;
 import be.kdg.prog6.adapter.out.db.schedule.ScheduleJpaEntity;
+import be.kdg.prog6.adapter.out.db.truckweight.TruckWeightJpaEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,6 +46,9 @@ public class AppointmentJpaEntity {
 
     @OneToMany(mappedBy = "appointment")
     private List<AppointmentActivityJpaEntity> activities;
+
+    @OneToOne(mappedBy = "appointment")
+    private TruckWeightJpaEntity recordedTruckWeight;
 
     public AppointmentJpaEntity(UUID appointmentId, String licensePlate, String materialType, UUID warehouseId, LocalDateTime appointmentDateTime, int warehouseNumber, String status) {
         this.appointmentId = appointmentId;

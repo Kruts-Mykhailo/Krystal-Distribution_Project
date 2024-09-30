@@ -5,6 +5,7 @@ import be.kdg.prog6.adapter.out.db.appointmentActivity.AppointmentActivityJpaRep
 import be.kdg.prog6.adapter.out.db.schedule.ScheduleJpaEntity;
 import be.kdg.prog6.domain.*;
 import be.kdg.prog6.port.out.AppointmentCreatedPort;
+import be.kdg.prog6.port.out.AppointmentFoundPort;
 import be.kdg.prog6.port.out.AppointmentUpdatedPort;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 @Component
-public class AppointmentCreatedAdapter implements AppointmentCreatedPort, AppointmentUpdatedPort {
+public class AppointmentCreatedAdapter implements AppointmentCreatedPort, AppointmentUpdatedPort, AppointmentFoundPort {
 
     private final AppointmentJpaRepository appointmentJpaRepository;
     private final AppointmentActivityJpaRepository appointmentActivityJpaRepository;
@@ -29,15 +30,7 @@ public class AppointmentCreatedAdapter implements AppointmentCreatedPort, Appoin
 
     @Override
     public void saveAppointment(Appointment appointment, UUID scheduleId) {
-        AppointmentJpaEntity appointmentJpaEntity = new AppointmentJpaEntity(
-                appointment.getId(),
-                appointment.getTruckLicensePlate().licensePlate(),
-                appointment.getMaterialType().name(),
-                appointment.getWarehouseId(),
-                appointment.getAppointmentDateTime(),
-                appointment.getWarehouseNumber(),
-                appointment.getAppointmentStatus().name()
-        );
+        AppointmentJpaEntity appointmentJpaEntity = AppointmentConverter.toJpaEntity(appointment);
         appointmentJpaEntity.setSchedule(new ScheduleJpaEntity(scheduleId));
         appointmentJpaRepository.save(appointmentJpaEntity);
     }
@@ -68,24 +61,13 @@ public class AppointmentCreatedAdapter implements AppointmentCreatedPort, Appoin
         Optional<AppointmentJpaEntity> appointmentJpaEntity = appointmentJpaRepository
                 .findEarliestScheduledAppointmentWithArrivalDateTime(licensePlate.licensePlate(), arrivalTime);
         logger.info(String.format("License plate: %s appointmentTime: %s ", licensePlate.licensePlate(), arrivalTime));
-        return appointmentJpaEntity.map(this::toAppointment);
+        return appointmentJpaEntity.map(AppointmentConverter::toAppointment);
     }
 
-    private Appointment toAppointment(AppointmentJpaEntity a) {
-        return new Appointment(
-                a.getAppointmentId(),
-                new LicensePlate(a.getLicensePlate()),
-                MaterialType.valueOf(a.getMaterialType()),
-                a.getAppointmentDateTime(),
-                a.getWarehouseId(),
-                a.getWarehouseNumber(),
-                AppointmentStatus.valueOf(a.getStatus()),
-                a.getActivities().stream().map(ac -> new AppointmentActivity(
-                        new LicensePlate(ac.getLicensePlate()),
-                        ActivityType.valueOf(ac.getActivityType()),
-                        ac.getDateTime(),
-                        AppointmentStatus.valueOf(ac.getTruckStatus())
-                )).toList()
-        );
+    @Override
+    public Optional<Appointment> getTruckAppointmentOnSite(LicensePlate licensePlate) {
+        return appointmentJpaRepository
+                .findByLicensePlateAndStatus(licensePlate.licensePlate(), AppointmentStatus.ON_SITE.name())
+                .map(AppointmentConverter::toAppointment);
     }
 }

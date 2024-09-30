@@ -7,6 +7,7 @@ import be.kdg.prog6.port.out.AppointmentCreatedPort;
 import be.kdg.prog6.port.out.ScheduleDetailsPort;
 import be.kdg.prog6.port.out.WarehouseInfoPort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -25,6 +26,7 @@ public class MakeAppointmentUseCaseImpl implements MakeAppointmentUseCase {
 
 
     @Override
+    @Transactional
     public Optional<Appointment> makeAppointment(CreateAppointmentCommand createAppointmentCommand) {
         WarehouseInfo warehouseInfo = warehouseInfoPort.getWarehouse(
                 createAppointmentCommand.sellerId(),

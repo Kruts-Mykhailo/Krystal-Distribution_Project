@@ -1,5 +1,6 @@
 package be.kdg.prog6.adapter.out.db.schedule;
 
+import be.kdg.prog6.adapter.out.db.appointment.AppointmentConverter;
 import be.kdg.prog6.adapter.out.db.appointment.AppointmentJpaEntity;
 import be.kdg.prog6.adapter.out.db.appointment.AppointmentJpaRepository;
 import be.kdg.prog6.domain.*;
@@ -26,7 +27,7 @@ public class ScheduleDatabaseAdapter implements ScheduleDetailsPort {
 
         List<Appointment> appointments = schedule.getAppointmentJpaEntities()
                 .stream()
-                .map(this::toAppointment).toList();
+                .map(AppointmentConverter::toAppointment).toList();
 
         return new DaySchedule(schedule.getScheduleId(), schedule.getScheduleDate(), appointments);
     }
@@ -42,19 +43,9 @@ public class ScheduleDatabaseAdapter implements ScheduleDetailsPort {
         schedule = scheduleJpaEntity.get();
         List<Appointment> appointments = schedule.getAppointmentJpaEntities()
                 .stream()
-                .map(this::toAppointment).toList();
+                .map(AppointmentConverter::toAppointment).toList();
         return new DaySchedule(schedule.getScheduleId(), schedule.getScheduleDate(), appointments);
     }
 
-    private Appointment toAppointment(AppointmentJpaEntity a) {
-        return new Appointment(
-                a.getAppointmentId(),
-                new LicensePlate(a.getLicensePlate()),
-                MaterialType.valueOf(a.getMaterialType()),
-                a.getAppointmentDateTime(),
-                a.getWarehouseId(),
-                a.getWarehouseNumber(),
-                AppointmentStatus.valueOf(a.getStatus())
-        );
-    }
+
 }

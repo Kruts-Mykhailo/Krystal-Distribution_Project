@@ -118,4 +118,14 @@ public class Appointment {
         this.appointmentActivities.add(activity);
         return activity;
     }
+
+    public void passedWeighingBridge(LocalDateTime eventTime) {
+        AppointmentActivity activity = new AppointmentActivity(
+                this.truckLicensePlate,
+                ActivityType.PASS_WEIGHING_BRIDGE,
+                eventTime,
+                AppointmentStatus.ON_SITE
+        );
+        this.appointmentActivities.add(activity);
+    }
 }

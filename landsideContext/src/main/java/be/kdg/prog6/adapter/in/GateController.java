@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Random;
 import java.util.logging.Logger;
 
 @Controller
@@ -38,8 +39,13 @@ public class GateController {
                 arrivalDateTime
         );
         if (arrivalResult.isPresent()) {
+
+            Random random = new Random();
+            int weighingBridgeNumber = random.nextInt(10000);
+
             return ResponseEntity.ok(
-                    String.format("Truck %s arrived to facility at %s.", licensePlate, arrivalDateTime)
+                    String.format("Truck %s arrived to facility at %s. Weighing bridge number: %d",
+                            licensePlate, arrivalDateTime, weighingBridgeNumber)
             );
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Truck arrival failed");

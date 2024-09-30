@@ -1,5 +1,6 @@
 package be.kdg.prog6.adapter.out.db.appointment;
 
+import be.kdg.prog6.domain.AppointmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,4 +22,6 @@ public interface AppointmentJpaRepository extends JpaRepository<AppointmentJpaEn
             @Param("licensePlate") String licensePlate,
             @Param("arrivalDateTime") LocalDateTime arrivalDateTime
     );
+
+    Optional<AppointmentJpaEntity> findByLicensePlateAndStatus(String licensePlate, String status);
 }
