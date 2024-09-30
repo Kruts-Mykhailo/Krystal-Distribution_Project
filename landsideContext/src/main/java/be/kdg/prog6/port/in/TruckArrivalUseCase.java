@@ -6,5 +6,5 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface TruckArrivalUseCase {
-    Optional<TruckActivity> arriveToFacility(LicensePlate licensePlate, LocalDateTime arrivalTime);
+    Optional<AppointmentActivity> arriveToFacility(LicensePlate licensePlate, LocalDateTime arrivalTime);
 }

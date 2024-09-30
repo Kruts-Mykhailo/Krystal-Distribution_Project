@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4">
+  <component name="AdditionalModuleElements">
+    <content url="file://$MODULE_DIR$/../.." dumb="true">
+      <excludeFolder url="file://$MODULE_DIR$/../dataSources" />
+      <excludeFolder url="file://$MODULE_DIR$/../../infrastructure/mysql/data/#innodb_temp" />
+      <excludeFolder url="file://$MODULE_DIR$/../../infrastructure/mysql/data/app_db" />
+      <excludeFolder url="file://$MODULE_DIR$/../../infrastructure/mysql/data/invoicing" />
+      <excludeFolder url="file://$MODULE_DIR$/../../infrastructure/mysql/data/landside" />
+      <excludeFolder url="file://$MODULE_DIR$/../../infrastructure/mysql/data/warehouse" />
+      <excludeFolder url="file://$MODULE_DIR$/../../infrastructure/mysql/data/waterside" />
+      <excludeFolder url="file://$MODULE_DIR$/../../infrastructure/mysql/family/app_db" />
+      <excludeFolder url="file://$MODULE_DIR$/../../infrastructure/mysql/family/invoicing" />
+      <excludeFolder url="file://$MODULE_DIR$/../../infrastructure/mysql/family/landside" />
+      <excludeFolder url="file://$MODULE_DIR$/../../infrastructure/mysql/family/warehouse" />
+      <excludeFolder url="file://$MODULE_DIR$/../../infrastructure/mysql/family/waterside" />
+      <excludeFolder url="file://$MODULE_DIR$/../../infrastructure/rabbitmq/data/mnesia/rabbit@2eaf90425c6a-plugins-expand" />
+      <excludeFolder url="file://$MODULE_DIR$/../../infrastructure/rabbitmq/data/mnesia/rabbit@2eaf90425c6a/coordination/rabbit@2eaf90425c6a/RABBIT5WF6QHTMV8DU/checkpoints" />
+      <excludeFolder url="file://$MODULE_DIR$/../../infrastructure/rabbitmq/data/mnesia/rabbit@2eaf90425c6a/coordination/rabbit@2eaf90425c6a/RABBIT5WF6QHTMV8DU/snapshots" />
+      <excludeFolder url="file://$MODULE_DIR$/../../infrastructure/rabbitmq/data/mnesia/rabbit@ca30b315db82-plugins-expand" />
+      <excludeFolder url="file://$MODULE_DIR$/../../infrastructure/rabbitmq/data/mnesia/rabbit@ca30b315db82/coordination/rabbit@ca30b315db82/RABBIT2G38PDQ5EJL9/checkpoints" />
+      <excludeFolder url="file://$MODULE_DIR$/../../infrastructure/rabbitmq/data/mnesia/rabbit@ca30b315db82/coordination/rabbit@ca30b315db82/RABBIT2G38PDQ5EJL9/snapshots" />
+      <excludeFolder url="file://$MODULE_DIR$/../../infrastructure/rabbitmq/log" />
+    </content>
+  </component>
+</module>

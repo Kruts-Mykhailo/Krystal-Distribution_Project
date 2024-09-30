@@ -6,10 +6,9 @@ import be.kdg.prog6.domain.LicensePlate;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface AppointmentUpdatedPort {
 
-    void updateAppointmentStatus(AppointmentStatus status, UUID appointmentId);
+    void updateAppointment(Appointment appointment, AppointmentStatus status);
     Optional<Appointment> getAppointmentByArrivalTime(LicensePlate licensePlate, LocalDateTime arrivalTime);
 }

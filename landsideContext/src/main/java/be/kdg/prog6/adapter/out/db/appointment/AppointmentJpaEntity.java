@@ -1,10 +1,12 @@
 package be.kdg.prog6.adapter.out.db.appointment;
 
+import be.kdg.prog6.adapter.out.db.appointmentActivity.AppointmentActivityJpaEntity;
 import be.kdg.prog6.adapter.out.db.schedule.ScheduleJpaEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Setter
@@ -41,6 +43,9 @@ public class AppointmentJpaEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private ScheduleJpaEntity schedule;
 
+    @OneToMany(mappedBy = "appointment")
+    private List<AppointmentActivityJpaEntity> activities;
+
     public AppointmentJpaEntity(UUID appointmentId, String licensePlate, String materialType, UUID warehouseId, LocalDateTime appointmentDateTime, int warehouseNumber, String status) {
         this.appointmentId = appointmentId;
         this.licensePlate = licensePlate;
@@ -50,6 +55,10 @@ public class AppointmentJpaEntity {
         this.appointmentEndDateTime = appointmentDateTime.plusHours(1);
         this.warehouseNumber = warehouseNumber;
         this.status = status;
+    }
+
+    public AppointmentJpaEntity(UUID appointmentId) {
+        this.appointmentId = appointmentId;
     }
 
     public AppointmentJpaEntity() {

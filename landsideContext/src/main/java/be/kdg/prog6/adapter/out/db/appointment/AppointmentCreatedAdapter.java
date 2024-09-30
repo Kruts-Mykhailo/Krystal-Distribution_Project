@@ -1,15 +1,15 @@
 package be.kdg.prog6.adapter.out.db.appointment;
 
+import be.kdg.prog6.adapter.out.db.appointmentActivity.AppointmentActivityJpaEntity;
+import be.kdg.prog6.adapter.out.db.appointmentActivity.AppointmentActivityJpaRepository;
 import be.kdg.prog6.adapter.out.db.schedule.ScheduleJpaEntity;
-import be.kdg.prog6.domain.Appointment;
-import be.kdg.prog6.domain.AppointmentStatus;
-import be.kdg.prog6.domain.LicensePlate;
-import be.kdg.prog6.domain.MaterialType;
+import be.kdg.prog6.domain.*;
 import be.kdg.prog6.port.out.AppointmentCreatedPort;
 import be.kdg.prog6.port.out.AppointmentUpdatedPort;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -18,11 +18,13 @@ import java.util.logging.Logger;
 public class AppointmentCreatedAdapter implements AppointmentCreatedPort, AppointmentUpdatedPort {
 
     private final AppointmentJpaRepository appointmentJpaRepository;
+    private final AppointmentActivityJpaRepository appointmentActivityJpaRepository;
 
     private final Logger logger = Logger.getLogger(AppointmentCreatedAdapter.class.getName());
 
-    public AppointmentCreatedAdapter(AppointmentJpaRepository appointmentJpaRepository) {
+    public AppointmentCreatedAdapter(AppointmentJpaRepository appointmentJpaRepository, AppointmentActivityJpaRepository appointmentActivityJpaRepository) {
         this.appointmentJpaRepository = appointmentJpaRepository;
+        this.appointmentActivityJpaRepository = appointmentActivityJpaRepository;
     }
 
     @Override
@@ -41,12 +43,23 @@ public class AppointmentCreatedAdapter implements AppointmentCreatedPort, Appoin
     }
 
     @Override
-    public void updateAppointmentStatus(AppointmentStatus status, UUID appointmentId) {
-        var appointmentJpaEntity = appointmentJpaRepository.findById(appointmentId);
+    public void updateAppointment(Appointment appointment, AppointmentStatus status) {
+        var appointmentJpaEntity = appointmentJpaRepository.findById(appointment.getId());
         if (appointmentJpaEntity.isPresent()) {
-            var appointment = appointmentJpaEntity.get();
-            appointment.setStatus(status.name());
-            appointmentJpaRepository.save(appointment);
+            AppointmentJpaEntity foundAppointment = appointmentJpaEntity.get();
+            foundAppointment.setStatus(status.name());
+            AppointmentJpaEntity savedAppointment = appointmentJpaRepository.save(foundAppointment);
+
+            List<AppointmentActivityJpaEntity> activities = appointment.getAppointmentActivities()
+                    .stream()
+                    .map(ac -> new AppointmentActivityJpaEntity(
+                            ac.licensePlate().licensePlate(),
+                            ac.activityType().name(),
+                            ac.status().name(),
+                            ac.localDateTime(),
+                            savedAppointment
+                    )).toList();
+            appointmentActivityJpaRepository.saveAll(activities);
         }
     }
 
@@ -66,7 +79,13 @@ public class AppointmentCreatedAdapter implements AppointmentCreatedPort, Appoin
                 a.getAppointmentDateTime(),
                 a.getWarehouseId(),
                 a.getWarehouseNumber(),
-                AppointmentStatus.valueOf(a.getStatus())
+                AppointmentStatus.valueOf(a.getStatus()),
+                a.getActivities().stream().map(ac -> new AppointmentActivity(
+                        new LicensePlate(ac.getLicensePlate()),
+                        ActivityType.valueOf(ac.getActivityType()),
+                        ac.getDateTime(),
+                        AppointmentStatus.valueOf(ac.getTruckStatus())
+                )).toList()
         );
     }
 }

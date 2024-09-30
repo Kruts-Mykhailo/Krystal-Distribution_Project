@@ -1,6 +1,7 @@
 package be.kdg.prog6.domain;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 public class Appointment {
@@ -12,6 +13,7 @@ public class Appointment {
     private UUID warehouseId;
     private int warehouseNumber;
     private AppointmentStatus appointmentStatus;
+    private List<AppointmentActivity> appointmentActivities;
 
     public Appointment(LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime appointmentDateTime, UUID warehouseId, int warehouseNumber, AppointmentStatus appointmentStatus) {
         this.id = UUID.randomUUID();
@@ -23,7 +25,7 @@ public class Appointment {
         this.appointmentStatus = appointmentStatus;
     }
 
-    public Appointment(UUID id, LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime appointmentDateTime, UUID warehouseId, int warehouseNumber, AppointmentStatus appointmentStatus) {
+    public Appointment(UUID id, LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime appointmentDateTime, UUID warehouseId, int warehouseNumber, AppointmentStatus appointmentStatus, List<AppointmentActivity> appointmentActivities) {
         this.id = id;
         this.truckLicensePlate = truckLicensePlate;
         this.materialType = materialType;
@@ -31,6 +33,7 @@ public class Appointment {
         this.warehouseId = warehouseId;
         this.warehouseNumber = warehouseNumber;
         this.appointmentStatus = appointmentStatus;
+        this.appointmentActivities = appointmentActivities;
     }
 
     public UUID getId() {
@@ -82,6 +85,14 @@ public class Appointment {
         this.appointmentDateTime = appointmentDateTime;
     }
 
+    public List<AppointmentActivity> getAppointmentActivities() {
+        return appointmentActivities;
+    }
+
+    public void setAppointmentActivities(List<AppointmentActivity> appointmentActivities) {
+        this.appointmentActivities = appointmentActivities;
+    }
+
     public UUID getWarehouseId() {
         return warehouseId;
     }
@@ -90,4 +101,21 @@ public class Appointment {
         this.warehouseId = warehouseId;
     }
 
+
+    private AppointmentStatus getTruckArrivalStatus(LocalDateTime arrivalTime) {
+        return arrivalTime.isAfter(this.appointmentDateTime) &&
+                arrivalTime.isBefore(this.appointmentDateTime.plusHours(1))
+                ? AppointmentStatus.ON_TIME : AppointmentStatus.LATE;
+    }
+
+    public AppointmentActivity truckArrived(LocalDateTime truckArrivalTime) {
+        AppointmentActivity activity = new AppointmentActivity(
+                this.truckLicensePlate,
+                ActivityType.ARRIVAL,
+                truckArrivalTime,
+                this.getTruckArrivalStatus(truckArrivalTime)
+        );
+        this.appointmentActivities.add(activity);
+        return activity;
+    }
 }

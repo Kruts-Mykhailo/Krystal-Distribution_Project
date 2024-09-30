@@ -1,17 +1,18 @@
 package be.kdg.prog6.adapter.in;
 
 
-import be.kdg.prog6.adapter.in.dto.ArrivalDTO;
+
 import be.kdg.prog6.domain.LicensePlate;
-import be.kdg.prog6.domain.TruckActivity;
+import be.kdg.prog6.domain.AppointmentActivity;
 import be.kdg.prog6.port.in.TruckArrivalUseCase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -26,17 +27,21 @@ public class GateController {
         this.truckArrivalUseCase = truckArrivalUseCase;
     }
 
-    @PostMapping("/arrive")
-    public ResponseEntity<?> arriveToFacility(@RequestBody ArrivalDTO arrivalDTO) {
-        logger.info(arrivalDTO.toString());
-        Optional<TruckActivity> arrivalResult = truckArrivalUseCase.arriveToFacility(
-                new LicensePlate(arrivalDTO.getLicensePlate()),
-                arrivalDTO.getArrivalTime()
+    @PostMapping("/arrive/{licensePlate}")
+    public ResponseEntity<?> arriveToFacility(@PathVariable String licensePlate) {
+        logger.info(licensePlate + " truck arrived to facility.");
+
+        LocalDateTime arrivalDateTime = LocalDateTime.now();
+
+        Optional<AppointmentActivity> arrivalResult = truckArrivalUseCase.arriveToFacility(
+                new LicensePlate(licensePlate),
+                arrivalDateTime
         );
         if (arrivalResult.isPresent()) {
-            return ResponseEntity.ok(arrivalDTO);
+            return ResponseEntity.ok(
+                    String.format("Truck %s arrived to facility at %s.", licensePlate, arrivalDateTime)
+            );
         }
-
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Truck arrival failed");
     }
 }
