@@ -6,19 +6,19 @@ import java.time.LocalDateTime;
 
 public class ArrivalDTO {
 
-    private LicensePlate licensePlate;
+    private String licensePlate;
     private LocalDateTime arrivalTime;
 
-    public ArrivalDTO(LicensePlate licensePlate, LocalDateTime arrivalTime) {
+    public ArrivalDTO(String licensePlate, LocalDateTime arrivalTime) {
         this.licensePlate = licensePlate;
         this.arrivalTime = arrivalTime;
     }
 
-    public LicensePlate getLicensePlate() {
+    public String getLicensePlate() {
         return licensePlate;
     }
 
-    public void setLicensePlate(LicensePlate licensePlate) {
+    public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
     }
 
@@ -28,5 +28,13 @@ public class ArrivalDTO {
 
     public void setArrivalTime(LocalDateTime arrivalTime) {
         this.arrivalTime = arrivalTime;
+    }
+
+    @Override
+    public String toString() {
+        return "ArrivalDTO{" +
+                "licensePlate='" + licensePlate + '\'' +
+                ", arrivalTime=" + arrivalTime +
+                '}';
     }
 }

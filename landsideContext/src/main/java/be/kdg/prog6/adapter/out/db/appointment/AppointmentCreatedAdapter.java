@@ -12,11 +12,14 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 @Component
 public class AppointmentCreatedAdapter implements AppointmentCreatedPort, AppointmentUpdatedPort {
 
     private final AppointmentJpaRepository appointmentJpaRepository;
+
+    private final Logger logger = Logger.getLogger(AppointmentCreatedAdapter.class.getName());
 
     public AppointmentCreatedAdapter(AppointmentJpaRepository appointmentJpaRepository) {
         this.appointmentJpaRepository = appointmentJpaRepository;
@@ -51,6 +54,7 @@ public class AppointmentCreatedAdapter implements AppointmentCreatedPort, Appoin
     public Optional<Appointment> getAppointmentByArrivalTime(LicensePlate licensePlate, LocalDateTime arrivalTime) {
         Optional<AppointmentJpaEntity> appointmentJpaEntity = appointmentJpaRepository
                 .findEarliestScheduledAppointmentWithArrivalDateTime(licensePlate.licensePlate(), arrivalTime);
+        logger.info(String.format("License plate: %s appointmentTime: %s ", licensePlate.licensePlate(), arrivalTime));
         return appointmentJpaEntity.map(this::toAppointment);
     }
 

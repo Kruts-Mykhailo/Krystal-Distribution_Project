@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class TruckArrivalUseCaseImpl implements TruckArrivalUseCase {
@@ -15,6 +16,8 @@ public class TruckArrivalUseCaseImpl implements TruckArrivalUseCase {
     private final AppointmentUpdatedPort appointmentUpdatedPort;
 
     private final TruckActivitySavedPort truckActivitySavedPort;
+
+    private final Logger logger = Logger.getLogger(TruckArrivalUseCaseImpl.class.getName());
 
     public TruckArrivalUseCaseImpl(AppointmentUpdatedPort appointmentUpdatedPort, TruckActivitySavedPort truckActivitySavedPort) {
         this.appointmentUpdatedPort = appointmentUpdatedPort;
@@ -26,6 +29,8 @@ public class TruckArrivalUseCaseImpl implements TruckArrivalUseCase {
         Optional<Appointment> appointment = appointmentUpdatedPort.getAppointmentByArrivalTime(licensePlate, arrivalTime);
 
         if (appointment.isPresent()) {
+            logger.info("Appointment found");
+
             Appointment foundAppointment = appointment.get();
 
             AppointmentStatus appointmentStatus = arrivalTime.isAfter(foundAppointment.getAppointmentDateTime()) &&
@@ -42,6 +47,7 @@ public class TruckArrivalUseCaseImpl implements TruckArrivalUseCase {
             appointmentUpdatedPort.updateAppointmentStatus(AppointmentStatus.ON_SITE, foundAppointment.getId());
             return Optional.of(truckActivity);
         }
+        logger.warning("Appointment not found");
         return Optional.empty();
     }
 }

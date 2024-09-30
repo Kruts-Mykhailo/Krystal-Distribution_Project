@@ -2,6 +2,7 @@ package be.kdg.prog6.adapter.out.db.appointment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -16,5 +17,8 @@ public interface AppointmentJpaRepository extends JpaRepository<AppointmentJpaEn
             "AND a.status = 'SCHEDULED' " +
             "AND :arrivalDateTime >= a.appointmentDateTime " +
             "ORDER BY a.appointmentDateTime ASC")
-    Optional<AppointmentJpaEntity> findEarliestScheduledAppointmentWithArrivalDateTime(String licensePlate, LocalDateTime arrivalDateTime);
+    Optional<AppointmentJpaEntity> findEarliestScheduledAppointmentWithArrivalDateTime(
+            @Param("licensePlate") String licensePlate,
+            @Param("arrivalDateTime") LocalDateTime arrivalDateTime
+    );
 }
