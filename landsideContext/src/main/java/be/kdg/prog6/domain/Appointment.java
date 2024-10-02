@@ -107,25 +107,34 @@ public class Appointment {
                 arrivalTime.isBefore(this.appointmentDateTime.plusHours(1))
                 ? AppointmentStatus.ON_TIME : AppointmentStatus.LATE;
     }
-
-    public AppointmentActivity truckArrived(LocalDateTime truckArrivalTime) {
+    private AppointmentActivity addActivity(ActivityType activityType, AppointmentStatus appointmentStatus, LocalDateTime dateTime) {
         AppointmentActivity activity = new AppointmentActivity(
                 this.truckLicensePlate,
-                ActivityType.ARRIVAL,
-                truckArrivalTime,
-                this.getTruckArrivalStatus(truckArrivalTime)
+                activityType,
+                dateTime,
+                appointmentStatus
         );
-        this.appointmentActivities.add(activity);
+        appointmentActivities.add(activity);
         return activity;
     }
 
-    public void passedWeighingBridge(LocalDateTime eventTime) {
-        AppointmentActivity activity = new AppointmentActivity(
-                this.truckLicensePlate,
-                ActivityType.PASS_WEIGHING_BRIDGE,
-                eventTime,
-                AppointmentStatus.ON_SITE
-        );
-        this.appointmentActivities.add(activity);
+    public AppointmentActivity truckArrived(LocalDateTime truckArrivalTime) {
+        return addActivity(ActivityType.ARRIVAL, this.getTruckArrivalStatus(truckArrivalTime), truckArrivalTime);
     }
+
+    public void enterByWeighingBridge(LocalDateTime eventTime) {
+        addActivity(ActivityType.PASS_WEIGHING_BRIDGE, AppointmentStatus.ON_SITE, eventTime);
+    }
+
+    public void dumpPayload(LocalDateTime eventTime) {
+        addActivity(ActivityType.DUMP_LOAD, AppointmentStatus.ON_SITE, eventTime);
+    }
+
+    public void leaveByWeighingBridge(LocalDateTime eventTime) {
+        addActivity(ActivityType.DEPARTURE, AppointmentStatus.ON_SITE, eventTime);
+    }
+
+
+
+
 }

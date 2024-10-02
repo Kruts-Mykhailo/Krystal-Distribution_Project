@@ -1,4 +1,4 @@
-package be.kdg.prog6.adapter.in.warehouseProjection;
+package be.kdg.prog6.adapter.in.warehouse.warehouseProjection;
 
 import java.util.UUID;
 

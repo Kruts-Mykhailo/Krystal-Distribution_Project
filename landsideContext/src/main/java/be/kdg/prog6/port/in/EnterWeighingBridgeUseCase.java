@@ -1,7 +1,5 @@
 package be.kdg.prog6.port.in;
 
-import be.kdg.prog6.domain.LicensePlate;
-
-public interface PassWeighingBridgeUseCase {
+public interface EnterWeighingBridgeUseCase {
     void passWeighingBridge(PassBridgeCommand passBridgeCommand);
 }

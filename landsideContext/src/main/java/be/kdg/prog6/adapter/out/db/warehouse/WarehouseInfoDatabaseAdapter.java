@@ -38,6 +38,21 @@ public class WarehouseInfoDatabaseAdapter implements WarehouseInfoPort {
     }
 
     @Override
+    public WarehouseInfo getWarehouseById(UUID warehouseId) {
+        Optional<WarehouseInfoJpaEntity> warehouse = warehouseInfoJpaRepository.findById(warehouseId);
+        if (warehouse.isEmpty()) {
+            throw new RuntimeException();
+        }
+        WarehouseInfoJpaEntity warehouseInfoJpa = warehouse.get();
+        return new WarehouseInfo(
+                MaterialType.valueOf(warehouseInfoJpa.getMaterialType()),
+                new Seller.SellerId(warehouseInfoJpa.getSellerId()),
+                warehouseInfoJpa.getWarehouseId(),
+                warehouseInfoJpa.getWarehouseNumber(),
+                warehouseInfoJpa.isFullCapacity());
+    }
+
+    @Override
     public void updateWarehouse(UUID warehouseId, boolean isFull) {
         Optional<WarehouseInfoJpaEntity> warehouse = warehouseInfoJpaRepository.findById(warehouseId);
 
