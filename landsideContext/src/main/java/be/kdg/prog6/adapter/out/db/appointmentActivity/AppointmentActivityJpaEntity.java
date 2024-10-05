@@ -18,7 +18,6 @@ import java.util.UUID;
 public class AppointmentActivityJpaEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID activityId;
 
     private String licensePlate;
@@ -36,11 +35,12 @@ public class AppointmentActivityJpaEntity {
 
     }
 
-    public AppointmentActivityJpaEntity(String licensePlate, String activityType, String truckStatus, LocalDateTime dateTime, AppointmentJpaEntity appointment) {
+    public AppointmentActivityJpaEntity(UUID activityId, String licensePlate, String activityType, LocalDateTime dateTime, String truckStatus, AppointmentJpaEntity appointment) {
+        this.activityId = activityId;
         this.licensePlate = licensePlate;
         this.activityType = activityType;
-        this.truckStatus = truckStatus;
         this.dateTime = dateTime;
+        this.truckStatus = truckStatus;
         this.appointment = appointment;
     }
 }

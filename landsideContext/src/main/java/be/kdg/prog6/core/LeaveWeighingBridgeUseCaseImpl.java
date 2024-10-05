@@ -1,5 +1,6 @@
 package be.kdg.prog6.core;
 
+import be.kdg.prog6.adapter.in.exceptions.AppointmentNotFoundException;
 import be.kdg.prog6.domain.*;
 import be.kdg.prog6.port.in.LeaveWeighingBridgeUseCase;
 import be.kdg.prog6.port.in.PassBridgeCommand;
@@ -8,7 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.logging.Logger;
 
 
 @Service
@@ -18,6 +19,7 @@ public class LeaveWeighingBridgeUseCaseImpl implements LeaveWeighingBridgeUseCas
     private final AppointmentUpdatedPort appointmentUpdatedPort;
     private final TruckWeightRecordFoundPort truckWeightRecordFoundPort;
     private final CreatePdtPort createPdtPort;
+    private final Logger logger = Logger.getLogger(LeaveWeighingBridgeUseCaseImpl.class.getName());
 
     public LeaveWeighingBridgeUseCaseImpl(AppointmentFoundPort appointmentFoundPort, AppointmentUpdatedPort appointmentUpdatedPort, TruckWeightRecordFoundPort truckWeightRecordFoundPort, TruckWeightSavedPort truckWeightSavedPort, CreatePdtPort createPdtPort, WarehouseInfoPort warehouseInfoPort) {
         this.appointmentFoundPort = appointmentFoundPort;
@@ -29,35 +31,34 @@ public class LeaveWeighingBridgeUseCaseImpl implements LeaveWeighingBridgeUseCas
 
     @Override
     @Transactional
-    public Optional<WBT> leaveWeighingBridge(PassBridgeCommand passBridgeCommand) {
-        Optional<Appointment> optionalAppointment = appointmentFoundPort.getTruckAppointmentOnSite(passBridgeCommand.licensePlate());
-        if (optionalAppointment.isPresent()) {
-            Appointment appointment = optionalAppointment.get();
-            appointment.leaveByWeighingBridge(LocalDateTime.now());
-            TruckWeightRecord truckWeightRecord = new TruckWeightRecord(
-                    passBridgeCommand.licensePlate(),
-                    passBridgeCommand.weight(),
-                    LocalDateTime.now()
-            );
-            TruckWeightRecord enterWeightRecord = truckWeightRecordFoundPort.getTruckWeightRecord(appointment.getId());
-            Double netWeight = enterWeightRecord.weight() - truckWeightRecord.weight();
+    public WBT leaveWeighingBridge(PassBridgeCommand passBridgeCommand) {
+        Appointment appointment = appointmentFoundPort.getTruckAppointmentOnSite(passBridgeCommand.licensePlate())
+                .orElseThrow(() -> new AppointmentNotFoundException("Truck on site not recognized"));
 
-            createPdtPort.sendPdt(new PDT(
-                    appointment.getWarehouseId(),
-                    LocalDateTime.now(),
-                    netWeight,
-                    appointment.getMaterialType()));
+        appointment.leaveByWeighingBridge(LocalDateTime.now());
+        TruckWeightRecord truckWeightRecord = new TruckWeightRecord(
+                passBridgeCommand.licensePlate(),
+                passBridgeCommand.weight(),
+                LocalDateTime.now()
+        );
+        TruckWeightRecord enterWeightRecord = truckWeightRecordFoundPort.getTruckWeightRecord(appointment.getId());
+        Double netWeight = enterWeightRecord.weight() - truckWeightRecord.weight();
 
-            appointmentUpdatedPort.updateAppointment(appointment, AppointmentStatus.LEFT);
-            return Optional.of(new WBT(
-                    passBridgeCommand.licensePlate(),
-                    enterWeightRecord.weight(),
-                    truckWeightRecord.weight(),
-                    netWeight,
-                    enterWeightRecord.time(),
-                    truckWeightRecord.time()));
-        }
-        return Optional.empty();
+//        createPdtPort.sendPdt(new PDT(
+//                appointment.getWarehouseId(),
+//                LocalDateTime.now(),
+//                netWeight,
+//                appointment.getMaterialType()));
+
+        appointmentUpdatedPort.updateAppointment(appointment, AppointmentStatus.LEFT_SITE);
+        logger.info(String.format("Truck %s left site", passBridgeCommand.licensePlate().licensePlate()));
+        return new WBT(
+                passBridgeCommand.licensePlate(),
+                enterWeightRecord.weight(),
+                truckWeightRecord.weight(),
+                netWeight,
+                enterWeightRecord.time(),
+                truckWeightRecord.time());
 
     }
 }

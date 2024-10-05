@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/conveyorBelt")
 public class ConveyorController {
@@ -21,6 +23,9 @@ public class ConveyorController {
     @PostMapping("/{licensePlate}")
     public ResponseEntity<?> truckDumpPayload(@PathVariable String licensePlate) {
         dumpPayloadUseCase.dumpPayload(new LicensePlate(licensePlate));
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(
+                String.format("Truck %s dumped payload at %s",
+                        licensePlate, LocalDateTime.now())
+        );
     }
 }

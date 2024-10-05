@@ -2,6 +2,8 @@ package be.kdg.prog6.adapter.out.db.appointment;
 
 import be.kdg.prog6.domain.*;
 
+import java.util.stream.Collectors;
+
 public class AppointmentConverter {
 
     public static Appointment toAppointment(AppointmentJpaEntity a) {
@@ -14,11 +16,12 @@ public class AppointmentConverter {
                 a.getWarehouseNumber(),
                 AppointmentStatus.valueOf(a.getStatus()),
                 a.getActivities().stream().map(ac -> new AppointmentActivity(
+                        ac.getActivityId(),
                         new LicensePlate(ac.getLicensePlate()),
                         ActivityType.valueOf(ac.getActivityType()),
                         ac.getDateTime(),
                         AppointmentStatus.valueOf(ac.getTruckStatus())
-                )).toList()
+                )).collect(Collectors.toList())
         );
     }
 

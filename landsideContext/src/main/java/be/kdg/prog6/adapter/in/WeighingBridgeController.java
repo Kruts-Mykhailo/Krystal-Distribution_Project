@@ -38,14 +38,11 @@ public class WeighingBridgeController {
 
         if (isEnter) {
             enterWeighingBridgeUseCase.enterWeighingBridge(passBridgeCommand);
+            return ResponseEntity.ok(passBridgeCommand);
         } else {
-            Optional<WBT> wbtOptional = leaveWeighingBridgeUseCase.leaveWeighingBridge(passBridgeCommand);
-            if (wbtOptional.isPresent()) {
-                WBT wbt = wbtOptional.get();
-                return ResponseEntity.ok(wbt);
-            }
-            return ResponseEntity.badRequest().body(String.format("Truck %s could not leave facility.", licensePlate));
+            WBT wbt = leaveWeighingBridgeUseCase.leaveWeighingBridge(passBridgeCommand);
+            return ResponseEntity.ok(wbt);
         }
-        return ResponseEntity.ok().build();
+
     }
 }

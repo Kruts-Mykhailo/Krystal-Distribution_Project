@@ -1,6 +1,7 @@
 package be.kdg.prog6.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,6 +24,7 @@ public class Appointment {
         this.warehouseId = warehouseId;
         this.warehouseNumber = warehouseNumber;
         this.appointmentStatus = appointmentStatus;
+        this.appointmentActivities = new ArrayList<>();
     }
 
     public Appointment(UUID id, LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime appointmentDateTime, UUID warehouseId, int warehouseNumber, AppointmentStatus appointmentStatus, List<AppointmentActivity> appointmentActivities) {
@@ -33,7 +35,7 @@ public class Appointment {
         this.warehouseId = warehouseId;
         this.warehouseNumber = warehouseNumber;
         this.appointmentStatus = appointmentStatus;
-        this.appointmentActivities = appointmentActivities;
+        this.appointmentActivities = appointmentActivities == null ? new ArrayList<>() : appointmentActivities;
     }
 
     public UUID getId() {
@@ -105,21 +107,21 @@ public class Appointment {
     private AppointmentStatus getTruckArrivalStatus(LocalDateTime arrivalTime) {
         return arrivalTime.isAfter(this.appointmentDateTime) &&
                 arrivalTime.isBefore(this.appointmentDateTime.plusHours(1))
-                ? AppointmentStatus.ON_TIME : AppointmentStatus.LATE;
+                ? AppointmentStatus.ARRIVED_ON_TIME : AppointmentStatus.ARRIVED_LATE;
     }
-    private AppointmentActivity addActivity(ActivityType activityType, AppointmentStatus appointmentStatus, LocalDateTime dateTime) {
+    private void addActivity(ActivityType activityType, AppointmentStatus appointmentStatus, LocalDateTime dateTime) {
         AppointmentActivity activity = new AppointmentActivity(
+                UUID.randomUUID(),
                 this.truckLicensePlate,
                 activityType,
                 dateTime,
                 appointmentStatus
         );
-        appointmentActivities.add(activity);
-        return activity;
+        this.appointmentActivities.add(activity);
     }
 
-    public AppointmentActivity truckArrived(LocalDateTime truckArrivalTime) {
-        return addActivity(ActivityType.ARRIVAL, this.getTruckArrivalStatus(truckArrivalTime), truckArrivalTime);
+    public void truckArrived(LocalDateTime truckArrivalTime) {
+        addActivity(ActivityType.ARRIVAL, this.getTruckArrivalStatus(truckArrivalTime), truckArrivalTime);
     }
 
     public void enterByWeighingBridge(LocalDateTime eventTime) {

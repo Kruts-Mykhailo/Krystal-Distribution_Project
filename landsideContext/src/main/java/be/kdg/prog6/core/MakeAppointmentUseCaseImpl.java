@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class MakeAppointmentUseCaseImpl implements MakeAppointmentUseCase {
@@ -19,6 +20,7 @@ public class MakeAppointmentUseCaseImpl implements MakeAppointmentUseCase {
     private final AppointmentCreatedPort appointmentCreatedPort;
     private final ScheduleDetailsPort scheduleDetailsPort;
     private final WarehouseInfoPort warehouseInfoPort;
+    private final Logger logger = Logger.getLogger(MakeAppointmentUseCaseImpl.class.getName());
 
     public MakeAppointmentUseCaseImpl(AppointmentCreatedPort appointmentCreatedPort, ScheduleDetailsPort scheduleDetailsPort, WarehouseInfoPort warehouseInfoPort) {
         this.appointmentCreatedPort = appointmentCreatedPort;
@@ -47,13 +49,20 @@ public class MakeAppointmentUseCaseImpl implements MakeAppointmentUseCase {
                 warehouseInfo.warehouseNumber()
         );
         if (appointment.isEmpty()) {
+            logger.warning("Fail schedule appointment. Day full");
             throw new AppointmentCannotBeScheduledException(String.format("Appointment cannot be scheduled for %s", createAppointmentCommand.scheduleDateTime()));
         }
         if (warehouseInfo.fullCapacity()) {
+            logger.warning("Fail schedule appointment. Warehouse is full");
             throw new WarehouseHasFullCapacityException(String.format("Warehouse %d has full capacity", warehouseInfo.warehouseNumber()));
         }
         Appointment newAppointment = appointment.get();
         appointmentCreatedPort.saveAppointment(newAppointment, schedule.getId());
+        logger.info(String.format(
+                "%s made an appointment for %s",
+                createAppointmentCommand.sellerId(),
+                createAppointmentCommand.scheduleDateTime()
+        ));
         return newAppointment;
     }
 }

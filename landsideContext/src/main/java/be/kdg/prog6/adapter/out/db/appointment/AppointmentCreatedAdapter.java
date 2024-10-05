@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Component
 public class AppointmentCreatedAdapter implements AppointmentCreatedPort, AppointmentUpdatedPort, AppointmentFoundPort {
@@ -46,12 +47,13 @@ public class AppointmentCreatedAdapter implements AppointmentCreatedPort, Appoin
             List<AppointmentActivityJpaEntity> activities = appointment.getAppointmentActivities()
                     .stream()
                     .map(ac -> new AppointmentActivityJpaEntity(
+                            ac.activityId(),
                             ac.licensePlate().licensePlate(),
                             ac.activityType().name(),
-                            ac.status().name(),
                             ac.localDateTime(),
+                            ac.status().name(),
                             savedAppointment
-                    )).toList();
+                    )).collect(Collectors.toList());
             appointmentActivityJpaRepository.saveAll(activities);
         }
     }
@@ -60,7 +62,6 @@ public class AppointmentCreatedAdapter implements AppointmentCreatedPort, Appoin
     public Optional<Appointment> getAppointmentByArrivalTime(LicensePlate licensePlate, LocalDateTime arrivalTime) {
         Optional<AppointmentJpaEntity> appointmentJpaEntity = appointmentJpaRepository
                 .findEarliestScheduledAppointmentWithArrivalDateTime(licensePlate.licensePlate(), arrivalTime);
-        logger.info(String.format("License plate: %s appointmentTime: %s ", licensePlate.licensePlate(), arrivalTime));
         return appointmentJpaEntity.map(AppointmentConverter::toAppointment);
     }
 

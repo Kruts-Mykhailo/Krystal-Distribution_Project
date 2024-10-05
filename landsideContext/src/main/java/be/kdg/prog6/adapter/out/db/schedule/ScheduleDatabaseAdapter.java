@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class ScheduleDatabaseAdapter implements ScheduleDetailsPort {
@@ -27,7 +28,7 @@ public class ScheduleDatabaseAdapter implements ScheduleDetailsPort {
 
         List<Appointment> appointments = schedule.getAppointmentJpaEntities()
                 .stream()
-                .map(AppointmentConverter::toAppointment).toList();
+                .map(AppointmentConverter::toAppointment).collect(Collectors.toList());
 
         return new DaySchedule(schedule.getScheduleId(), schedule.getScheduleDate(), appointments);
     }
@@ -43,7 +44,7 @@ public class ScheduleDatabaseAdapter implements ScheduleDetailsPort {
         schedule = scheduleJpaEntity.get();
         List<Appointment> appointments = schedule.getAppointmentJpaEntities()
                 .stream()
-                .map(AppointmentConverter::toAppointment).toList();
+                .map(AppointmentConverter::toAppointment).collect(Collectors.toList());
         return new DaySchedule(schedule.getScheduleId(), schedule.getScheduleDate(), appointments);
     }
 

@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.time.LocalTime;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -30,25 +31,17 @@ public class GateController {
 
     @PostMapping("/{licensePlate}/arrive")
     public ResponseEntity<?> arriveToFacility(@PathVariable String licensePlate) {
-        logger.info(licensePlate + " truck arrived to facility.");
 
-        LocalDateTime arrivalDateTime = LocalDateTime.now();
+        LocalDateTime arrivalDateTime = LocalDateTime.parse("2024-10-08T03:01:00");
+        truckArrivalUseCase.arriveToFacility(new LicensePlate(licensePlate), arrivalDateTime);
 
-        Optional<AppointmentActivity> arrivalResult = truckArrivalUseCase.arriveToFacility(
-                new LicensePlate(licensePlate),
-                arrivalDateTime
+        Random random = new Random();
+        int weighingBridgeNumber = random.nextInt(10000);
+
+        return ResponseEntity.ok(
+                String.format("Truck %s arrived to facility at %s. Weighing bridge number: %d",
+                        licensePlate, arrivalDateTime, weighingBridgeNumber)
         );
 
-        if (arrivalResult.isPresent()) {
-
-            Random random = new Random();
-            int weighingBridgeNumber = random.nextInt(10000);
-
-            return ResponseEntity.ok(
-                    String.format("Truck %s arrived to facility at %s. Weighing bridge number: %d",
-                            licensePlate, arrivalDateTime, weighingBridgeNumber)
-            );
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Truck arrival failed");
     }
 }

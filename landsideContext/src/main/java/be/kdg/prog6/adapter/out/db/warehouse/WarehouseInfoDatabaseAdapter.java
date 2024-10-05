@@ -37,7 +37,6 @@ public class WarehouseInfoDatabaseAdapter implements WarehouseInfoPort {
                 warehouseInfoJpa.isFullCapacity());
     }
 
-    @Override
     public WarehouseInfo getWarehouseById(UUID warehouseId) {
         Optional<WarehouseInfoJpaEntity> warehouse = warehouseInfoJpaRepository.findById(warehouseId);
         if (warehouse.isEmpty()) {

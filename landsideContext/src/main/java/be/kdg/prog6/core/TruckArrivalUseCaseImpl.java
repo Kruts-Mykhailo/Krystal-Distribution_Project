@@ -1,5 +1,6 @@
 package be.kdg.prog6.core;
 
+import be.kdg.prog6.adapter.in.exceptions.AppointmentNotFoundException;
 import be.kdg.prog6.domain.*;
 import be.kdg.prog6.port.in.TruckArrivalUseCase;
 import be.kdg.prog6.port.out.AppointmentUpdatedPort;
@@ -7,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -23,19 +23,15 @@ public class TruckArrivalUseCaseImpl implements TruckArrivalUseCase {
 
     @Override
     @Transactional
-    public Optional<AppointmentActivity> arriveToFacility(LicensePlate licensePlate, LocalDateTime arrivalTime) {
-        Optional<Appointment> appointment = appointmentUpdatedPort.getAppointmentByArrivalTime(licensePlate, arrivalTime);
+    public void arriveToFacility(LicensePlate licensePlate, LocalDateTime arrivalTime) {
+        Appointment appointment = appointmentUpdatedPort.getAppointmentByArrivalTime(licensePlate, arrivalTime)
+                .orElseThrow(() -> new AppointmentNotFoundException(
+                        String.format("Appointment for %s has not been found", licensePlate.licensePlate())
+                ));
 
-        if (appointment.isPresent()) {
-            logger.info("Appointment found");
+        appointment.truckArrived(arrivalTime);
+        logger.info(String.format("Truck %s arrived to facility at %s", licensePlate.licensePlate(), arrivalTime));
+        appointmentUpdatedPort.updateAppointment(appointment, AppointmentStatus.ON_SITE);
 
-            Appointment foundAppointment = appointment.get();
-            AppointmentActivity appointmentActivity = foundAppointment.truckArrived(arrivalTime);
-            appointmentUpdatedPort.updateAppointment(foundAppointment, AppointmentStatus.ON_SITE);
-
-            return Optional.of(appointmentActivity);
-        }
-        logger.warning("Appointment not found");
-        return Optional.empty();
     }
 }
