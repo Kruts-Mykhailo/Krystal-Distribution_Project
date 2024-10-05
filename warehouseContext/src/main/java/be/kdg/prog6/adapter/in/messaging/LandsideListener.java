@@ -1,9 +1,8 @@
-package be.kdg.prog6.adapter.in;
+package be.kdg.prog6.adapter.in.messaging;
 
 import be.kdg.prog6.domain.PDT;
 import be.kdg.prog6.port.in.AdjustWarehouseInventoryUseCase;
 import be.kdg.prog6.port.in.PayloadDeliveredCommand;
-import be.kdg.prog6.port.out.PayloadRecordSaved;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

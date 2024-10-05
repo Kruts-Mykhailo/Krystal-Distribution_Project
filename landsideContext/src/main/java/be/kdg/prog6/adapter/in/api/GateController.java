@@ -1,20 +1,16 @@
-package be.kdg.prog6.adapter.in;
+package be.kdg.prog6.adapter.in.api;
 
 
 
 import be.kdg.prog6.domain.LicensePlate;
-import be.kdg.prog6.domain.AppointmentActivity;
 import be.kdg.prog6.port.in.TruckArrivalUseCase;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Random;
 import java.util.logging.Logger;
 

@@ -1,6 +1,5 @@
-package be.kdg.prog6.adapter.in.warehouse.publishPdt;
+package be.kdg.prog6.adapter.in.messaging;
 
-import be.kdg.prog6.adapter.in.warehouse.MessagingTopology;
 import be.kdg.prog6.domain.PDT;
 import be.kdg.prog6.port.out.CreatePdtPort;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

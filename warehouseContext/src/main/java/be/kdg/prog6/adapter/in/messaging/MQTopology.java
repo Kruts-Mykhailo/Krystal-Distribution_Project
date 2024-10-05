@@ -1,23 +1,21 @@
-package be.kdg.prog6.adapter.in.warehouse;
+package be.kdg.prog6.adapter.in.messaging;
 
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-
-
 @Configuration
-public class MessagingTopology {
-
-    public static final String CREATED_ACTIVITIES_QUEUE = "created_activities";
-    public static final String PAYLOAD_DELIVERY_TICKET_EXCHANGE = "payload_delivery_tickets";
+public class MQTopology {
     public static final String PAYLOAD_DELIVERY_TICKET_QUEUE = "pdt_received";
+    public static final String WAREHOUSE_FULLNESS_QUEUE = "warehouse_capacity_change";
+    public static final String WAREHOUSE_FULLNESS_EXCHANGE = "warehouse_capacity_exchange";
+
 
     @Bean
     Jackson2JsonMessageConverter consumerJackson2MessageConverter() {
@@ -25,21 +23,20 @@ public class MessagingTopology {
     }
 
     @Bean
-    TopicExchange pdtExchange() {
-        return new TopicExchange(PAYLOAD_DELIVERY_TICKET_EXCHANGE);
+    TopicExchange warehouseCapacityExchange() {
+        return new TopicExchange(WAREHOUSE_FULLNESS_EXCHANGE);
     }
 
     @Bean
-    Queue pdtReceivedQueue() {
-        return new Queue(PAYLOAD_DELIVERY_TICKET_QUEUE, true);
+    Queue warehouseCapacityQueue() {
+        return new Queue(WAREHOUSE_FULLNESS_QUEUE, true);
     }
-
     @Bean
     Binding bindingPdtReceived(TopicExchange exchange, Queue queue) {
         return BindingBuilder
                 .bind(queue)
                 .to(exchange)
-                .with("landside.#.pdt.received");
+                .with("warehouse.#.capacity.changed");
 
     }
 
@@ -55,6 +52,5 @@ public class MessagingTopology {
     Jackson2JsonMessageConverter jackson2JsonMessageConverter() {
         return new Jackson2JsonMessageConverter();
     }
-
 
 }

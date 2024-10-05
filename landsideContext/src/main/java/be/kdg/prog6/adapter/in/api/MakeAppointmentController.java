@@ -1,4 +1,4 @@
-package be.kdg.prog6.adapter.in;
+package be.kdg.prog6.adapter.in.api;
 
 import be.kdg.prog6.adapter.in.dto.AppointmentDTO;
 import be.kdg.prog6.adapter.in.dto.AppointmentRequestDTO;

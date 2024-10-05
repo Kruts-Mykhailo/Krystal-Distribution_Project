@@ -1,4 +1,4 @@
-package be.kdg.prog6.adapter.in;
+package be.kdg.prog6.adapter.in.api;
 
 import be.kdg.prog6.domain.LicensePlate;
 import be.kdg.prog6.domain.WBT;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/bridge")

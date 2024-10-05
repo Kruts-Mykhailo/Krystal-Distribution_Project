@@ -1,6 +1,5 @@
-package be.kdg.prog6.adapter.in.warehouse.warehouseProjection;
+package be.kdg.prog6.adapter.in.messaging;
 
-import be.kdg.prog6.adapter.in.warehouse.MessagingTopology;
 import be.kdg.prog6.port.in.WarehouseInfoProjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +17,7 @@ public class WarehouseListener {
     }
 
 
-    @RabbitListener(queues = MessagingTopology.CREATED_ACTIVITIES_QUEUE, messageConverter = "#{jackson2JsonMessageConverter}")
+    @RabbitListener(queues = MessagingTopology.WAREHOUSE_FULLNESS_QUEUE, messageConverter = "#{jackson2JsonMessageConverter}")
     public void warehouseUpdatedListener(WarehouseUpdatedEvent warehouseUpdatedEvent) {
         LOGGER.info("Warehouse {} is full: {}",
                 warehouseUpdatedEvent.warehouseId(),

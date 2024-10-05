@@ -1,6 +1,6 @@
 package be.kdg.prog6.core;
 
-import be.kdg.prog6.adapter.in.exceptions.AppointmentNotFoundException;
+import be.kdg.prog6.adapter.exceptions.AppointmentNotFoundException;
 import be.kdg.prog6.domain.Appointment;
 import be.kdg.prog6.domain.AppointmentStatus;
 import be.kdg.prog6.domain.TruckWeightRecord;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service

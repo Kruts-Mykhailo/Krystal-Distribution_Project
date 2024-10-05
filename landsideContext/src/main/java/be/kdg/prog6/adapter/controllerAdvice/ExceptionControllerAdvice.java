@@ -1,6 +1,6 @@
-package be.kdg.prog6.adapter.in.controllerAdvice;
+package be.kdg.prog6.adapter.controllerAdvice;
 
-import be.kdg.prog6.adapter.in.exceptions.AppointmentCannotBeScheduledException;
+import be.kdg.prog6.adapter.exceptions.AppointmentCannotBeScheduledException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.ErrorResponse;

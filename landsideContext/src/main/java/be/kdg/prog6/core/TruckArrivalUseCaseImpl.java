@@ -1,6 +1,6 @@
 package be.kdg.prog6.core;
 
-import be.kdg.prog6.adapter.in.exceptions.AppointmentNotFoundException;
+import be.kdg.prog6.adapter.exceptions.AppointmentNotFoundException;
 import be.kdg.prog6.domain.*;
 import be.kdg.prog6.port.in.TruckArrivalUseCase;
 import be.kdg.prog6.port.out.AppointmentUpdatedPort;

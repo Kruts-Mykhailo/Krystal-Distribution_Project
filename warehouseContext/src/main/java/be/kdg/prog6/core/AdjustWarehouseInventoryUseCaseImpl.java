@@ -8,6 +8,9 @@ import be.kdg.prog6.port.in.PayloadDeliveredCommand;
 import be.kdg.prog6.port.out.PayloadRecordSaved;
 import be.kdg.prog6.port.out.ProjectWarehouseInfoPort;
 import be.kdg.prog6.port.out.WarehouseFoundPort;
+import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +19,7 @@ public class AdjustWarehouseInventoryUseCaseImpl implements AdjustWarehouseInven
     private final PayloadRecordSaved payloadRecordSaved;
     private final ProjectWarehouseInfoPort projectWarehouseInfoPort;
     private final WarehouseFoundPort warehouseFoundPort;
+    private final Logger logger = LoggerFactory.getLogger(AdjustWarehouseInventoryUseCaseImpl.class);
 
     public AdjustWarehouseInventoryUseCaseImpl(PayloadRecordSaved payloadRecordSaved, ProjectWarehouseInfoPort projectWarehouseInfoPort, WarehouseFoundPort warehouseFoundPort) {
         this.payloadRecordSaved = payloadRecordSaved;
@@ -24,18 +28,24 @@ public class AdjustWarehouseInventoryUseCaseImpl implements AdjustWarehouseInven
     }
 
     @Override
+    @Transactional
     public void savePayloadRecord(PayloadDeliveredCommand payloadDeliveredCommand) {
         Warehouse warehouse = warehouseFoundPort.getWarehouseById(payloadDeliveredCommand.warehouseId());
-        MaterialAmount warehouseMaterialAmount = warehouse.getWarehouseMaterialAmount();
 
         payloadRecordSaved.savePayloadRecord(
                 ActivityType.DELIVERY,
                 payloadDeliveredCommand.netWeight(),
-                payloadDeliveredCommand.warehouseId()
+                payloadDeliveredCommand.warehouseId(),
+                payloadDeliveredCommand.sendTime()
         );
 
         projectWarehouseInfoPort.updateWarehouseCapacity(
                 payloadDeliveredCommand.warehouseId(),
-                warehouseMaterialAmount.amount() >= Warehouse.WAREHOUSE_MAX_CAPACITY * 0.80);
+                warehouse.isWarehouseAtFullCapacity());
+
+        logger.info("%d warehouse received a payload of %.2f tons".formatted(
+                warehouse.getWarehouseNumber(),
+                payloadDeliveredCommand.netWeight())
+        );
     }
 }

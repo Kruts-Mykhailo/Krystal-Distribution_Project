@@ -1,7 +1,7 @@
 package be.kdg.prog6.core;
 
-import be.kdg.prog6.adapter.in.exceptions.AppointmentCannotBeScheduledException;
-import be.kdg.prog6.adapter.in.exceptions.WarehouseHasFullCapacityException;
+import be.kdg.prog6.adapter.exceptions.AppointmentCannotBeScheduledException;
+import be.kdg.prog6.adapter.exceptions.WarehouseHasFullCapacityException;
 import be.kdg.prog6.domain.*;
 import be.kdg.prog6.port.in.CreateAppointmentCommand;
 import be.kdg.prog6.port.in.MakeAppointmentUseCase;

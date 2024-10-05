@@ -6,5 +6,5 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public interface PayloadRecordSaved {
-    void savePayloadRecord(ActivityType activityType, Double amount, UUID warehouseId);
+    void savePayloadRecord(ActivityType activityType, Double amount, UUID warehouseId, LocalDateTime timestamp);
 }

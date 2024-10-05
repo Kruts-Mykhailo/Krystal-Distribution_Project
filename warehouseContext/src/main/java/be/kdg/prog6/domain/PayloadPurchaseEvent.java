@@ -2,9 +2,8 @@ package be.kdg.prog6.domain;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.UUID;
 
-public record PayloadPurchaseEvent(Double amount, LocalDateTime eventDateTime) implements PayloadActivityRecord {
+public record PayloadPurchaseEvent(Double amount, LocalDateTime eventDateTime) implements PayloadActivity {
     public PayloadPurchaseEvent {
         Objects.requireNonNull(amount);
         if (amount < 0) {
