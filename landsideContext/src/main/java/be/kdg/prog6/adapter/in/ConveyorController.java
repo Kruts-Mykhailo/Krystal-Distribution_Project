@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/conveyorBelt")
@@ -23,9 +24,14 @@ public class ConveyorController {
     @PostMapping("/{licensePlate}")
     public ResponseEntity<?> truckDumpPayload(@PathVariable String licensePlate) {
         dumpPayloadUseCase.dumpPayload(new LicensePlate(licensePlate));
+
+        Random random = new Random();
+        int weighingBridgeNumber = random.nextInt(10000);
+
         return ResponseEntity.ok(
-                String.format("Truck %s dumped payload at %s",
-                        licensePlate, LocalDateTime.now())
+                String.format("Truck %s dumped payload at %s. Weighing bridge number: %d",
+                        licensePlate, LocalDateTime.now(), weighingBridgeNumber)
         );
+
     }
 }
