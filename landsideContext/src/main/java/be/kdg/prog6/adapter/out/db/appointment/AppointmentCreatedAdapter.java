@@ -22,8 +22,6 @@ public class AppointmentCreatedAdapter implements AppointmentCreatedPort, Appoin
     private final AppointmentJpaRepository appointmentJpaRepository;
     private final AppointmentActivityJpaRepository appointmentActivityJpaRepository;
 
-    private final Logger logger = Logger.getLogger(AppointmentCreatedAdapter.class.getName());
-
     public AppointmentCreatedAdapter(AppointmentJpaRepository appointmentJpaRepository, AppointmentActivityJpaRepository appointmentActivityJpaRepository) {
         this.appointmentJpaRepository = appointmentJpaRepository;
         this.appointmentActivityJpaRepository = appointmentActivityJpaRepository;

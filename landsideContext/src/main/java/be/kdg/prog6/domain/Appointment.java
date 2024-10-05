@@ -133,7 +133,7 @@ public class Appointment {
     }
 
     public void leaveByWeighingBridge(LocalDateTime eventTime) {
-        addActivity(ActivityType.DEPARTURE, AppointmentStatus.ON_SITE, eventTime);
+        addActivity(ActivityType.DEPARTURE, AppointmentStatus.LEFT_SITE, eventTime);
     }
 
 
