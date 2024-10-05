@@ -1,5 +1,7 @@
 package be.kdg.prog6.core;
 
+import be.kdg.prog6.adapter.in.exceptions.AppointmentCannotBeScheduledException;
+import be.kdg.prog6.adapter.in.exceptions.WarehouseHasFullCapacityException;
 import be.kdg.prog6.domain.*;
 import be.kdg.prog6.port.in.CreateAppointmentCommand;
 import be.kdg.prog6.port.in.MakeAppointmentUseCase;
@@ -27,7 +29,7 @@ public class MakeAppointmentUseCaseImpl implements MakeAppointmentUseCase {
 
     @Override
     @Transactional
-    public Optional<Appointment> makeAppointment(CreateAppointmentCommand createAppointmentCommand) {
+    public Appointment makeAppointment(CreateAppointmentCommand createAppointmentCommand) {
         WarehouseInfo warehouseInfo = warehouseInfoPort.getWarehouse(
                 createAppointmentCommand.sellerId(),
                 createAppointmentCommand.materialType()
@@ -44,11 +46,14 @@ public class MakeAppointmentUseCaseImpl implements MakeAppointmentUseCase {
                 warehouseInfo.warehouseId(),
                 warehouseInfo.warehouseNumber()
         );
-        if (warehouseInfo.fullCapacity() || appointment.isEmpty()) {
-            return Optional.empty();
+        if (appointment.isEmpty()) {
+            throw new AppointmentCannotBeScheduledException(String.format("Appointment cannot be scheduled for %s", createAppointmentCommand.scheduleDateTime()));
+        }
+        if (warehouseInfo.fullCapacity()) {
+            throw new WarehouseHasFullCapacityException(String.format("Warehouse %d has full capacity", warehouseInfo.warehouseNumber()));
         }
         Appointment newAppointment = appointment.get();
         appointmentCreatedPort.saveAppointment(newAppointment, schedule.getId());
-        return Optional.of(newAppointment);
+        return newAppointment;
     }
 }

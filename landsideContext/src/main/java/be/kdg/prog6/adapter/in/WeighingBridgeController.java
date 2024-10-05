@@ -35,8 +35,9 @@ public class WeighingBridgeController {
                 new LicensePlate(licensePlate),
                 payloadWeight,
                 LocalDateTime.now());
+
         if (isEnter) {
-            enterWeighingBridgeUseCase.passWeighingBridge(passBridgeCommand);
+            enterWeighingBridgeUseCase.enterWeighingBridge(passBridgeCommand);
         } else {
             Optional<WBT> wbtOptional = leaveWeighingBridgeUseCase.leaveWeighingBridge(passBridgeCommand);
             if (wbtOptional.isPresent()) {

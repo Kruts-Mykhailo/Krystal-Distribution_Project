@@ -9,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -32,17 +30,13 @@ public class MakeAppointmentController {
                 new Seller.SellerId(customerId),
                 appointmentRequestDTO.getScheduleDateTime());
 
-        Optional<Appointment> appointment = makeAppointmentUseCase.makeAppointment(command);
+        Appointment appointment = makeAppointmentUseCase.makeAppointment(command);
 
-        if (appointment.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Appointment could not be created");
-        }
-        Appointment appointmentCreated = appointment.get();
         AppointmentDTO appointmentDTO = new AppointmentDTO(
-                appointmentCreated.getTruckLicensePlate().licensePlate(),
-                appointmentCreated.getMaterialType().name(),
-                appointmentCreated.getWarehouseNumber(),
-                appointmentCreated.getAppointmentDateTime());
+                appointment.getTruckLicensePlate().licensePlate(),
+                appointment.getMaterialType().name(),
+                appointment.getWarehouseNumber(),
+                appointment.getAppointmentDateTime());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(appointmentDTO);
     }

@@ -28,7 +28,7 @@ public class GateController {
         this.truckArrivalUseCase = truckArrivalUseCase;
     }
 
-    @PostMapping("/arrive/{licensePlate}")
+    @PostMapping("/{licensePlate}/arrive")
     public ResponseEntity<?> arriveToFacility(@PathVariable String licensePlate) {
         logger.info(licensePlate + " truck arrived to facility.");
 
@@ -38,6 +38,7 @@ public class GateController {
                 new LicensePlate(licensePlate),
                 arrivalDateTime
         );
+
         if (arrivalResult.isPresent()) {
 
             Random random = new Random();

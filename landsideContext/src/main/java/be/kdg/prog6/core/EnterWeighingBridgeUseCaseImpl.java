@@ -29,7 +29,7 @@ public class EnterWeighingBridgeUseCaseImpl implements EnterWeighingBridgeUseCas
 
     @Override
     @Transactional
-    public void passWeighingBridge(PassBridgeCommand passBridgeCommand) {
+    public void enterWeighingBridge(PassBridgeCommand passBridgeCommand) {
         Optional<Appointment> optionalAppointment = appointmentFoundPort.getTruckAppointmentOnSite(passBridgeCommand.licensePlate());
 
         if (optionalAppointment.isPresent()) {

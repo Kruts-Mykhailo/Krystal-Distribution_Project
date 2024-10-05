@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MessagingTopology {
 
+    public static final String CREATED_ACTIVITIES_QUEUE = "created_activities";
     public static final String PAYLOAD_DELIVERY_TICKET_EXCHANGE = "payload_delivery_tickets";
     public static final String PAYLOAD_DELIVERY_TICKET_QUEUE = "pdt_received";
 
