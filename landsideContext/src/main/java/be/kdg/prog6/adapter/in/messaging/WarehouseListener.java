@@ -1,5 +1,6 @@
 package be.kdg.prog6.adapter.in.messaging;
 
+import be.kdg.prog6.events.WarehouseUpdatedEvent;
 import be.kdg.prog6.port.in.WarehouseInfoProjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

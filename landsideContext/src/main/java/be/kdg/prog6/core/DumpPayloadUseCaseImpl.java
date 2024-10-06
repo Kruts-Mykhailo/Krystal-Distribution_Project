@@ -2,6 +2,7 @@ package be.kdg.prog6.core;
 
 import be.kdg.prog6.domain.Appointment;
 import be.kdg.prog6.domain.LicensePlate;
+import be.kdg.prog6.domain.PDT;
 import be.kdg.prog6.port.in.DumpPayloadUseCase;
 import be.kdg.prog6.port.out.AppointmentFoundPort;
 import be.kdg.prog6.port.out.AppointmentUpdatedPort;
@@ -26,13 +27,17 @@ public class DumpPayloadUseCaseImpl implements DumpPayloadUseCase {
 
     @Override
     @Transactional
-    public void dumpPayload(LicensePlate licensePlate) {
-        Optional<Appointment> appointment = appointmentFoundPort.getTruckAppointmentOnSite(licensePlate);
-        if (appointment.isPresent()) {
-            Appointment appointmentFound = appointment.get();
-            appointmentFound.dumpPayload(LocalDateTime.now());
-            appointmentUpdatedPort.updateAppointment(appointmentFound, appointmentFound.getAppointmentStatus());
-            logger.info(String.format("Truck %s dumped material on conveyor belt.", licensePlate.licensePlate()));
-        }
+    public PDT dumpPayload(LicensePlate licensePlate) {
+        Appointment appointment = appointmentFoundPort.getTruckAppointmentOnSite(licensePlate)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Truck %s is not recognized on conveyor belt".formatted(licensePlate.licensePlate())
+                ));
+
+        appointment.dumpPayload(LocalDateTime.now());
+        appointmentUpdatedPort.updateAppointment(appointment, appointment.getAppointmentStatus());
+
+        logger.info(String.format("Truck %s dumped material on conveyor belt.", licensePlate.licensePlate()));
+
+        return new PDT(appointment.getWarehouseNumber(), LocalDateTime.now(), appointment.getMaterialType());
     }
 }

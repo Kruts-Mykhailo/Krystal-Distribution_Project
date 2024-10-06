@@ -3,6 +3,7 @@ package be.kdg.prog6.adapter.in.api;
 
 
 import be.kdg.prog6.domain.LicensePlate;
+import be.kdg.prog6.port.in.TruckArrivalCommand;
 import be.kdg.prog6.port.in.TruckArrivalUseCase;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,16 +29,18 @@ public class GateController {
     @PostMapping("/{licensePlate}/arrive")
     public ResponseEntity<?> arriveToFacility(@PathVariable String licensePlate) {
 
-        //LocalDateTime arrivalDateTime = LocalDateTime.parse("2024-10-08T03:01:00");
-        LocalDateTime arrivalDateTime = LocalDateTime.now();
-        truckArrivalUseCase.arriveToFacility(new LicensePlate(licensePlate), arrivalDateTime);
+        TruckArrivalCommand truckArrivalCommand = new TruckArrivalCommand(
+                new LicensePlate(licensePlate),
+                LocalDateTime.now()
+        );
+        truckArrivalUseCase.arriveToFacility(truckArrivalCommand);
 
         Random random = new Random();
         int weighingBridgeNumber = random.nextInt(10000);
 
         return ResponseEntity.ok(
                 String.format("Truck %s arrived to facility at %s. Weighing bridge number: %d",
-                        licensePlate, arrivalDateTime, weighingBridgeNumber)
+                        licensePlate, LocalDateTime.now(), weighingBridgeNumber)
         );
 
     }

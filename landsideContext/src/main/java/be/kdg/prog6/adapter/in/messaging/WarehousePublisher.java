@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 @Component
-public class PdtPublisher implements CreatePdtPort {
+public class WarehousePublisher implements CreatePdtPort {
 
     private final RabbitTemplate rabbitTemplate;
 
-    public PdtPublisher(RabbitTemplate rabbitTemplate) {
+    public WarehousePublisher(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
 

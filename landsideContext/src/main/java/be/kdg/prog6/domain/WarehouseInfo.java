@@ -8,6 +8,5 @@ public record WarehouseInfo(MaterialType materialType, Seller.SellerId sellerId,
     public WarehouseInfo {
         Objects.requireNonNull(sellerId);
         Objects.requireNonNull(warehouseId);
-        Objects.requireNonNull(warehouseNumber);
     }
 }

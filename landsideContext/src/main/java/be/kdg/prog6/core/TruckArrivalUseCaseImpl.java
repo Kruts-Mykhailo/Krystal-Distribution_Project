@@ -2,6 +2,7 @@ package be.kdg.prog6.core;
 
 import be.kdg.prog6.adapter.exceptions.AppointmentNotFoundException;
 import be.kdg.prog6.domain.*;
+import be.kdg.prog6.port.in.TruckArrivalCommand;
 import be.kdg.prog6.port.in.TruckArrivalUseCase;
 import be.kdg.prog6.port.out.AppointmentUpdatedPort;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,10 @@ public class TruckArrivalUseCaseImpl implements TruckArrivalUseCase {
 
     @Override
     @Transactional
-    public void arriveToFacility(LicensePlate licensePlate, LocalDateTime arrivalTime) {
+    public void arriveToFacility(TruckArrivalCommand truckArrivalCommand) {
+        LicensePlate licensePlate = truckArrivalCommand.licensePlate();
+        LocalDateTime arrivalTime = truckArrivalCommand.arrivalTime();
+
         Appointment appointment = appointmentUpdatedPort.getAppointmentByArrivalTime(licensePlate, arrivalTime)
                 .orElseThrow(() -> new AppointmentNotFoundException(
                         String.format("Appointment for %s has not been found", licensePlate.licensePlate())

@@ -1,6 +1,7 @@
 package be.kdg.prog6.core;
 
 import be.kdg.prog6.adapter.exceptions.AppointmentNotFoundException;
+import be.kdg.prog6.events.PayloadDeliveredEvent;
 import be.kdg.prog6.domain.*;
 import be.kdg.prog6.port.in.LeaveWeighingBridgeUseCase;
 import be.kdg.prog6.port.in.PassBridgeCommand;
@@ -49,11 +50,12 @@ public class LeaveWeighingBridgeUseCaseImpl implements LeaveWeighingBridgeUseCas
 
         truckWeightSavedPort.saveTruckWeight(truckWeightRecord, appointment.getId());
         appointmentUpdatedPort.updateAppointment(appointment, AppointmentStatus.LEFT_SITE);
-        createPdtPort.sendPdt(new PDT(
+        createPdtPort.sendPdt(new PayloadDeliveredEvent(
                 appointment.getWarehouseId(),
                 LocalDateTime.now(),
                 netWeight,
                 appointment.getMaterialType()));
+
         logger.info(String.format("Truck %s left site", passBridgeCommand.licensePlate().licensePlate()));
         return new WBT(
                 passBridgeCommand.licensePlate(),

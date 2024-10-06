@@ -1,4 +1,4 @@
-package be.kdg.prog6.adapter.in.messaging;
+package be.kdg.prog6.events;
 
 import java.util.UUID;
 
