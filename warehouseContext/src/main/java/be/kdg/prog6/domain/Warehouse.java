@@ -8,12 +8,12 @@ import java.util.UUID;
 public class Warehouse {
     private UUID id;
     private int warehouseNumber;
-    private UUID ownerId;
+    private Seller.SellerId ownerId;
     private MaterialType materialType;
     private List<PayloadActivity> activityRecords;
     public static Double WAREHOUSE_MAX_CAPACITY = 1_500_000.0;
 
-    public Warehouse(UUID id, int warehouseNumber, UUID ownerId, MaterialType materialType, List<PayloadActivity> activityRecords) {
+    public Warehouse(UUID id, int warehouseNumber, Seller.SellerId ownerId, MaterialType materialType, List<PayloadActivity> activityRecords) {
         this.id = id;
         this.warehouseNumber = warehouseNumber;
         this.ownerId = ownerId;
@@ -21,7 +21,7 @@ public class Warehouse {
         this.activityRecords = activityRecords;
     }
 
-    public Warehouse(UUID id, MaterialType materialType, UUID ownerId, int warehouseNumber) {
+    public Warehouse(UUID id, MaterialType materialType, Seller.SellerId ownerId, int warehouseNumber) {
         this.id = id;
         this.materialType = materialType;
         this.ownerId = ownerId;
@@ -37,11 +37,11 @@ public class Warehouse {
         this.warehouseNumber = warehouseNumber;
     }
 
-    public UUID getOwnerId() {
+    public Seller.SellerId getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(UUID ownerId) {
+    public void setOwnerId(Seller.SellerId ownerId) {
         this.ownerId = ownerId;
     }
 

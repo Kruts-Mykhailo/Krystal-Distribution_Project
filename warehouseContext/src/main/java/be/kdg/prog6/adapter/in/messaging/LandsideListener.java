@@ -1,8 +1,7 @@
 package be.kdg.prog6.adapter.in.messaging;
 
-import be.kdg.prog6.domain.PDT;
+import be.kdg.prog6.events.PDTReceivedEvent;
 import be.kdg.prog6.port.in.AdjustWarehouseInventoryUseCase;
-import be.kdg.prog6.port.in.PayloadDeliveredCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -19,14 +18,18 @@ public class LandsideListener {
     }
 
     @RabbitListener(queues = MQTopology.PAYLOAD_DELIVERY_TICKET_QUEUE, messageConverter = "jackson2JsonMessageConverter")
-    public void payloadDelivered(PDT payloadDeliveryTicket) {
+    public void payloadDelivered(PDTReceivedEvent pdtReceivedEvent) {
         logger.info(
                 "Payload %s delivered to warehouse %s"
                         .formatted(
-                            payloadDeliveryTicket.materialType(),
-                            payloadDeliveryTicket.warehouseId()
+                            pdtReceivedEvent.materialType(),
+                            pdtReceivedEvent.warehouseId()
                 )
         );
-        adjustWarehouseInventoryUseCase.savePayloadRecord(PayloadDeliveredCommand.fromPDT(payloadDeliveryTicket));
+        adjustWarehouseInventoryUseCase.savePayloadRecord(
+                pdtReceivedEvent.warehouseId(),
+                pdtReceivedEvent.sendTime(),
+                pdtReceivedEvent.netWeight()
+        );
     }
 }

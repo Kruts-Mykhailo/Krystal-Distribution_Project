@@ -60,7 +60,7 @@ public class WarehouseAdapter implements WarehouseFoundPort, PayloadRecordSaved 
         return new Warehouse(
                 warehouse.getWarehouseId(),
                 warehouse.getWarehouseNumber(),
-                warehouse.getOwnerId(),
+                new Seller.SellerId(warehouse.getOwnerId()),
                 MaterialType.valueOf(warehouse.getMaterialType()),
                 payloadActivities
         );

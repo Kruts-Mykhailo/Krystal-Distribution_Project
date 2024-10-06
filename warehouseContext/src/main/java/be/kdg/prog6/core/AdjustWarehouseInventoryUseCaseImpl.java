@@ -1,10 +1,8 @@
 package be.kdg.prog6.core;
 
 import be.kdg.prog6.domain.ActivityType;
-import be.kdg.prog6.domain.MaterialAmount;
 import be.kdg.prog6.domain.Warehouse;
 import be.kdg.prog6.port.in.AdjustWarehouseInventoryUseCase;
-import be.kdg.prog6.port.in.PayloadDeliveredCommand;
 import be.kdg.prog6.port.out.PayloadRecordSaved;
 import be.kdg.prog6.port.out.ProjectWarehouseInfoPort;
 import be.kdg.prog6.port.out.WarehouseFoundPort;
@@ -12,6 +10,9 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 public class AdjustWarehouseInventoryUseCaseImpl implements AdjustWarehouseInventoryUseCase {
@@ -29,23 +30,23 @@ public class AdjustWarehouseInventoryUseCaseImpl implements AdjustWarehouseInven
 
     @Override
     @Transactional
-    public void savePayloadRecord(PayloadDeliveredCommand payloadDeliveredCommand) {
-        Warehouse warehouse = warehouseFoundPort.getWarehouseById(payloadDeliveredCommand.warehouseId());
+    public void savePayloadRecord(UUID warehouseId, LocalDateTime sendTime, Double netWeight) {
+        Warehouse warehouse = warehouseFoundPort.getWarehouseById(warehouseId);
 
         payloadRecordSaved.savePayloadRecord(
                 ActivityType.DELIVERY,
-                payloadDeliveredCommand.netWeight(),
-                payloadDeliveredCommand.warehouseId(),
-                payloadDeliveredCommand.sendTime()
+                netWeight,
+                warehouseId,
+                sendTime
         );
 
         projectWarehouseInfoPort.updateWarehouseCapacity(
-                payloadDeliveredCommand.warehouseId(),
+                warehouseId,
                 warehouse.isWarehouseAtFullCapacity());
 
         logger.info("%d warehouse received a payload of %.2f tons".formatted(
                 warehouse.getWarehouseNumber(),
-                payloadDeliveredCommand.netWeight())
+                netWeight)
         );
     }
 }
