@@ -17,7 +17,7 @@ public class WarehouseListener {
     }
 
 
-    @RabbitListener(queues = MessagingTopology.WAREHOUSE_FULLNESS_QUEUE, messageConverter = "#{jackson2JsonMessageConverter}")
+    @RabbitListener(queues = MQTopology.WAREHOUSE_FULLNESS_QUEUE, messageConverter = "#{jackson2JsonMessageConverter}")
     public void warehouseUpdatedListener(WarehouseUpdatedEvent warehouseUpdatedEvent) {
         LOGGER.info("Warehouse {} is full: {}",
                 warehouseUpdatedEvent.warehouseId(),

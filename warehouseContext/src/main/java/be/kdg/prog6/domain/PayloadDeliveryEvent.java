@@ -14,6 +14,6 @@ public record PayloadDeliveryEvent(Double amount, LocalDateTime eventDateTime) i
 
     @Override
     public Double payload() {
-        return -Math.abs(amount);
+        return amount;
     }
 }

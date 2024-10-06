@@ -1,5 +1,8 @@
 package be.kdg.prog6.adapter.in.messaging;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -13,15 +16,18 @@ import org.springframework.context.annotation.Configuration;
 
 
 @Configuration
-public class MessagingTopology {
+public class MQTopology {
 
     public static final String WAREHOUSE_FULLNESS_QUEUE = "warehouse_capacity_change";
     public static final String PAYLOAD_DELIVERY_TICKET_EXCHANGE = "payload_delivery_tickets";
     public static final String PAYLOAD_DELIVERY_TICKET_QUEUE = "pdt_received";
 
     @Bean
-    Jackson2JsonMessageConverter consumerJackson2MessageConverter() {
-        return new Jackson2JsonMessageConverter();
+    public Jackson2JsonMessageConverter jackson2JsonMessageConverter() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
+        return new Jackson2JsonMessageConverter(objectMapper);
     }
 
     @Bean
@@ -51,10 +57,6 @@ public class MessagingTopology {
 
     }
 
-    @Bean
-    Jackson2JsonMessageConverter jackson2JsonMessageConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
 
 
 }

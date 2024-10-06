@@ -13,6 +13,6 @@ public record PayloadPurchaseEvent(Double amount, LocalDateTime eventDateTime) i
 
     @Override
     public Double payload() {
-        return amount;
+        return -Math.abs(amount);
     }
 }

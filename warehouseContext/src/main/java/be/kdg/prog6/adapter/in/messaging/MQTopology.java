@@ -1,5 +1,8 @@
 package be.kdg.prog6.adapter.in.messaging;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
@@ -18,21 +21,17 @@ public class MQTopology {
 
 
     @Bean
-    Jackson2JsonMessageConverter consumerJackson2MessageConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
-
-    @Bean
     TopicExchange warehouseCapacityExchange() {
         return new TopicExchange(WAREHOUSE_FULLNESS_EXCHANGE);
     }
+
 
     @Bean
     Queue warehouseCapacityQueue() {
         return new Queue(WAREHOUSE_FULLNESS_QUEUE, true);
     }
     @Bean
-    Binding bindingPdtReceived(TopicExchange exchange, Queue queue) {
+    Binding bindingWarehouseCapacityChanged(TopicExchange exchange, Queue queue) {
         return BindingBuilder
                 .bind(queue)
                 .to(exchange)
@@ -49,8 +48,11 @@ public class MQTopology {
     }
 
     @Bean
-    Jackson2JsonMessageConverter jackson2JsonMessageConverter() {
-        return new Jackson2JsonMessageConverter();
+    public Jackson2JsonMessageConverter jackson2JsonMessageConverter() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
+        return new Jackson2JsonMessageConverter(objectMapper);
     }
 
 }

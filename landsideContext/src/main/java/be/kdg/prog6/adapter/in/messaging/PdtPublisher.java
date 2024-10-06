@@ -19,7 +19,7 @@ public class PdtPublisher implements CreatePdtPort {
     public void sendPdt(PDT pdt) {
         String routingKey = String.format("landside.%s.pdt.received", UUID.randomUUID());
         this.rabbitTemplate.convertAndSend(
-                MessagingTopology.PAYLOAD_DELIVERY_TICKET_EXCHANGE,
+                MQTopology.PAYLOAD_DELIVERY_TICKET_EXCHANGE,
                 routingKey,
                 pdt
         );

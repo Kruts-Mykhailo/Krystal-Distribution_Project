@@ -18,7 +18,7 @@ public class LandsideListener {
         this.adjustWarehouseInventoryUseCase = adjustWarehouseInventoryUseCase;
     }
 
-    @RabbitListener(queues = MQTopology.PAYLOAD_DELIVERY_TICKET_QUEUE, messageConverter = "#{jackson2JsonMessageConverter}")
+    @RabbitListener(queues = MQTopology.PAYLOAD_DELIVERY_TICKET_QUEUE, messageConverter = "jackson2JsonMessageConverter")
     public void payloadDelivered(PDT payloadDeliveryTicket) {
         logger.info(
                 "Payload %s delivered to warehouse %s"

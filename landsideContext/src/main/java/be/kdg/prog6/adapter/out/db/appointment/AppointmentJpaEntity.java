@@ -47,8 +47,8 @@ public class AppointmentJpaEntity {
     @OneToMany(mappedBy = "appointment")
     private List<AppointmentActivityJpaEntity> activities;
 
-    @OneToOne(mappedBy = "appointment")
-    private TruckWeightJpaEntity recordedTruckWeight;
+    @OneToMany(mappedBy = "appointment")
+    private List<TruckWeightJpaEntity> recordedTruckWeight;
 
     public AppointmentJpaEntity(UUID appointmentId, String licensePlate, String materialType, UUID warehouseId, LocalDateTime appointmentDateTime, int warehouseNumber, String status) {
         this.appointmentId = appointmentId;

@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/backend.iml" filepath="$PROJECT_DIR$/.idea/modules/backend.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/landsideContext/backend.landsideContext.main.iml" filepath="$PROJECT_DIR$/.idea/modules/landsideContext/backend.landsideContext.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/warehouseContext/backend.warehouseContext.main.iml" filepath="$PROJECT_DIR$/.idea/modules/warehouseContext/backend.warehouseContext.main.iml" />
     </modules>
   </component>
 </project>

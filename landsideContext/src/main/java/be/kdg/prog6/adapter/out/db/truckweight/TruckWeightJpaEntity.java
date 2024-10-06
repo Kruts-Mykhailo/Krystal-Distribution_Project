@@ -25,8 +25,7 @@ public class TruckWeightJpaEntity {
 
     private LocalDateTime recordTime;
 
-    @OneToOne
-    @JoinColumn(name = "appointment_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     private AppointmentJpaEntity appointment;
 
     public TruckWeightJpaEntity(String licensePlate, Double weightRecorded, LocalDateTime recordTime, AppointmentJpaEntity appointment) {

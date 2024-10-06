@@ -28,7 +28,8 @@ public class GateController {
     @PostMapping("/{licensePlate}/arrive")
     public ResponseEntity<?> arriveToFacility(@PathVariable String licensePlate) {
 
-        LocalDateTime arrivalDateTime = LocalDateTime.parse("2024-10-08T03:01:00");
+        //LocalDateTime arrivalDateTime = LocalDateTime.parse("2024-10-08T03:01:00");
+        LocalDateTime arrivalDateTime = LocalDateTime.now();
         truckArrivalUseCase.arriveToFacility(new LicensePlate(licensePlate), arrivalDateTime);
 
         Random random = new Random();
