@@ -1,2 +1,5 @@
-package be.kdg.prog6.domain;public class ShippingOrder {
+package be.kdg.prog6.domain;
+
+public record ShippingOrder(String poNumber) {
+
 }

@@ -1,7 +1,7 @@
 package be.kdg.prog6.core;
 
 import be.kdg.prog6.domain.*;
-import be.kdg.prog6.port.in.InitiateLoadingUseCase;
+import be.kdg.prog6.port.in.MatchShippingOrderUseCase;
 import be.kdg.prog6.port.out.*;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +11,14 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class InititateLoadingUseCaseImpl implements InitiateLoadingUseCase {
+public class MatchShippingOrderUseCaseImpl implements MatchShippingOrderUseCase {
 
     private final PayloadRecordSavedPort payloadRecordSavedPort;
     private final PurchaseOrderFoundPort purchaseOrderFoundPort;
     private final PurchaseOrderUpdatedPort purchaseOrderUpdatedPort;
     private final WarehouseFoundPort warehouseFoundPort;
 
-    public InititateLoadingUseCaseImpl(PayloadRecordSavedPort payloadRecordSavedPort, PurchaseOrderFoundPort purchaseOrderFoundPort, PurchaseOrderUpdatedPort purchaseOrderUpdatedPort, WarehouseFoundPort warehouseFoundPort) {
+    public MatchShippingOrderUseCaseImpl(PayloadRecordSavedPort payloadRecordSavedPort, PurchaseOrderFoundPort purchaseOrderFoundPort, PurchaseOrderUpdatedPort purchaseOrderUpdatedPort, WarehouseFoundPort warehouseFoundPort) {
         this.payloadRecordSavedPort = payloadRecordSavedPort;
         this.purchaseOrderFoundPort = purchaseOrderFoundPort;
         this.purchaseOrderUpdatedPort = purchaseOrderUpdatedPort;

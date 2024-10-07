@@ -2,5 +2,5 @@ package be.kdg.prog6.events;
 
 import java.util.UUID;
 
-public record UpdateWarehouseCapacityEvent(UUID warehouseId, boolean fullCapacity) {
+public record UpdateWarehouseCapacityEvent(UUID warehouseId, Double initialCapacity) {
 }
