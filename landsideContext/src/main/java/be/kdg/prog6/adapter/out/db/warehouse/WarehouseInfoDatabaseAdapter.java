@@ -34,30 +34,17 @@ public class WarehouseInfoDatabaseAdapter implements WarehouseInfoPort {
                 new Seller.SellerId(warehouseInfoJpa.getSellerId()),
                 warehouseInfoJpa.getWarehouseId(),
                 warehouseInfoJpa.getWarehouseNumber(),
-                warehouseInfoJpa.isFullCapacity());
-    }
-
-    public WarehouseInfo getWarehouseById(UUID warehouseId) {
-        Optional<WarehouseInfoJpaEntity> warehouse = warehouseInfoJpaRepository.findById(warehouseId);
-        if (warehouse.isEmpty()) {
-            throw new RuntimeException();
-        }
-        WarehouseInfoJpaEntity warehouseInfoJpa = warehouse.get();
-        return new WarehouseInfo(
-                MaterialType.valueOf(warehouseInfoJpa.getMaterialType()),
-                new Seller.SellerId(warehouseInfoJpa.getSellerId()),
-                warehouseInfoJpa.getWarehouseId(),
-                warehouseInfoJpa.getWarehouseNumber(),
-                warehouseInfoJpa.isFullCapacity());
+                warehouseInfoJpa.getInitialCapacity(),
+                warehouseInfoJpa.getMaxCapacity());
     }
 
     @Override
-    public void updateWarehouse(UUID warehouseId, boolean isFull) {
+    public void updateWarehouse(UUID warehouseId, Double value) {
         Optional<WarehouseInfoJpaEntity> warehouse = warehouseInfoJpaRepository.findById(warehouseId);
 
         if (warehouse.isPresent()) {
             WarehouseInfoJpaEntity warehouseInfo = warehouse.get();
-            warehouseInfo.setFullCapacity(isFull);
+            warehouseInfo.setInitialCapacity(value);
             warehouseInfoJpaRepository.save(warehouseInfo);
         }
 

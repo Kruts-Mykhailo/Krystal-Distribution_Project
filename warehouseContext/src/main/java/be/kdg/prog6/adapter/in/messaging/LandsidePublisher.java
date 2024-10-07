@@ -17,7 +17,7 @@ public class LandsidePublisher implements ProjectWarehouseInfoPort {
     }
 
     @Override
-    public void updateWarehouseCapacity(UUID warehouseId, Boolean capacity) {
+    public void projectWarehouseCapacity(UUID warehouseId, Double capacity) {
         String routingKey = String.format("warehouse.%s.capacity.changed", warehouseId);
         this.rabbitTemplate.convertAndSend(
                 MQTopology.WAREHOUSE_FULLNESS_EXCHANGE,

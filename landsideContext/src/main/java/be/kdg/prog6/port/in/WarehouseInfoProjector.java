@@ -4,5 +4,5 @@ import java.util.UUID;
 
 
 public interface WarehouseInfoProjector {
-    void project(UUID warehouseId, boolean fullCapacity);
+    void project(UUID warehouseId, Double value);
 }

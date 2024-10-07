@@ -16,7 +16,7 @@ public class WarehouseInfoProjectionImpl implements WarehouseInfoProjector {
     }
 
     @Override
-    public void project(UUID warehouseId, boolean fullCapacity) {
-        warehouseInfoPort.updateWarehouse(warehouseId, fullCapacity);
+    public void project(UUID warehouseId, Double value) {
+        warehouseInfoPort.updateWarehouse(warehouseId, value);
     }
 }

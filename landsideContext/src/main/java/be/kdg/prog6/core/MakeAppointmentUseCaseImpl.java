@@ -52,7 +52,7 @@ public class MakeAppointmentUseCaseImpl implements MakeAppointmentUseCase {
             logger.warning("Fail schedule appointment. Day full");
             throw new AppointmentCannotBeScheduledException(String.format("Appointment cannot be scheduled for %s", createAppointmentCommand.scheduleDateTime()));
         }
-        if (warehouseInfo.fullCapacity()) {
+        if (warehouseInfo.isFullCapacity()) {
             logger.warning("Fail schedule appointment. Warehouse is full");
             throw new WarehouseHasFullCapacityException(String.format("Warehouse %d has full capacity", warehouseInfo.warehouseNumber()));
         }

@@ -11,7 +11,6 @@ public class Warehouse {
     private Seller.SellerId ownerId;
     private MaterialType materialType;
     private List<PayloadActivity> activityRecords;
-    public static Double WAREHOUSE_MAX_CAPACITY = 1_500_000.0;
 
     public Warehouse(UUID id, int warehouseNumber, Seller.SellerId ownerId, MaterialType materialType, List<PayloadActivity> activityRecords) {
         this.id = id;
@@ -69,9 +68,6 @@ public class Warehouse {
         this.id = id;
     }
 
-    public boolean isWarehouseAtFullCapacity() {
-        return this.getWarehouseMaterialAmount().amount() >= WAREHOUSE_MAX_CAPACITY * 0.80;
-    }
     
     public MaterialAmount getWarehouseMaterialAmount() {
         return new MaterialAmount(activityRecords.stream().mapToDouble(PayloadActivity::payload).sum(), LocalDateTime.now());

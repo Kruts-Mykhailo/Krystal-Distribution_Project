@@ -20,10 +20,10 @@ public class WarehouseListener {
 
     @RabbitListener(queues = MQTopology.WAREHOUSE_FULLNESS_QUEUE, messageConverter = "#{jackson2JsonMessageConverter}")
     public void warehouseUpdatedListener(WarehouseUpdatedEvent warehouseUpdatedEvent) {
-        LOGGER.info("Warehouse {} is full: {}",
+        LOGGER.info("Warehouse {} has capacity of: {}",
                 warehouseUpdatedEvent.warehouseId(),
-                warehouseUpdatedEvent.fullCapacity());
-        warehouseInfoProjector.project(warehouseUpdatedEvent.warehouseId(), warehouseUpdatedEvent.fullCapacity());
+                warehouseUpdatedEvent.value());
+        warehouseInfoProjector.project(warehouseUpdatedEvent.warehouseId(), warehouseUpdatedEvent.value());
 
     }
 }

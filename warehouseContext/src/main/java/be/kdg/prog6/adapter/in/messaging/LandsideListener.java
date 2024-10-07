@@ -20,7 +20,7 @@ public class LandsideListener {
     @RabbitListener(queues = MQTopology.PAYLOAD_DELIVERY_TICKET_QUEUE, messageConverter = "jackson2JsonMessageConverter")
     public void payloadDelivered(PDTReceivedEvent pdtReceivedEvent) {
         logger.info(
-                "Payload %s delivered to warehouse %s"
+                "Payload of %s delivered to warehouse %s"
                         .formatted(
                             pdtReceivedEvent.materialType(),
                             pdtReceivedEvent.warehouseId()

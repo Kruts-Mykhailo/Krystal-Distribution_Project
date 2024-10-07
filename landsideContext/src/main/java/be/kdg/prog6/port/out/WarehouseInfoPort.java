@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface WarehouseInfoPort {
     WarehouseInfo getWarehouse(Seller.SellerId sellerId, MaterialType materialType);
-    void updateWarehouse(UUID warehouseId, boolean isFull);
+    void updateWarehouse(UUID warehouseId, Double value);
 }

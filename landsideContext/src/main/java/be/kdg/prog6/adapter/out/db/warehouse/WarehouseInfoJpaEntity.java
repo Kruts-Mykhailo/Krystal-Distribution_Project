@@ -30,16 +30,20 @@ public class WarehouseInfoJpaEntity {
     private String materialType;
 
     @Column(nullable = false)
-    private boolean fullCapacity;
+    private Double initialCapacity;
+
+    @Column(nullable = false)
+    private Double maxCapacity;
 
     public WarehouseInfoJpaEntity() {
     }
 
-    public WarehouseInfoJpaEntity(UUID warehouseId, UUID sellerId, String materialType, boolean fullCapacity) {
-        this.warehouseId = warehouseId;
-        this.sellerId = sellerId;
+    public WarehouseInfoJpaEntity(Double maxCapacity, Double initialCapacity, String materialType, UUID sellerId, int warehouseNumber, UUID warehouseId) {
+        this.maxCapacity = maxCapacity;
+        this.initialCapacity = initialCapacity;
         this.materialType = materialType;
-        this.fullCapacity = fullCapacity;
+        this.sellerId = sellerId;
+        this.warehouseNumber = warehouseNumber;
+        this.warehouseId = warehouseId;
     }
-
 }
