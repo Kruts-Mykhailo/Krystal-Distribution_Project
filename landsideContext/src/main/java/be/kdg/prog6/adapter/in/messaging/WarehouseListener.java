@@ -22,8 +22,8 @@ public class WarehouseListener {
     public void warehouseUpdatedListener(WarehouseUpdatedEvent warehouseUpdatedEvent) {
         LOGGER.info("Warehouse {} has capacity of: {}",
                 warehouseUpdatedEvent.warehouseId(),
-                warehouseUpdatedEvent.value());
-        warehouseInfoProjector.project(warehouseUpdatedEvent.warehouseId(), warehouseUpdatedEvent.value());
+                warehouseUpdatedEvent.initialCapacity());
+        warehouseInfoProjector.project(warehouseUpdatedEvent.warehouseId(), warehouseUpdatedEvent.initialCapacity());
 
     }
 }

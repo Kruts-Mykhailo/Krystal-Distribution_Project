@@ -24,7 +24,7 @@ public class PayloadActivityAdapter implements PayloadRecordSavedPort {
 
     @Override
     public void savePayloadRecord(PayloadCommand payloadCommand) {
-        payloadActivityJpaRepository.save(fromCommand(payloadCommand));
+        PayloadActivityJpaEntity payloadActivityJpaEntity = payloadActivityJpaRepository.save(fromCommand(payloadCommand));
     }
 
     @Override

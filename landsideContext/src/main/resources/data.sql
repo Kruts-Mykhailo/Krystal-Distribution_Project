@@ -1,4 +1,4 @@
-INSERT INTO warehouses (id, warehouse_id, warehouse_number, seller_id, material_type, initialCapacity, maxCapacity) VALUES
+INSERT INTO warehouses (id, warehouse_id, warehouse_number, seller_id, material_type, initial_capacity, max_capacity) VALUES
 ( UNHEX(REPLACE('c56a4180-65aa-42ec-a945-5fd21dec0538', '-', '')), UNHEX(REPLACE('c56a4180-65aa-42ec-a945-5fd21dec0538', '-', '')), 1,UNHEX(REPLACE('e53a47fa-9f1b-4d58-8981-cdd01beac39e', '-', '')), 'GYPSUM', 0.0, 500000.0),
 ( UNHEX(REPLACE('bba34a54-1c14-47d3-9838-42d78c74a17d', '-', '')), UNHEX(REPLACE('bba34a54-1c14-47d3-9838-42d78c74a17d', '-', '')), 2,UNHEX(REPLACE('e53a47fa-9f1b-4d58-8981-cdd01beac39e', '-', '')), 'IRON_ORE', 0.0, 500000.0),
 ( UNHEX(REPLACE('ca761232-ed42-11ce-bacd-00aa0057b223', '-', '')), UNHEX(REPLACE('ca761232-ed42-11ce-bacd-00aa0057b223', '-', '')), 3,UNHEX(REPLACE('e53a47fa-9f1b-4d58-8981-cdd01beac39e', '-', '')), 'CEMENT', 0.0, 500000.0),

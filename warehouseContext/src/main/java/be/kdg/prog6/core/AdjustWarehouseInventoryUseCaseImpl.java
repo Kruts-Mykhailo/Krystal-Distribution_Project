@@ -32,14 +32,14 @@ public class AdjustWarehouseInventoryUseCaseImpl implements AdjustWarehouseInven
     @Override
     @Transactional
     public void savePayloadRecord(UUID warehouseId, LocalDateTime sendTime, Double netWeight) {
-        Warehouse warehouse = warehouseFoundPort.getWarehouseById(warehouseId);
-
         payloadRecordSaved.savePayloadRecord(new PayloadCommand(
                 ActivityType.DELIVERY,
                 netWeight,
                 warehouseId,
                 sendTime
         ));
+
+        Warehouse warehouse = warehouseFoundPort.getWarehouseById(warehouseId);
 
         projectWarehouseInfoPort.projectWarehouseCapacity(
                 warehouseId,
