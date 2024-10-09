@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -23,8 +24,19 @@ public class PayloadActivityAdapter implements PayloadRecordSavedPort {
     }
 
     @Override
-    public void savePayloadRecord(PayloadCommand payloadCommand) {
-        PayloadActivityJpaEntity payloadActivityJpaEntity = payloadActivityJpaRepository.save(fromCommand(payloadCommand));
+    public void saveOrUpdatePayloadRecord(PayloadCommand payloadCommand) {
+        Optional<PayloadActivityJpaEntity> optionalActivity = payloadActivityJpaRepository
+                .findFirstByWarehouseAndAmountOrderByRecordTimeAsc(
+                        new WarehouseJpaEntity(payloadCommand.warehouseId()),
+                        0.0
+                );
+        if (optionalActivity.isEmpty()){
+            payloadActivityJpaRepository.save(fromCommand(payloadCommand));
+        } else {
+            PayloadActivityJpaEntity payloadActivityJpaEntity = optionalActivity.get();
+            payloadActivityJpaEntity.setAmount(payloadCommand.amount());
+            payloadActivityJpaRepository.save(payloadActivityJpaEntity);
+        }
     }
 
     @Override
