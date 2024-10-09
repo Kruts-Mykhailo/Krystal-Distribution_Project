@@ -4,6 +4,7 @@ import be.kdg.prog6.domain.OrderLine;
 import be.kdg.prog6.domain.PurchaseOrder;
 import be.kdg.prog6.domain.Seller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PurchaseOrderConverter {
@@ -22,6 +23,16 @@ public class PurchaseOrderConverter {
                 orderLines,
                 purchaseOrderJpaEntity.getPoNumber(),
                 PurchaseOrder.OrderStatus.valueOf(purchaseOrderJpaEntity.getOrderStatus())
+        );
+    }
+
+    public static PurchaseOrder toPurchaseOrder(PurchaseOrderJpaEntity purchaseOrderJpaEntity) {
+        return new PurchaseOrder(
+                new Seller.SellerId(purchaseOrderJpaEntity.getSellerId()),
+                new ArrayList<>(),
+                purchaseOrderJpaEntity.getPoNumber(),
+                PurchaseOrder.OrderStatus.valueOf(purchaseOrderJpaEntity.getOrderStatus())
+
         );
     }
 }

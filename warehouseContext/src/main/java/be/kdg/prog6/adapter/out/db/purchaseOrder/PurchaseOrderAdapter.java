@@ -9,6 +9,7 @@ import be.kdg.prog6.port.out.PurchaseOrderSavedPort;
 import be.kdg.prog6.port.out.PurchaseOrderUpdatedPort;
 import org.springframework.stereotype.Component;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -32,6 +33,14 @@ public class PurchaseOrderAdapter implements PurchaseOrderUpdatedPort, PurchaseO
         List<OrderLine> orderLines = OrderLineConverter.toOrderLineList(purchaseOrderJpaEntity.getOrderLines());
 
         return PurchaseOrderConverter.toPurchaseOrder(purchaseOrderJpaEntity, orderLines);
+    }
+
+    @Override
+    public List<PurchaseOrder> getAllPurchaseOrders() {
+        return purchaseOrderJpaRepository.findAll()
+                .stream()
+                .map(PurchaseOrderConverter::toPurchaseOrder)
+                .collect(Collectors.toList());
     }
 
     @Override
