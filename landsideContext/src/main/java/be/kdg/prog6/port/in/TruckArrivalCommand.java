@@ -8,8 +8,8 @@ import java.util.Objects;
 public record TruckArrivalCommand(LicensePlate licensePlate, LocalDateTime arrivalTime) {
     public TruckArrivalCommand {
         Objects.requireNonNull(licensePlate.licensePlate());
-        if (arrivalTime.isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("Arrival date cannot be in the past.");
-        }
+//        if (arrivalTime.isBefore(LocalDateTime.now())) {
+//            throw new IllegalArgumentException("Arrival date cannot be in the past.");
+//        }
     }
 }

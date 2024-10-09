@@ -1,0 +1,23 @@
+### First POST request to warehouse_capacity_change
+POST http://localhost:15672/api/exchanges/%2F/amq.default/publish
+Authorization: Basic bXl1c2VyOm15cGFzc3dvcmQ=
+Content-Type: application/json
+
+{
+  "properties": {},
+  "routing_key": "warehouse_capacity_change",
+  "payload": "{\"warehouseId\":\"c56a4180-65aa-42ec-a945-5fd21dec0538\", \"initialCapacity\":10000.0}",
+  "payload_encoding": "string"
+}
+
+### Second POST request to warehouse_capacity_change with updated initialCapacity
+POST http://localhost:15672/api/exchanges/%2F/amq.default/publish
+Authorization: Basic bXl1c2VyOm15cGFzc3dvcmQ=
+Content-Type: application/json
+
+{
+  "properties": {},
+  "routing_key": "warehouse_capacity_change",
+  "payload": "{\"warehouseId\":\"c56a4180-65aa-42ec-a945-5fd21dec0538\", \"initialCapacity\":600000.0}",
+  "payload_encoding": "string"
+}
