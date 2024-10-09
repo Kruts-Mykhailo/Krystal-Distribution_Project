@@ -35,7 +35,7 @@ public class MatchShippingOrderUseCaseImpl implements MatchShippingOrderUseCase 
                             purchaseOrder.sellerId(),
                             orderLine.materialType());
                     return new PayloadCommand(
-                            ActivityType.DELIVERY,
+                            ActivityType.PURCHASE,
                             orderLine.quantity() * orderLine.uom().getMeasureCoefficient(),
                             warehouseId,
                             LocalDateTime.now()
