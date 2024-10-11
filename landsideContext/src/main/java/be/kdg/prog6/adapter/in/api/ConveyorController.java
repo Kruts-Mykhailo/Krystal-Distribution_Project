@@ -1,6 +1,6 @@
 package be.kdg.prog6.adapter.in.api;
 
-import be.kdg.prog6.adapter.in.dto.PdtDTO;
+import be.kdg.prog6.adapter.in.api.dto.PdtDTO;
 import be.kdg.prog6.domain.LicensePlate;
 import be.kdg.prog6.domain.PDT;
 import be.kdg.prog6.port.in.DumpPayloadUseCase;

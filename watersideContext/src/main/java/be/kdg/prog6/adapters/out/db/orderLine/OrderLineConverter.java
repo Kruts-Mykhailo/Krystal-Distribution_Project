@@ -11,11 +11,11 @@ import java.util.stream.Collectors;
 
 public class OrderLineConverter {
 
-    public static List<OrderLineJpaEntity> toOrderLineJpaEntityList(List<OrderLine> orderLines, String poNumber) {
+    public static List<OrderLineJpaEntity> toOrderLineJpaEntityList(List<OrderLine> orderLines, PurchaseOrderJpaEntity purchaseOrderJpaEntity) {
         return orderLines
                 .stream()
                 .map(orderLine -> new OrderLineJpaEntity(
-                        new PurchaseOrderJpaEntity(poNumber),
+                        purchaseOrderJpaEntity,
                         orderLine.quantity(),
                         orderLine.uom().name(),
                         orderLine.materialType().name()))

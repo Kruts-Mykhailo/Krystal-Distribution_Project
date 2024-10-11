@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ShipmentOrderLineConverter {
-    public static List<ShipmentOrderLineJpaEntity> toEntityList(List<OrderLine> shipmentOrderLines, String soId) {
+    public static List<ShipmentOrderLineJpaEntity> toEntityList(List<OrderLine> shipmentOrderLines, ShipmentOrderJpaEntity shipmentOrderJpaEntity) {
         return shipmentOrderLines.stream().map( sol ->
                 new ShipmentOrderLineJpaEntity(
                         sol.materialType().name(),
                         sol.uom().name(),
                         sol.quantity(),
-                        new ShipmentOrderJpaEntity(soId)
+                        shipmentOrderJpaEntity
                 )
         ).collect(Collectors.toList());
     }

@@ -33,7 +33,7 @@ public class PurchaseOrderAdapter implements SavePOPort, FindPOPort {
                 purchaseOrderJpaRepository.save(PurchaseOrderConverter.toPurchaseOrderJpaEntity(po));
 
         orderLineJpaRepository.saveAll(OrderLineConverter
-                .toOrderLineJpaEntityList(po.orderLines(),purchaseOrderJpaEntity.getPoNumber()));
+                .toOrderLineJpaEntityList(po.orderLines(),purchaseOrderJpaEntity));
     }
 
     @Override

@@ -3,7 +3,9 @@ package be.kdg.prog6.domain;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 
 public class ShipmentOrder {
     private String poReferenceNumber;
@@ -15,20 +17,6 @@ public class ShipmentOrder {
     private IO inspectionOperation;
     private BO bunkeringOperation;
     private Boolean isMatchedWithPO;
-
-
-
-    public ShipmentOrder(String poReferenceNumber, List<OrderLine> orderLines, String customerEnterpriseNumber, String vesselNumber, LocalDate arrivalDate, LocalDate departureDate) {
-        this.poReferenceNumber = poReferenceNumber;
-        this.orderLines = orderLines;
-        this.customerEnterpriseNumber = customerEnterpriseNumber;
-        this.vesselNumber = vesselNumber;
-        this.arrivalDate = arrivalDate;
-        this.departureDate = departureDate;
-        this.inspectionOperation = null;
-        this.bunkeringOperation = null;
-        this.isMatchedWithPO = false;
-    }
 
     public ShipmentOrder(String poReferenceNumber, List<OrderLine> orderLines, String customerEnterpriseNumber, String vesselNumber, LocalDate arrivalDate, LocalDate departureDate, IO inspectionOperation, BO bunkeringOperation, Boolean isMatchedWithPO) {
         this.poReferenceNumber = poReferenceNumber;
@@ -43,19 +31,28 @@ public class ShipmentOrder {
     }
 
     public void matchPurchaseOrder(List<OrderLine> purchaseOrderOrderLines) {
-        this.isMatchedWithPO = new HashSet<>(purchaseOrderOrderLines).containsAll(this.orderLines) &&
-                new HashSet<>(this.orderLines).containsAll(purchaseOrderOrderLines);
+        Map<OrderLine, Long> thisOrderLineCounts = this.orderLines.stream()
+                .collect(Collectors.groupingBy(orderLine -> orderLine, Collectors.counting()));
+
+        Map<OrderLine, Long> purchaseOrderLineCounts = purchaseOrderOrderLines.stream()
+                .collect(Collectors.groupingBy(orderLine -> orderLine, Collectors.counting()));
+
+        this.isMatchedWithPO = thisOrderLineCounts.equals(purchaseOrderLineCounts);
     }
+
     public boolean isIOAndBOFulfilled() {
-        return inspectionOperation.getInspectionStatus() == IO.InspectionStatus.COMPLETED;
+        return inspectionOperation.getInspectionStatus() == IO.InspectionStatus.COMPLETED &&
+                bunkeringOperation.getOperationDate() != null;
     }
 
     public void completeBO(LocalDate date) {
-        this.bunkeringOperation = new BO(date);
+        this.bunkeringOperation.setOperationDate(date);
     }
 
     public void signIO(LocalDate date, String signature) {
-
+        this.inspectionOperation.setInspectionDate(date);
+        this.inspectionOperation.setInspectorSignature(signature);
+        this.inspectionOperation.setInspectionStatus(IO.InspectionStatus.COMPLETED);
     }
 
     public Boolean getMatchedWithPO() {
@@ -130,9 +127,5 @@ public class ShipmentOrder {
         this.inspectionOperation = inspectionOperation;
     }
 
-
-    public enum Status {
-        OUTGOING, COMPLETED
-    }
 
 }

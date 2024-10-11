@@ -21,7 +21,7 @@ public class ReceivePOUseCaseImpl implements ReceivePOUseCase {
     @Override
     @Transactional
     public void receivePO(PO purchaseOrder) {
-        log.info("Received PO: {}", purchaseOrder.poNumber());
         savePOPort.savePO(purchaseOrder);
+        log.info("Received PO: {}", purchaseOrder.poNumber());
     }
 }

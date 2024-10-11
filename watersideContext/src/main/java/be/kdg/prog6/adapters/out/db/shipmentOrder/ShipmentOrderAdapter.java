@@ -22,11 +22,11 @@ public class ShipmentOrderAdapter implements SaveSOPort, FindSOPort {
 
     @Override
     public void saveSO(ShipmentOrder shipmentOrder) {
-        soRepository.save(ShipmentOrderConverter.toShipmentOrderJpaEntity(shipmentOrder));
+        ShipmentOrderJpaEntity shipmentOrderJpaEntity = soRepository.save(ShipmentOrderConverter.toShipmentOrderJpaEntity(shipmentOrder));
         shipmentOrderLineRepository.saveAll(
                 ShipmentOrderLineConverter.toEntityList(
                         shipmentOrder.getOrderLines(),
-                        shipmentOrder.getPoReferenceNumber()));
+                        shipmentOrderJpaEntity));
     }
 
     @Override

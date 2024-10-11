@@ -1,0 +1,20 @@
+### POST input vessel and shipment order info
+POST http://localhost:8094/wsc/arrivals/V12345
+Content-Type: application/json
+
+{
+  "purchaseOrderNumber": "PO123456",
+  "customerEnterpriseNumber": "ENT789012",
+  "orderLines": [
+    {
+      "weight": 1,
+      "materialType": "GP",
+      "uom": "kt"
+    }
+  ],
+  "departureDate": "2024-10-16"
+}
+
+
+### POST match SO and PO
+POST http://localhost:8094/wsc/vessels/V12345

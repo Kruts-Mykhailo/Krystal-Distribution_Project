@@ -1,7 +1,6 @@
 package be.kdg.prog6.adapters.in.api;
 
-import be.kdg.prog6.domain.OrderLine;
-import be.kdg.prog6.domain.ShipmentOrder;
+import be.kdg.prog6.domain.*;
 import be.kdg.prog6.ports.in.InputSOAndVesselInfoUseCase;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,14 +24,17 @@ public class ArrivalController {
         ShipmentOrder shipmentOrder = new ShipmentOrder(
                 vesselInputDTO.getPurchaseOrderNumber(),
                 vesselInputDTO.getOrderLines().stream().map(ol -> new OrderLine(
-                        ol.materialType(),
+                        MaterialType.fromCode(ol.materialType()),
                         ol.weight(),
-                        ol.uom()
+                        UOM.fromCode(ol.uom())
                 )).toList(),
                 vesselInputDTO.getCustomerEnterpriseNumber(),
                 vesselNumber,
                 LocalDate.now(),
-                vesselInputDTO.getDepartureDate()
+                vesselInputDTO.getDepartureDate(),
+                new IO(),
+                new BO(),
+                false
         );
         inputSOAndVesselInfoUseCase.inputInformation(shipmentOrder);
         return ResponseEntity.ok().body("Ship %s arrived successfully".formatted(vesselNumber));

@@ -10,7 +10,7 @@ public class ShipmentOrderConverter {
                 shipmentOrder.getVesselNumber(),
                 shipmentOrder.getArrivalDate(),
                 shipmentOrder.getDepartureDate(),
-                shipmentOrder.getBunkeringOperation().operationDate(),
+                shipmentOrder.getBunkeringOperation().getOperationDate(),
                 shipmentOrder.getInspectionOperation().getInspectionDate(),
                 shipmentOrder.getInspectionOperation().getInspectorSignature(),
                 shipmentOrder.getMatchedWithPO()

@@ -12,7 +12,10 @@ public class IO {
         this.inspectionDate = inspectionDate;
         this.inspectionStatus = inspectorSignature == null || inspectionDate == null ?
                 InspectionStatus.OUTSTANDING : InspectionStatus.COMPLETED;
+    }
 
+    public IO() {
+        this.inspectionStatus = InspectionStatus.OUTSTANDING;
     }
 
     public String getInspectorSignature() {

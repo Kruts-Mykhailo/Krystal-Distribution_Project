@@ -1,7 +1,7 @@
 package be.kdg.prog6.adapter.in.api;
 
-import be.kdg.prog6.adapter.in.dto.AppointmentDTO;
-import be.kdg.prog6.adapter.in.dto.AppointmentRequestDTO;
+import be.kdg.prog6.adapter.in.api.dto.AppointmentDTO;
+import be.kdg.prog6.adapter.in.api.dto.AppointmentRequestDTO;
 import be.kdg.prog6.domain.*;
 import be.kdg.prog6.port.in.CreateAppointmentCommand;
 import be.kdg.prog6.port.in.MakeAppointmentUseCase;

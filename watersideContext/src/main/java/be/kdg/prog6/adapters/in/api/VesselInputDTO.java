@@ -14,7 +14,7 @@ public class VesselInputDTO {
     private List<OrderLineDTO> orderLines;
     private LocalDate departureDate;
 
-    public record OrderLineDTO(Double weight, MaterialType materialType, UOM uom) {
+    public record OrderLineDTO(Double weight, String materialType, String uom) {
 
     }
 }
