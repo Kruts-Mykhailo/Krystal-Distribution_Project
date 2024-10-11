@@ -9,6 +9,7 @@
         </processorPath>
         <module name="backend.warehouseContext.main" />
         <module name="backend.landsideContext.main" />
+        <module name="backend.watersideContext.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="17">
