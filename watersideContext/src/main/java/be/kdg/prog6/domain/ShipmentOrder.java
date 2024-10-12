@@ -41,19 +41,30 @@ public class ShipmentOrder {
         this.isMatchedWithPO = thisOrderLineCounts.equals(purchaseOrderLineCounts);
     }
 
-    public boolean isIOAndBOFulfilled() {
-        return inspectionOperation.getInspectionStatus() == IO.InspectionStatus.COMPLETED &&
-                bunkeringOperation.getOperationDate() != null;
+    public void leavePort() {
+        this.departureDate = LocalDate.now();
+        this.shipmentStatus = ShipmentStatus.LEFT_PORT;
+    }
+
+    private void updateShipmentStatus() {
+        if (inspectionOperation.getInspectionStatus() == IO.InspectionStatus.COMPLETED &&
+                bunkeringOperation.getOperationDate() != null &&
+                this.isMatchedWithPO) {
+            this.shipmentStatus = ShipmentStatus.COMPLETED;
+        }
     }
 
     public void scheduleBO(LocalDate date) {
         this.bunkeringOperation.setOperationDate(date);
+        updateShipmentStatus();
+
     }
 
     public void completeIO(LocalDate date, String signature) {
         this.inspectionOperation.setInspectionDate(date);
         this.inspectionOperation.setInspectorSignature(signature);
         this.inspectionOperation.setInspectionStatus(IO.InspectionStatus.COMPLETED);
+        updateShipmentStatus();
     }
 
     public ShipmentStatus getShipmentStatus() {
@@ -137,7 +148,7 @@ public class ShipmentOrder {
     }
 
     public enum ShipmentStatus {
-        OUTSTANDING, COMPLETED
+        OUTSTANDING, COMPLETED, LEFT_PORT
     }
 
 }

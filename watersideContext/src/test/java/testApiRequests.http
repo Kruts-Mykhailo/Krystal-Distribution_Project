@@ -42,3 +42,6 @@ POST http://localhost:8094/wsc/vessels/V12345/bunkeringOperations/2024-10-12
 
 ### POST plan bunkering operation
 POST http://localhost:8094/wsc/vessels/V1654423445/bunkeringOperations/2024-10-13
+
+### POST complete vesel inspection
+POST http://localhost:8094/wsc/vessels/V12345/inspectionOperations/Mykhailo-Kruts
