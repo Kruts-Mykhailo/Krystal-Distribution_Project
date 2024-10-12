@@ -1,5 +1,6 @@
 package be.kdg.prog6.adapters.in.api;
 
+import be.kdg.prog6.adapters.in.api.dto.OutstandingIODTO;
 import be.kdg.prog6.ports.in.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package be.kdg.prog6.adapters.in.api;
+package be.kdg.prog6.adapters.in.api.dto;
 
 public class OutstandingIODTO {
     private String vesselNumber;

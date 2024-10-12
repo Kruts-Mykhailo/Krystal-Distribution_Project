@@ -57,6 +57,14 @@ public class ShipmentOrderAdapter implements SaveSOPort, FindSOPort, UpdateSOPor
     }
 
     @Override
+    public List<ShipmentOrder> findAllOnSite() {
+        return soRepository.findAllByShipmentStatusIsNot(ShipmentOrder.ShipmentStatus.LEFT_PORT.name())
+                .stream()
+                .map(ShipmentOrderConverter::toShipmentOrderEntity)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void updateShipmentOrder(ShipmentOrder shipmentOrder) {
         soRepository.save(ShipmentOrderConverter.toShipmentOrderJpaEntity(shipmentOrder));
     }

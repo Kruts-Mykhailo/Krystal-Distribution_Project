@@ -1,7 +1,5 @@
-package be.kdg.prog6.adapters.in.api;
+package be.kdg.prog6.adapters.in.api.dto;
 
-import be.kdg.prog6.domain.MaterialType;
-import be.kdg.prog6.domain.UOM;
 import lombok.Getter;
 
 import java.time.LocalDate;

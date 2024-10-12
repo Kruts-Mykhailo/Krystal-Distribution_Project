@@ -47,3 +47,6 @@ POST http://localhost:8094/wsc/vessels/V12345/inspectionOperations/Mykhailo-Krut
 
 ### Get all ships with outstanding IO's
 GET http://localhost:8094/wsc/vessels/outstanding-inspection-operations
+
+### Get all shipments arrivals
+GET http://localhost:8094/wsc/arrivals

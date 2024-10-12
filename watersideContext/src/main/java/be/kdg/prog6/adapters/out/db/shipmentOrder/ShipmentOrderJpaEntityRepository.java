@@ -11,12 +11,6 @@ import java.util.Optional;
 @Repository
 public interface ShipmentOrderJpaEntityRepository extends JpaRepository<ShipmentOrderJpaEntity, String> {
 
-
-    @Query("select s from ShipmentOrderJpaEntity  s " +
-    "left join fetch s.shipmentOrderLines " +
-    "where s.poReferenceNumber = :orderId ")
-    Optional<ShipmentOrderJpaEntity> findOrderByIdFetched(String orderId);
-
     @Query("select s from ShipmentOrderJpaEntity  s " +
     "left join fetch s.shipmentOrderLines " +
     "where s.vesselNumber = :vesselNumber " +
@@ -29,4 +23,6 @@ public interface ShipmentOrderJpaEntityRepository extends JpaRepository<Shipment
     "where s.inspectionOperationDate = null " +
     "and s.inspectorSignature = null")
     List<ShipmentOrderJpaEntity> findAllByIOFetched();
+
+    List<ShipmentOrderJpaEntity> findAllByShipmentStatusIsNot(String shipmentStatus);
 }
