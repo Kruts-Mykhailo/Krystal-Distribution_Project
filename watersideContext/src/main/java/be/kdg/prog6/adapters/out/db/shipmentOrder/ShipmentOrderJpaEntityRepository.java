@@ -24,4 +24,9 @@ public interface ShipmentOrderJpaEntityRepository extends JpaRepository<Shipment
     Optional<ShipmentOrderJpaEntity> findOrderByVesselNumberFetched(String vesselNumber);
 
     List<ShipmentOrderJpaEntity> findAllByBunkeringOperationDate(LocalDate bunkeringOperationDate);
+
+    @Query("select s from ShipmentOrderJpaEntity s " +
+    "where s.inspectionOperationDate = null " +
+    "and s.inspectorSignature = null")
+    List<ShipmentOrderJpaEntity> findAllByIOFetched();
 }

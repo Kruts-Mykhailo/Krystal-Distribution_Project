@@ -2,12 +2,10 @@ package be.kdg.prog6.adapters.in.api;
 
 import be.kdg.prog6.ports.in.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/vessels")
@@ -16,11 +14,13 @@ public class VesselController {
     private final MatchSOAndPOUseCase matchSOAndPOUseCase;
     private final PlanBunkeringOperationUseCase planBunkeringOperationUseCase;
     private final CompleteVesselInspectionUseCase completeVesselInspectionUseCase;
+    private final GetAllOutstandingInspectionOperationsUseCase getAllOutstandingInspectionOperationsUseCase;
 
-    public VesselController(MatchSOAndPOUseCase matchSOAndPOUseCase, PlanBunkeringOperationUseCase planBunkeringOperationUseCase, CompleteVesselInspectionUseCase completeVesselInspectionUseCase) {
+    public VesselController(MatchSOAndPOUseCase matchSOAndPOUseCase, PlanBunkeringOperationUseCase planBunkeringOperationUseCase, CompleteVesselInspectionUseCase completeVesselInspectionUseCase, GetAllOutstandingInspectionOperationsUseCase getAllOutstandingInspectionOperationsUseCase) {
         this.matchSOAndPOUseCase = matchSOAndPOUseCase;
         this.planBunkeringOperationUseCase = planBunkeringOperationUseCase;
         this.completeVesselInspectionUseCase = completeVesselInspectionUseCase;
+        this.getAllOutstandingInspectionOperationsUseCase = getAllOutstandingInspectionOperationsUseCase;
     }
 
     @PostMapping("/{vesselNumber}")
@@ -42,5 +42,19 @@ public class VesselController {
         completeVesselInspectionUseCase.completeVesselInspection(command);
         return ResponseEntity.ok().body("Vessel inspection for %s is completed".formatted(vesselNumber));
 
+    }
+
+    @GetMapping("/outstanding-inspection-operations")
+    public ResponseEntity<List<OutstandingIODTO>> getVesselsWithOutstandingInspectionOperation(){
+        List<OutstandingIODTO> ships = getAllOutstandingInspectionOperationsUseCase.
+                getAll().
+                stream().
+                map(o -> new OutstandingIODTO(o.getVesselNumber())).
+                toList();
+
+        if (ships.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok().body(ships);
     }
 }
