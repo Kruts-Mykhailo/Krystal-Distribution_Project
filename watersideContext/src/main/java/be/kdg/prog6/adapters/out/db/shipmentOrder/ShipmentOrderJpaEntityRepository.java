@@ -18,6 +18,6 @@ public interface ShipmentOrderJpaEntityRepository extends JpaRepository<Shipment
     @Query("select s from ShipmentOrderJpaEntity  s " +
     "left join fetch s.shipmentOrderLines " +
     "where s.vesselNumber = :vesselNumber " +
-    "and s.isMatchedWithPO = false ")
+    "and s.shipmentStatus = 'OUTSTANDING' ")
     Optional<ShipmentOrderJpaEntity> findOrderByVesselNumberFetched(String vesselNumber);
 }

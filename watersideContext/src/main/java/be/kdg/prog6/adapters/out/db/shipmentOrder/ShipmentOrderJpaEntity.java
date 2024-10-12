@@ -41,6 +41,9 @@ public class ShipmentOrderJpaEntity {
     @Column(nullable = false)
     private Boolean isMatchedWithPO;
 
+    @Column(nullable = false)
+    private String shipmentStatus;
+
     @OneToMany(mappedBy = "shipmentOrder")
     private List<ShipmentOrderLineJpaEntity> shipmentOrderLines;
 
@@ -60,7 +63,7 @@ public class ShipmentOrderJpaEntity {
         this.shipmentOrderLines = shipmentOrderLines;
     }
 
-    public ShipmentOrderJpaEntity(String poReferenceNumber, String customerEnterpriseNumber, String vesselNumber, LocalDate arrivalDate, LocalDate departureDate, LocalDate bunkeringOperationDate, LocalDate inspectionOperationDate, String inspectorSignature, Boolean isMatchedWithPO) {
+    public ShipmentOrderJpaEntity(String poReferenceNumber, String customerEnterpriseNumber, String vesselNumber, LocalDate arrivalDate, LocalDate departureDate, LocalDate bunkeringOperationDate, LocalDate inspectionOperationDate, String inspectorSignature, Boolean isMatchedWithPO, String shipmentStatus) {
         this.poReferenceNumber = poReferenceNumber;
         this.customerEnterpriseNumber = customerEnterpriseNumber;
         this.vesselNumber = vesselNumber;
@@ -70,5 +73,6 @@ public class ShipmentOrderJpaEntity {
         this.inspectionOperationDate = inspectionOperationDate;
         this.inspectorSignature = inspectorSignature;
         this.isMatchedWithPO = isMatchedWithPO;
+        this.shipmentStatus = shipmentStatus;
     }
 }

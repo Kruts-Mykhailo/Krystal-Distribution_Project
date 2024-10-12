@@ -1,7 +1,6 @@
 package be.kdg.prog6.domain;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,8 +16,9 @@ public class ShipmentOrder {
     private IO inspectionOperation;
     private BO bunkeringOperation;
     private Boolean isMatchedWithPO;
+    private ShipmentStatus shipmentStatus;
 
-    public ShipmentOrder(String poReferenceNumber, List<OrderLine> orderLines, String customerEnterpriseNumber, String vesselNumber, LocalDate arrivalDate, LocalDate departureDate, IO inspectionOperation, BO bunkeringOperation, Boolean isMatchedWithPO) {
+    public ShipmentOrder(String poReferenceNumber, List<OrderLine> orderLines, String customerEnterpriseNumber, String vesselNumber, LocalDate arrivalDate, LocalDate departureDate, IO inspectionOperation, BO bunkeringOperation, Boolean isMatchedWithPO, ShipmentStatus shipmentStatus) {
         this.poReferenceNumber = poReferenceNumber;
         this.orderLines = orderLines;
         this.customerEnterpriseNumber = customerEnterpriseNumber;
@@ -28,6 +28,7 @@ public class ShipmentOrder {
         this.inspectionOperation = inspectionOperation;
         this.bunkeringOperation = bunkeringOperation;
         this.isMatchedWithPO = isMatchedWithPO;
+        this.shipmentStatus = shipmentStatus;
     }
 
     public void matchPurchaseOrder(List<OrderLine> purchaseOrderOrderLines) {
@@ -45,14 +46,22 @@ public class ShipmentOrder {
                 bunkeringOperation.getOperationDate() != null;
     }
 
-    public void completeBO(LocalDate date) {
+    public void scheduleBO(LocalDate date) {
         this.bunkeringOperation.setOperationDate(date);
     }
 
-    public void signIO(LocalDate date, String signature) {
+    public void completeIO(LocalDate date, String signature) {
         this.inspectionOperation.setInspectionDate(date);
         this.inspectionOperation.setInspectorSignature(signature);
         this.inspectionOperation.setInspectionStatus(IO.InspectionStatus.COMPLETED);
+    }
+
+    public ShipmentStatus getShipmentStatus() {
+        return shipmentStatus;
+    }
+
+    public void setShipmentStatus(ShipmentStatus shipmentStatus) {
+        this.shipmentStatus = shipmentStatus;
     }
 
     public Boolean getMatchedWithPO() {
@@ -127,5 +136,8 @@ public class ShipmentOrder {
         this.inspectionOperation = inspectionOperation;
     }
 
+    public enum ShipmentStatus {
+        OUTSTANDING, COMPLETED
+    }
 
 }

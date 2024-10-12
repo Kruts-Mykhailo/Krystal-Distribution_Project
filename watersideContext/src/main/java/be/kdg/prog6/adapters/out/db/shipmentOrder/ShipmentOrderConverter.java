@@ -13,7 +13,8 @@ public class ShipmentOrderConverter {
                 shipmentOrder.getBunkeringOperation().getOperationDate(),
                 shipmentOrder.getInspectionOperation().getInspectionDate(),
                 shipmentOrder.getInspectionOperation().getInspectorSignature(),
-                shipmentOrder.getMatchedWithPO()
+                shipmentOrder.getMatchedWithPO(),
+                shipmentOrder.getShipmentStatus().name()
         );
     }
 
@@ -36,7 +37,8 @@ public class ShipmentOrderConverter {
                 shipmentOrderJpaEntity.getDepartureDate(),
                 io,
                 bo,
-                shipmentOrderJpaEntity.getIsMatchedWithPO()
+                shipmentOrderJpaEntity.getIsMatchedWithPO(),
+                ShipmentOrder.ShipmentStatus.valueOf(shipmentOrderJpaEntity.getShipmentStatus())
         );
     }
 }

@@ -18,3 +18,7 @@ Content-Type: application/json
 
 ### POST match SO and PO
 POST http://localhost:8094/wsc/vessels/V12345
+
+
+### POST plan bunkering operation
+POST http://localhost:8094/wsc/vessels/V12345/bunkeringOperations/2024-10-12
