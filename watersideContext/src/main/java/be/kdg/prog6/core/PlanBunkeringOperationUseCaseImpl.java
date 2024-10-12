@@ -27,7 +27,7 @@ public class PlanBunkeringOperationUseCaseImpl implements PlanBunkeringOperation
     @Override
     @Transactional
     public void planBO(PlanBunkeringOperationCommand command) {
-        if (findSOPort.findShipmentOrderByBunkeringOperationDate(command.date()).size() == BO.DAY_LIMIT) {
+        if (findSOPort.findAllShipmentOrderByBunkeringOperationDate(command.date()).size() == BO.DAY_LIMIT) {
             throw new BunkeringOperationDayLimitException("Bunkering operation day limit exceeded. Pick another date.");
         }
         ShipmentOrder shipmentOrder = findSOPort.findShipmentOrderByVesselNumber(command.vesselNumber());

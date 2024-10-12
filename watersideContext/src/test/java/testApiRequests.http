@@ -34,7 +34,7 @@ Content-Type: application/json
 
 
 ### POST match SO and PO
-POST http://localhost:8094/wsc/vessels/V12345
+POST http://localhost:8094/wsc/vessels/V12345?matchSoPo=true
 
 ### POST plan bunkering operation
 POST http://localhost:8094/wsc/vessels/V12345/bunkeringOperations/2024-10-12
@@ -44,6 +44,9 @@ POST http://localhost:8094/wsc/vessels/V1654423445/bunkeringOperations/2024-10-1
 
 ### POST complete vesel inspection
 POST http://localhost:8094/wsc/vessels/V12345/inspectionOperations/Mykhailo-Kruts
+
+### POST check if vessel can leave
+POST http://localhost:8094/wsc/vessels/V12345?checkToLeave=true
 
 ### Get all ships with outstanding IO's
 GET http://localhost:8094/wsc/vessels/outstanding-inspection-operations

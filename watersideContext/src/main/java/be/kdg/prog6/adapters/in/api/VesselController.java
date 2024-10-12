@@ -1,6 +1,8 @@
 package be.kdg.prog6.adapters.in.api;
 
 import be.kdg.prog6.adapters.in.api.dto.OutstandingIODTO;
+import be.kdg.prog6.adapters.in.api.dto.VesselStatusDTOConverter;
+import be.kdg.prog6.domain.ShipmentOrder;
 import be.kdg.prog6.ports.in.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,18 +18,32 @@ public class VesselController {
     private final PlanBunkeringOperationUseCase planBunkeringOperationUseCase;
     private final CompleteVesselInspectionUseCase completeVesselInspectionUseCase;
     private final GetAllOutstandingInspectionOperationsUseCase getAllOutstandingInspectionOperationsUseCase;
+    private final CheckIfVesselCanLeaveUseCase checkIfVesselCanLeaveUseCase;
 
-    public VesselController(MatchSOAndPOUseCase matchSOAndPOUseCase, PlanBunkeringOperationUseCase planBunkeringOperationUseCase, CompleteVesselInspectionUseCase completeVesselInspectionUseCase, GetAllOutstandingInspectionOperationsUseCase getAllOutstandingInspectionOperationsUseCase) {
+    public VesselController(MatchSOAndPOUseCase matchSOAndPOUseCase, PlanBunkeringOperationUseCase planBunkeringOperationUseCase, CompleteVesselInspectionUseCase completeVesselInspectionUseCase, GetAllOutstandingInspectionOperationsUseCase getAllOutstandingInspectionOperationsUseCase, CheckIfVesselCanLeaveUseCase checkIfVesselCanLeaveUseCase) {
         this.matchSOAndPOUseCase = matchSOAndPOUseCase;
         this.planBunkeringOperationUseCase = planBunkeringOperationUseCase;
         this.completeVesselInspectionUseCase = completeVesselInspectionUseCase;
         this.getAllOutstandingInspectionOperationsUseCase = getAllOutstandingInspectionOperationsUseCase;
+        this.checkIfVesselCanLeaveUseCase = checkIfVesselCanLeaveUseCase;
     }
 
     @PostMapping("/{vesselNumber}")
-    public ResponseEntity<?> matchSOAndPOForVessel(@PathVariable String vesselNumber){
-        matchSOAndPOUseCase.matchSOAndPO(vesselNumber);
-        return ResponseEntity.ok().body("SO and PO matched for vessel " + vesselNumber);
+    public ResponseEntity<?> matchSOAndPOForVessel(
+            @PathVariable String vesselNumber,
+            @RequestParam(value = "matchSoPo", required = false, defaultValue = "false") boolean matchSoPo,
+            @RequestParam(value = "checkToLeave", required = false, defaultValue = "false") boolean checkToLeave) {
+
+        if (matchSoPo) {
+            matchSOAndPOUseCase.matchSOAndPO(vesselNumber);
+            return ResponseEntity.ok().body("SO and PO matched for vessel " + vesselNumber);
+        }
+        if (checkToLeave) {
+            ShipmentOrder shipmentOrder = checkIfVesselCanLeaveUseCase.checkIfVesselCanLeave(vesselNumber);
+            return ResponseEntity.ok().body(VesselStatusDTOConverter.convert(shipmentOrder));
+        }
+
+        return ResponseEntity.ok().body("Processed for vessel " + vesselNumber);
     }
 
     @PostMapping("/{vesselNumber}/bunkeringOperations/{date}")

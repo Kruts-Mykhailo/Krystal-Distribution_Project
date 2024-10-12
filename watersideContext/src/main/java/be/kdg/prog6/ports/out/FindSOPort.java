@@ -8,7 +8,7 @@ import java.util.List;
 public interface FindSOPort {
 
     ShipmentOrder findShipmentOrderByVesselNumber(String vesselNumber);
-    List<ShipmentOrder> findShipmentOrderByBunkeringOperationDate(LocalDate date);
+    List<ShipmentOrder> findAllShipmentOrderByBunkeringOperationDate(LocalDate date);
     List<ShipmentOrder> findAllWithoutIO();
     List<ShipmentOrder> findAllOnSite();
 }

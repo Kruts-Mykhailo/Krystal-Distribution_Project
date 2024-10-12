@@ -1,6 +1,7 @@
 package be.kdg.prog6.adapters.out.db.shipmentOrder;
 
 import be.kdg.prog6.adapters.exceptions.ShipmentOrderNotFoundException;
+import be.kdg.prog6.adapters.exceptions.VesselAlreadyLeftException;
 import be.kdg.prog6.adapters.out.db.shipmentOrderLine.ShipmentOrderLineConverter;
 import be.kdg.prog6.adapters.out.db.shipmentOrderLine.ShipmentOrderLineJpaEntityRepository;
 import be.kdg.prog6.domain.ShipmentOrder;
@@ -36,12 +37,18 @@ public class ShipmentOrderAdapter implements SaveSOPort, FindSOPort, UpdateSOPor
 
     @Override
     public ShipmentOrder findShipmentOrderByVesselNumber(String vesselNumber) {
-        return ShipmentOrderConverter.toShipmentOrderEntity(soRepository.findOrderByVesselNumberFetched(vesselNumber)
-                .orElseThrow(() -> new ShipmentOrderNotFoundException("No shipment order found for vessel number " + vesselNumber)));
+        ShipmentOrderJpaEntity shipmentOrderJpaEntity = soRepository.findOrderByVesselNumberFetched(vesselNumber)
+                .orElseThrow(() -> new ShipmentOrderNotFoundException("No shipment order found for vessel number " + vesselNumber));
+
+        if (ShipmentOrder.ShipmentStatus.valueOf(shipmentOrderJpaEntity.getShipmentStatus()) == ShipmentOrder.ShipmentStatus.LEFT_PORT) {
+            throw new VesselAlreadyLeftException("Vessel %s already left the site".formatted(vesselNumber));
+        }
+
+        return ShipmentOrderConverter.toShipmentOrderEntity(shipmentOrderJpaEntity);
     }
 
     @Override
-    public List<ShipmentOrder> findShipmentOrderByBunkeringOperationDate(LocalDate date) {
+    public List<ShipmentOrder> findAllShipmentOrderByBunkeringOperationDate(LocalDate date) {
         return soRepository.findAllByBunkeringOperationDate(date)
                 .stream()
                 .map(ShipmentOrderConverter::toShipmentOrderEntity)
@@ -65,7 +72,7 @@ public class ShipmentOrderAdapter implements SaveSOPort, FindSOPort, UpdateSOPor
     }
 
     @Override
-    public void updateShipmentOrder(ShipmentOrder shipmentOrder) {
-        soRepository.save(ShipmentOrderConverter.toShipmentOrderJpaEntity(shipmentOrder));
+    public ShipmentOrder updateShipmentOrder(ShipmentOrder shipmentOrder) {
+        return ShipmentOrderConverter.toShipmentOrderEntity(soRepository.save(ShipmentOrderConverter.toShipmentOrderJpaEntity(shipmentOrder)));
     }
 }

@@ -2,9 +2,9 @@ package be.kdg.prog6.adapters.in.api.dto;
 
 import be.kdg.prog6.domain.ShipmentOrder;
 
-public class VesselArrivalDTOConverter {
-    public static VesselArrivalDTO convert(ShipmentOrder shipmentOrder) {
-        return new VesselArrivalDTO(
+public class VesselStatusDTOConverter {
+    public static VesselStatusDTO convert(ShipmentOrder shipmentOrder) {
+        return new VesselStatusDTO(
                 shipmentOrder.getVesselNumber(),
                 shipmentOrder.getArrivalDate(),
                 shipmentOrder.getShipmentStatus().name(),

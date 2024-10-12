@@ -1,7 +1,7 @@
 package be.kdg.prog6.adapters.in.api;
 
-import be.kdg.prog6.adapters.in.api.dto.VesselArrivalDTO;
-import be.kdg.prog6.adapters.in.api.dto.VesselArrivalDTOConverter;
+import be.kdg.prog6.adapters.in.api.dto.VesselStatusDTO;
+import be.kdg.prog6.adapters.in.api.dto.VesselStatusDTOConverter;
 import be.kdg.prog6.adapters.in.api.dto.VesselInputDTO;
 import be.kdg.prog6.domain.*;
 import be.kdg.prog6.ports.in.InputSOAndVesselInfoUseCase;
@@ -45,9 +45,9 @@ public class ArrivalController {
 
     @GetMapping
     public ResponseEntity<?> viewAllShipmentsArrivals(){
-        List<VesselArrivalDTO> shipmentsArrivals = viewShipmentArrivalsUseCase.getAllShipmentArrivals().
+        List<VesselStatusDTO> shipmentsArrivals = viewShipmentArrivalsUseCase.getAllShipmentArrivals().
                 stream().
-                map(VesselArrivalDTOConverter::convert).
+                map(VesselStatusDTOConverter::convert).
                 toList();
         if (shipmentsArrivals.isEmpty()) {
             return ResponseEntity.noContent().build();

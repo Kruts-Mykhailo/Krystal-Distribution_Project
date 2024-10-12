@@ -41,9 +41,13 @@ public class ShipmentOrder {
         this.isMatchedWithPO = thisOrderLineCounts.equals(purchaseOrderLineCounts);
     }
 
-    public void leavePort() {
+    public void leave() {
         this.departureDate = LocalDate.now();
         this.shipmentStatus = ShipmentStatus.LEFT_PORT;
+    }
+
+    public boolean canVesselLeave() {
+        return this.shipmentStatus == ShipmentStatus.COMPLETED;
     }
 
     private void updateShipmentStatus() {
