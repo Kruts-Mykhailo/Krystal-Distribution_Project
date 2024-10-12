@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class BO {
     private LocalDate operationDate;
+    public static int DAY_LIMIT = 6;
 
     public BO(LocalDate operationDate) {
         this.operationDate = operationDate;

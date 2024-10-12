@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -20,4 +22,6 @@ public interface ShipmentOrderJpaEntityRepository extends JpaRepository<Shipment
     "where s.vesselNumber = :vesselNumber " +
     "and s.shipmentStatus = 'OUTSTANDING' ")
     Optional<ShipmentOrderJpaEntity> findOrderByVesselNumberFetched(String vesselNumber);
+
+    List<ShipmentOrderJpaEntity> findAllByBunkeringOperationDate(LocalDate bunkeringOperationDate);
 }

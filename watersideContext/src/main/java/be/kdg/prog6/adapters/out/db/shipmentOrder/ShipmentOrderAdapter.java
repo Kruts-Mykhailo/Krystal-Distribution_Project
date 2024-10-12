@@ -6,10 +6,15 @@ import be.kdg.prog6.adapters.out.db.shipmentOrderLine.ShipmentOrderLineJpaEntity
 import be.kdg.prog6.domain.ShipmentOrder;
 import be.kdg.prog6.ports.out.FindSOPort;
 import be.kdg.prog6.ports.out.SaveSOPort;
+import be.kdg.prog6.ports.out.UpdateSOPort;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
-public class ShipmentOrderAdapter implements SaveSOPort, FindSOPort {
+public class ShipmentOrderAdapter implements SaveSOPort, FindSOPort, UpdateSOPort {
 
     private final ShipmentOrderJpaEntityRepository soRepository;
     private final ShipmentOrderLineJpaEntityRepository shipmentOrderLineRepository;
@@ -33,5 +38,18 @@ public class ShipmentOrderAdapter implements SaveSOPort, FindSOPort {
     public ShipmentOrder findShipmentOrderByVesselNumber(String vesselNumber) {
         return ShipmentOrderConverter.toShipmentOrderEntity(soRepository.findOrderByVesselNumberFetched(vesselNumber)
                 .orElseThrow(() -> new ShipmentOrderNotFoundException("No shipment order found for vessel number " + vesselNumber)));
+    }
+
+    @Override
+    public List<ShipmentOrder> findShipmentOrderByBunkeringOperationDate(LocalDate date) {
+        return soRepository.findAllByBunkeringOperationDate(date)
+                .stream()
+                .map(ShipmentOrderConverter::toShipmentOrderEntity)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateShipmentOrder(ShipmentOrder shipmentOrder) {
+        soRepository.save(ShipmentOrderConverter.toShipmentOrderJpaEntity(shipmentOrder));
     }
 }

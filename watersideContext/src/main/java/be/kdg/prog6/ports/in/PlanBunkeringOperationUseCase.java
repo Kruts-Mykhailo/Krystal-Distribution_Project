@@ -4,5 +4,5 @@ import java.time.LocalDate;
 
 public interface PlanBunkeringOperationUseCase {
 
-    void planBO(LocalDate localDate, String vesselNumber);
+    void planBO(PlanBunkeringOperationCommand command);
 }

@@ -33,7 +33,7 @@ public class InputSOAndVesselInfoUseCaseImpl implements InputSOAndVesselInfoUseC
                 infoCommand.customerEnterpriseNumber(),
                 infoCommand.vesselNumber(),
                 LocalDate.now(),
-                infoCommand.departureDate(),
+                null,
                 new IO(),
                 new BO(),
                 false,

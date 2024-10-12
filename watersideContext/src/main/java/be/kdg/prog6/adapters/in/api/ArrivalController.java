@@ -30,9 +30,7 @@ public class ArrivalController {
                         ol.weight(),
                         UOM.fromCode(ol.uom())
                 )).toList(),
-                vesselInputDTO.getCustomerEnterpriseNumber(),
-                vesselInputDTO.getDepartureDate()
-
+                vesselInputDTO.getCustomerEnterpriseNumber()
         );
         inputSOAndVesselInfoUseCase.inputInformation(inputVesselInfoCommand);
         return ResponseEntity.ok().body("Ship %s arrived successfully".formatted(vesselNumber));

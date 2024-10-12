@@ -26,7 +26,7 @@ public class ShipmentOrderJpaEntity {
     @Column(nullable = false)
     private LocalDate arrivalDate;
 
-    @Column(nullable = false)
+    @Column
     private LocalDate departureDate;
 
     @Column

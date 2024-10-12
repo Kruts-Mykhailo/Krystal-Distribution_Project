@@ -15,6 +15,23 @@ Content-Type: application/json
   "departureDate": "2024-10-16"
 }
 
+### POST input vessel and shipment order info
+POST http://localhost:8094/wsc/arrivals/V1654423445
+Content-Type: application/json
+
+{
+  "purchaseOrderNumber": "PO345345",
+  "customerEnterpriseNumber": "ENT789012",
+  "orderLines": [
+    {
+      "weight": 1,
+      "materialType": "GP",
+      "uom": "kt"
+    }
+  ],
+  "departureDate": "2024-10-16"
+}
+
 
 ### POST match SO and PO
 POST http://localhost:8094/wsc/vessels/V12345
@@ -22,3 +39,6 @@ POST http://localhost:8094/wsc/vessels/V12345
 
 ### POST plan bunkering operation
 POST http://localhost:8094/wsc/vessels/V12345/bunkeringOperations/2024-10-12
+
+### POST plan bunkering operation
+POST http://localhost:8094/wsc/vessels/V1654423445/bunkeringOperations/2024-10-13

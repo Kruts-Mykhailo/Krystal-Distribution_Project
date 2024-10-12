@@ -1,6 +1,7 @@
 package be.kdg.prog6.adapters.in.api;
 
 import be.kdg.prog6.ports.in.MatchSOAndPOUseCase;
+import be.kdg.prog6.ports.in.PlanBunkeringOperationCommand;
 import be.kdg.prog6.ports.in.PlanBunkeringOperationUseCase;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +31,7 @@ public class VesselController {
 
     @PostMapping("/{vesselNumber}/bunkeringOperations/{date}")
     public ResponseEntity<?> scheduleBunkeringOperation(@PathVariable String vesselNumber, @PathVariable LocalDate date){
-        planBunkeringOperationUseCase.planBO(date, vesselNumber);
+        planBunkeringOperationUseCase.planBO(new PlanBunkeringOperationCommand(vesselNumber, date));
         return ResponseEntity.ok().body("Bunkering operation for %s is scheduled for %s".formatted(vesselNumber, date));
     }
 }

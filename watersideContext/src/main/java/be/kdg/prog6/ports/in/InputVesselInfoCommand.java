@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-public record InputVesselInfoCommand(String poRefernceNumber, String vesselNumber, List<OrderLine> orderLines, String customerEnterpriseNumber, LocalDate departureDate) {
+public record InputVesselInfoCommand(String poRefernceNumber, String vesselNumber, List<OrderLine> orderLines, String customerEnterpriseNumber) {
     public InputVesselInfoCommand {
         if (vesselNumber.isEmpty()) {
             throw new IllegalArgumentException("Vessel number must not be empty");
@@ -16,9 +16,6 @@ public record InputVesselInfoCommand(String poRefernceNumber, String vesselNumbe
         }
         if (orderLines.isEmpty()) {
             throw new IllegalArgumentException("Shipment Order must contain order lines");
-        }
-        if (departureDate.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("Departure date must not be before current date");
         }
         if (poRefernceNumber.isEmpty()) {
             throw new IllegalArgumentException("Purchase order refernce number must not be empty");

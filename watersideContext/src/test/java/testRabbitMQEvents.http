@@ -9,3 +9,15 @@ Content-Type: application/json
   "payload": "{\"purchaseOrder\":{\"poNumber\":\"PO123456\",\"referenceUUID\":\"550e8400-e29b-41d4-a716-446655440000\",\"customerParty\":{\"UUID\":\"56efaea4-953c-44bf-9f41-9700fffa2f28\",\"name\":\"Joske Vermeulen\",\"address\":\"Trammesantlei 122, Schoten, Belgium\"},\"sellerParty\":{\"UUID\":\"e53a47fa-9f1b-4d58-8981-cdd01beac39e\",\"name\":\"De klant van KDG\",\"address\":\"Het adres van de klant van KDG\"},\"vesselNumber\":\"VSL7891011\",\"orderLines\":[{\"lineNumber\":1,\"materialType\":\"GP\",\"description\":\"Gypsum\",\"quantity\":1,\"uom\":\"kt\"}]}}",
   "payload_encoding": "string"
 }
+
+### Receive purchase order
+POST http://localhost:15672/api/exchanges/%2F/amq.default/publish
+Authorization: Basic bXl1c2VyOm15cGFzc3dvcmQ=
+Content-Type: application/json
+
+{
+  "properties": {},
+  "routing_key": "purchase_order_queue",
+  "payload": "{\"purchaseOrder\":{\"poNumber\":\"PO345345\",\"referenceUUID\":\"550e8400-e29b-41d4-a716-446655440000\",\"customerParty\":{\"UUID\":\"56efaea4-953c-44bf-9f41-9700fffa2f28\",\"name\":\"Joske Vermeulen\",\"address\":\"Trammesantlei 122, Schoten, Belgium\"},\"sellerParty\":{\"UUID\":\"e53a47fa-9f1b-4d58-8981-cdd01beac39e\",\"name\":\"De klant van KDG\",\"address\":\"Het adres van de klant van KDG\"},\"vesselNumber\":\"VSL7891011\",\"orderLines\":[{\"lineNumber\":1,\"materialType\":\"GP\",\"description\":\"Gypsum\",\"quantity\":1,\"uom\":\"kt\"}]}}",
+  "payload_encoding": "string"
+}
