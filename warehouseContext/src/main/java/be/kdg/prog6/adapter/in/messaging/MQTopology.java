@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MQTopology {
-    public static final String PAYLOAD_DELIVERY_TICKET_QUEUE = "pdt_received";
+    public static final String PAYLOAD_DELIVERY_TICKET_QUEUE = "payload_delivery_ticket_queue";
     public static final String WAREHOUSE_FULLNESS_QUEUE = "warehouse_capacity_change";
     public static final String WAREHOUSE_FULLNESS_EXCHANGE = "warehouse_capacity_exchange";
 
