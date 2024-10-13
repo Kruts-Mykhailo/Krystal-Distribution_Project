@@ -39,5 +39,14 @@ public class WarehouseAdapter implements WarehouseFoundPort {
         return WarehouseConverter.toWarehouse(warehouseJpaEntity, payloadActivityJpaEntities);
     }
 
+    @Override
+    public Warehouse getWarehouseByNumber(int number) {
+        WarehouseJpaEntity warehouseJpaEntity = warehouseJpaRepository.findByWarehouseNumberFetched(number)
+                .orElseThrow(() -> new WarehouseNotFoundException("Warehouse with number %d not found.".formatted(number)));
+        List<PayloadActivity> payloadActivityJpaEntities = PayloadConverter
+                .toPayloadActivities(warehouseJpaEntity.getPayloadActivityJpaEntities());
+        return WarehouseConverter.toWarehouse(warehouseJpaEntity, payloadActivityJpaEntities);
+    }
+
 
 }

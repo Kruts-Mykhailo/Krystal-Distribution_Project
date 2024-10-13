@@ -8,4 +8,5 @@ import java.util.UUID;
 public interface WarehouseFoundPort {
     UUID getWarehouseIdByOwnerIdAndMaterialType(Seller.SellerId id, MaterialType materialType);
     Warehouse getWarehouseById(UUID uuid);
+    Warehouse getWarehouseByNumber(int number);
 }

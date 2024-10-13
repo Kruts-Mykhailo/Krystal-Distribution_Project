@@ -17,4 +17,9 @@ public interface WarehouseJpaRepository extends JpaRepository<WarehouseJpaEntity
     Optional<WarehouseJpaEntity> findByWarehouseIdFetched(UUID id);
 
     Optional<WarehouseJpaEntity> findByOwnerIdAndMaterialType(UUID ownerId, String materialType);
+
+    @Query("select w from WarehouseJpaEntity w " +
+            "left join fetch w.payloadActivityJpaEntities " +
+            "where w.warehouseNumber = :warehouseNumber")
+    Optional<WarehouseJpaEntity> findByWarehouseNumberFetched(int warehouseNumber);
 }

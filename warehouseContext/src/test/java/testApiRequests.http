@@ -1,2 +1,5 @@
 ### Receive purchase orders and their status
 GET http://localhost:8093/wc/purchaseOrders
+
+### Get warehouse info
+GET http://localhost:8093/wc/warehouses/1
