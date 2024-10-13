@@ -18,11 +18,9 @@ import java.util.UUID;
 public class MakeAppointmentController {
 
     private final MakeAppointmentUseCase makeAppointmentUseCase;
-    private final CheckTruckArrivalUseCase checkTruckArrivalUseCase;
 
-    public MakeAppointmentController(MakeAppointmentUseCase makeAppointmentUseCase, CheckTruckArrivalUseCase checkTruckArrivalUseCase) {
+    public MakeAppointmentController(MakeAppointmentUseCase makeAppointmentUseCase) {
         this.makeAppointmentUseCase = makeAppointmentUseCase;
-        this.checkTruckArrivalUseCase = checkTruckArrivalUseCase;
     }
 
     @PostMapping("/{customerId}")
@@ -45,9 +43,5 @@ public class MakeAppointmentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(appointmentDTO);
     }
 
-    @GetMapping("/{licensePlate}")
-    public ResponseEntity<TruckArrivalDTO> getTruckStatus(@PathVariable String licensePlate) {
-        Appointment appointment = checkTruckArrivalUseCase.checkTruckArrival(new LicensePlate(licensePlate));
-        return ResponseEntity.ok().body(TruckArrivalDTO.from(appointment));
-    }
+
 }

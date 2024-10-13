@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,4 +30,6 @@ public interface AppointmentJpaRepository extends JpaRepository<AppointmentJpaEn
     "left join fetch a.activities " +
     "where a.licensePlate = :licensePlate and a.status != :status")
     Optional<AppointmentJpaEntity> findByLicensePlateAndNotStatusFetched(String licensePlate, String status);
+
+    List<AppointmentJpaEntity> findAllByStatusIn(List<String> statuses);
 }

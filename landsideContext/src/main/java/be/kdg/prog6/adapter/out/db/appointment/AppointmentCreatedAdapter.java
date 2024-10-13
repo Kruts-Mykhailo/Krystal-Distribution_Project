@@ -78,4 +78,13 @@ public class AppointmentCreatedAdapter implements AppointmentCreatedPort, Appoin
                                         .formatted(licensePlate.licensePlate()))
                         ));
     }
+
+    @Override
+    public List<Appointment> getAllAppointmentsOnSite() {
+        return appointmentJpaRepository
+                .findAllByStatusIn(List.of(AppointmentStatus.ON_SITE.name(), AppointmentStatus.ARRIVED_LATE.name()))
+                .stream()
+                .map(AppointmentConverter::toAppointment)
+                .collect(Collectors.toList());
+    }
 }

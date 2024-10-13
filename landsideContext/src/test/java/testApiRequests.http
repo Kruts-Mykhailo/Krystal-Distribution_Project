@@ -9,7 +9,10 @@ Content-Type: application/json
 }
 
 ### Get truck status
-GET http://localhost:8091/lsc/appointments/B-123JD-F
+GET http://localhost:8091/lsc/trucks/B-123JD-F
+
+### Get all trucks on site
+GET http://localhost:8091/lsc/trucks
 
 ### POST Test license plate on gate recognition
 POST http://localhost:8091/lsc/gate/B-123JD-F/arrive
