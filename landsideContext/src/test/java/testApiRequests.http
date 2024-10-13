@@ -1,5 +1,5 @@
 ### POST Test create appointment
-POST http://localhost:8091/lsc/appointment/e53a47fa-9f1b-4d58-8981-cdd01beac39e
+POST http://localhost:8091/lsc/appointments/e53a47fa-9f1b-4d58-8981-cdd01beac39e
 Content-Type: application/json
 
 {
@@ -8,6 +8,8 @@ Content-Type: application/json
   "scheduleDateTime": "2024-10-13T15:00:00"
 }
 
+### Get truck status
+GET http://localhost:8091/lsc/appointments/B-123JD-F
 
 ### POST Test license plate on gate recognition
 POST http://localhost:8091/lsc/gate/B-123JD-F/arrive

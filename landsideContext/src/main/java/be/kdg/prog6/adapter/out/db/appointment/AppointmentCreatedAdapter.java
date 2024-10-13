@@ -1,5 +1,7 @@
 package be.kdg.prog6.adapter.out.db.appointment;
 
+import be.kdg.prog6.adapter.exceptions.AppointmentNotFoundException;
+import be.kdg.prog6.adapter.out.db.appointmentActivity.AppointmentActivityConverter;
 import be.kdg.prog6.adapter.out.db.appointmentActivity.AppointmentActivityJpaEntity;
 import be.kdg.prog6.adapter.out.db.appointmentActivity.AppointmentActivityJpaRepository;
 import be.kdg.prog6.adapter.out.db.schedule.ScheduleJpaEntity;
@@ -44,14 +46,8 @@ public class AppointmentCreatedAdapter implements AppointmentCreatedPort, Appoin
 
             List<AppointmentActivityJpaEntity> activities = appointment.getAppointmentActivities()
                     .stream()
-                    .map(ac -> new AppointmentActivityJpaEntity(
-                            ac.activityId(),
-                            ac.licensePlate().licensePlate(),
-                            ac.activityType().name(),
-                            ac.localDateTime(),
-                            ac.status().name(),
-                            savedAppointment
-                    )).collect(Collectors.toList());
+                    .map(ac -> AppointmentActivityConverter.toJpaEntity(ac, savedAppointment))
+                    .collect(Collectors.toList());
             appointmentActivityJpaRepository.saveAll(activities);
         }
     }
@@ -68,5 +64,18 @@ public class AppointmentCreatedAdapter implements AppointmentCreatedPort, Appoin
         return appointmentJpaRepository
                 .findByLicensePlateAndStatus(licensePlate.licensePlate(), AppointmentStatus.ON_SITE.name())
                 .map(AppointmentConverter::toAppointment);
+    }
+
+    @Override
+    public Appointment getAppointmentOfTruck(LicensePlate licensePlate) {
+        return AppointmentConverter.toAppointment(
+                appointmentJpaRepository
+                        .findByLicensePlateAndNotStatusFetched(
+                                licensePlate.licensePlate(),
+                                AppointmentStatus.LEFT_SITE.name())
+                        .orElseThrow(
+                                () -> new AppointmentNotFoundException("Appointment for %s could not be found"
+                                        .formatted(licensePlate.licensePlate()))
+                        ));
     }
 }

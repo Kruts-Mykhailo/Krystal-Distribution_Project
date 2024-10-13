@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface AppointmentFoundPort {
     Optional<Appointment> getTruckAppointmentOnSite(LicensePlate licensePlate);
+    Appointment getAppointmentOfTruck(LicensePlate licensePlate);
 }

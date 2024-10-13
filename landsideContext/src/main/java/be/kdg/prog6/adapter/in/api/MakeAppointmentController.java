@@ -2,7 +2,9 @@ package be.kdg.prog6.adapter.in.api;
 
 import be.kdg.prog6.adapter.in.api.dto.AppointmentDTO;
 import be.kdg.prog6.adapter.in.api.dto.AppointmentRequestDTO;
+import be.kdg.prog6.adapter.in.api.dto.TruckArrivalDTO;
 import be.kdg.prog6.domain.*;
+import be.kdg.prog6.port.in.CheckTruckArrivalUseCase;
 import be.kdg.prog6.port.in.CreateAppointmentCommand;
 import be.kdg.prog6.port.in.MakeAppointmentUseCase;
 import org.springframework.http.HttpStatus;
@@ -12,13 +14,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/appointment")
+@RequestMapping("/appointments")
 public class MakeAppointmentController {
 
     private final MakeAppointmentUseCase makeAppointmentUseCase;
+    private final CheckTruckArrivalUseCase checkTruckArrivalUseCase;
 
-    public MakeAppointmentController(MakeAppointmentUseCase makeAppointmentUseCase) {
+    public MakeAppointmentController(MakeAppointmentUseCase makeAppointmentUseCase, CheckTruckArrivalUseCase checkTruckArrivalUseCase) {
         this.makeAppointmentUseCase = makeAppointmentUseCase;
+        this.checkTruckArrivalUseCase = checkTruckArrivalUseCase;
     }
 
     @PostMapping("/{customerId}")
@@ -39,5 +43,11 @@ public class MakeAppointmentController {
                 appointment.getAppointmentDateTime());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(appointmentDTO);
+    }
+
+    @GetMapping("/{licensePlate}")
+    public ResponseEntity<TruckArrivalDTO> getTruckStatus(@PathVariable String licensePlate) {
+        Appointment appointment = checkTruckArrivalUseCase.checkTruckArrival(new LicensePlate(licensePlate));
+        return ResponseEntity.ok().body(TruckArrivalDTO.from(appointment));
     }
 }
