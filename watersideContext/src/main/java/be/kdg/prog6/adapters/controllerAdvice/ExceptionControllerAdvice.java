@@ -33,6 +33,11 @@ public class ExceptionControllerAdvice {
         return ErrorResponse.create(ex, HttpStatus.GONE, ex.getLocalizedMessage());
     }
 
+    @ExceptionHandler(value = { IllegalArgumentException.class })
+    private ErrorResponse handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
+        return ErrorResponse.create(ex, HttpStatus.BAD_REQUEST, ex.getLocalizedMessage());
+    }
+
 
 
 }

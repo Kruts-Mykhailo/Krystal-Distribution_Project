@@ -18,6 +18,7 @@ public class MQTopology {
 
     public static final String FINISH_OPERATIONS_QUEUE = "finish_operations_queue";
     public static final String FINISH_OPERATIONS_EXCHANGE = "finish_operations_exchange";
+    public static final String COMMISSIONS_QUEUE = "commissions_queue";
 
     @Bean
     TopicExchange finishOperationsExchange() {
@@ -30,11 +31,24 @@ public class MQTopology {
     }
 
     @Bean
-    Binding bindingFinishOperations(TopicExchange exchange, Queue queue) {
+    Queue commissionsQueue() {
+        return new Queue(COMMISSIONS_QUEUE, true);
+    }
+
+    @Bean
+    Binding bindingFinishOperations(TopicExchange exchange, Queue finishOperationsQueue) {
         return BindingBuilder.
-                bind(queue).
+                bind(finishOperationsQueue).
                 to(exchange).
                 with("operations.#.finished");
+    }
+
+    @Bean
+    Binding bindingCommissions(TopicExchange exchange, Queue commissionsQueue) {
+        return BindingBuilder.
+                bind(commissionsQueue).
+                to(exchange).
+                with("#.commissions");
     }
 
     @Bean
