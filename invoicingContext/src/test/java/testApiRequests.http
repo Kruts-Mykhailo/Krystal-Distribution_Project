@@ -1,5 +1,2 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
-
-###
+### GET storage fee
+GET http://localhost:8092/ic/commissions/e53a47fa-9f1b-4d58-8981-cdd01beac39e

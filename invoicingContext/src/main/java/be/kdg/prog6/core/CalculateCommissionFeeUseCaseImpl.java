@@ -1,8 +1,6 @@
 package be.kdg.prog6.core;
 
-import be.kdg.prog6.domain.CommissionFee;
-import be.kdg.prog6.domain.Seller;
-import be.kdg.prog6.domain.Warehouse;
+import be.kdg.prog6.domain.*;
 import be.kdg.prog6.events.CommissionEvent;
 import be.kdg.prog6.port.in.CalculateCommissionFeeUseCase;
 import be.kdg.prog6.port.out.SaveCommissionFeePort;
@@ -38,13 +36,14 @@ public class CalculateCommissionFeeUseCaseImpl implements CalculateCommissionFee
                 .orderLines()
                 .stream()
                 .mapToDouble(orderLine -> {
+                    Double tons = UOM.fromCode(orderLine.uom()).getMeasureCoefficient() * orderLine.quantity();
                     Warehouse warehouse = warehouseFoundPort.getBySellerIdAndMaterialType(
                             new Seller.SellerId(commissionEvent.sellerId()),
-                            orderLine.materialType()
+                            MaterialType.valueOf(orderLine.materialType())
                     );
-                    warehouse.removeOldestPayload(orderLine.quantity());
+                    warehouse.removeOldestPayload(tons);
                     warehouseStoragePort.update(warehouse);
-                    return warehouse.calculateCommissionFee(orderLine.quantity());})
+                    return warehouse.calculateCommissionFee(tons);})
                 .sum();
 
         CommissionFee commissionFee = new CommissionFee(
