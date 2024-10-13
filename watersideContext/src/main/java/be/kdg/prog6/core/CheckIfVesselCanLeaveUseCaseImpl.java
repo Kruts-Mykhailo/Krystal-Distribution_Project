@@ -34,7 +34,7 @@ public class CheckIfVesselCanLeaveUseCaseImpl implements CheckIfVesselCanLeaveUs
             shipmentOrder.leave();
             shipmentOrder = updateSOPort.updateShipmentOrder(shipmentOrder);
             PO purchaseOrder = findPOPort.findPOByReferenceNumber(shipmentOrder.getPoReferenceNumber());
-            sendCommissionInfoPort.sendInfoForCommission(new CommissionEvent(purchaseOrder.orderLines(), purchaseOrder.sellerId()));
+            sendCommissionInfoPort.sendInfoForCommission(new CommissionEvent(purchaseOrder.orderLines(), purchaseOrder.sellerId(), purchaseOrder.poNumber()));
             shipmentOrderFulfilledPort.deductMaterialFromWarehouse(shipmentOrder.getPoReferenceNumber());
         }
 
