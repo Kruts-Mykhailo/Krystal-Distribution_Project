@@ -2,11 +2,9 @@ package be.kdg.prog6.core;
 
 import be.kdg.prog6.domain.ActivityType;
 import be.kdg.prog6.domain.Warehouse;
+import be.kdg.prog6.events.PayloadArrivedEvent;
 import be.kdg.prog6.port.in.AdjustWarehouseInventoryUseCase;
-import be.kdg.prog6.port.out.PayloadCommand;
-import be.kdg.prog6.port.out.PayloadRecordSavedPort;
-import be.kdg.prog6.port.out.ProjectWarehouseInfoPort;
-import be.kdg.prog6.port.out.WarehouseFoundPort;
+import be.kdg.prog6.port.out.*;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,12 +18,14 @@ public class AdjustWarehouseInventoryUseCaseImpl implements AdjustWarehouseInven
 
     private final PayloadRecordSavedPort payloadRecordSaved;
     private final ProjectWarehouseInfoPort projectWarehouseInfoPort;
+    private final StorageUpdatedPort storageUpdatedPort;
     private final WarehouseFoundPort warehouseFoundPort;
     private final Logger logger = LoggerFactory.getLogger(AdjustWarehouseInventoryUseCaseImpl.class);
 
-    public AdjustWarehouseInventoryUseCaseImpl(PayloadRecordSavedPort payloadRecordSaved, ProjectWarehouseInfoPort projectWarehouseInfoPort, WarehouseFoundPort warehouseFoundPort) {
+    public AdjustWarehouseInventoryUseCaseImpl(PayloadRecordSavedPort payloadRecordSaved, ProjectWarehouseInfoPort projectWarehouseInfoPort, StorageUpdatedPort storageUpdatedPort, WarehouseFoundPort warehouseFoundPort) {
         this.payloadRecordSaved = payloadRecordSaved;
         this.projectWarehouseInfoPort = projectWarehouseInfoPort;
+        this.storageUpdatedPort = storageUpdatedPort;
         this.warehouseFoundPort = warehouseFoundPort;
     }
 
@@ -39,7 +39,17 @@ public class AdjustWarehouseInventoryUseCaseImpl implements AdjustWarehouseInven
                 sendTime
         ));
 
+
         Warehouse warehouse = warehouseFoundPort.getWarehouseById(warehouseId);
+
+        if (netWeight != 0.0) {
+            storageUpdatedPort.sendPayloadDeliveryInfo(
+                    new PayloadArrivedEvent(
+                        warehouse.getOwnerId(),
+                        netWeight,
+                        sendTime,
+                        warehouse.getMaterialType()));
+        }
 
         projectWarehouseInfoPort.projectWarehouseCapacity(
                 warehouseId,

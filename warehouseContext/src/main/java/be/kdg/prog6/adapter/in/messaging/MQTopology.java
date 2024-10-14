@@ -20,6 +20,7 @@ public class MQTopology {
 
     public static final String INVOICING_EXCHANGE = "invoicing_exchange";
     public static final String COMMISSIONS_QUEUE = "commissions_queue";
+    public static final String PAYLOAD_DELIVERY_QUEUE = "payload_delivery_queue";
 
     @Bean
     TopicExchange warehouseCapacityExchange() {
@@ -30,6 +31,7 @@ public class MQTopology {
     Queue warehouseCapacityQueue() {
         return new Queue(WAREHOUSE_FULLNESS_QUEUE, true);
     }
+
     @Bean
     Binding bindingWarehouseCapacityChanged(TopicExchange warehouseCapacityExchange, Queue warehouseCapacityQueue) {
         return BindingBuilder
@@ -55,6 +57,19 @@ public class MQTopology {
                 .bind(commissionsQueue)
                 .to(invoicingExchange)
                 .with("commission.#.initiate");
+    }
+
+    @Bean
+    Queue payloadDeliveryQueue() {
+        return new Queue(PAYLOAD_DELIVERY_QUEUE, true);
+    }
+
+    @Bean
+    Binding bindingPayloadDelivery(TopicExchange invoicingExchange, Queue payloadDeliveryQueue) {
+        return BindingBuilder
+                .bind(payloadDeliveryQueue)
+                .to(invoicingExchange)
+                .with("payload.#.delivered");
     }
 
 

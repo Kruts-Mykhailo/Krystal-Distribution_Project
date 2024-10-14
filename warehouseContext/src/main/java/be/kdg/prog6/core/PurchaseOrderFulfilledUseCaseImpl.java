@@ -18,9 +18,9 @@ public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilled
     private final PurchaseOrderFoundPort purchaseOrderFoundPort;
     private final PurchaseOrderUpdatedPort purchaseOrderUpdatedPort;
     private final WarehouseFoundPort warehouseFoundPort;
-    private final SendPOForCommissionPort commissionInfoPort;
+    private final PurchaseOrderFulfilledPort commissionInfoPort;
 
-    public PurchaseOrderFulfilledUseCaseImpl(PayloadRecordSavedPort payloadRecordSavedPort, PurchaseOrderFoundPort purchaseOrderFoundPort, PurchaseOrderUpdatedPort purchaseOrderUpdatedPort, WarehouseFoundPort warehouseFoundPort, SendPOForCommissionPort commissionInfoPort) {
+    public PurchaseOrderFulfilledUseCaseImpl(PayloadRecordSavedPort payloadRecordSavedPort, PurchaseOrderFoundPort purchaseOrderFoundPort, PurchaseOrderUpdatedPort purchaseOrderUpdatedPort, WarehouseFoundPort warehouseFoundPort, PurchaseOrderFulfilledPort commissionInfoPort) {
         this.payloadRecordSavedPort = payloadRecordSavedPort;
         this.purchaseOrderFoundPort = purchaseOrderFoundPort;
         this.purchaseOrderUpdatedPort = purchaseOrderUpdatedPort;

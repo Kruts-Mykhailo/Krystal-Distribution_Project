@@ -1,10 +1,8 @@
 package be.kdg.prog6.adapter.out.db.warehouse;
 
-import be.kdg.prog6.adapter.exceptions.WarehouseNotFoundException;
 import be.kdg.prog6.domain.MaterialType;
 import be.kdg.prog6.domain.Seller;
 import be.kdg.prog6.domain.WarehouseInfo;
-import be.kdg.prog6.port.out.GetSellerByWarehousePort;
 import be.kdg.prog6.port.out.WarehouseInfoPort;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Component
-public class WarehouseInfoDatabaseAdapter implements WarehouseInfoPort, GetSellerByWarehousePort {
+public class WarehouseInfoDatabaseAdapter implements WarehouseInfoPort {
 
     private final WarehouseInfoJpaRepository warehouseInfoJpaRepository;
 
@@ -52,12 +50,4 @@ public class WarehouseInfoDatabaseAdapter implements WarehouseInfoPort, GetSelle
 
     }
 
-    @Override
-    public Seller.SellerId getSellerByWarehouseId(UUID warehouseId) {
-        WarehouseInfoJpaEntity warehouse = warehouseInfoJpaRepository.findById(warehouseId).
-                orElseThrow(() -> new WarehouseNotFoundException("Warehouse with id %s not found".formatted(warehouseId)));
-        return WarehouseInfoConverter.convert(warehouse).sellerId();
-
-
-    }
 }

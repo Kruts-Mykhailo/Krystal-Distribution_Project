@@ -41,13 +41,13 @@ public class EnterWeighingBridgeUseCaseImpl implements EnterWeighingBridgeUseCas
                 passBridgeCommand.weight(),
                 LocalDateTime.now()
         );
+        truckWeightSavedPort.saveTruckWeight(truckWeightRecord, appointment.getId());
+        appointmentUpdatedPort.updateAppointment(appointment, AppointmentStatus.ON_SITE);
         logger.info(String.format(
                 "Truck %s passed weighing bridge at %s",
                 passBridgeCommand.licensePlate().licensePlate(),
                 truckWeightRecord
         ));
-        truckWeightSavedPort.saveTruckWeight(truckWeightRecord, appointment.getId());
-        appointmentUpdatedPort.updateAppointment(appointment, AppointmentStatus.ON_SITE);
 
     }
 }

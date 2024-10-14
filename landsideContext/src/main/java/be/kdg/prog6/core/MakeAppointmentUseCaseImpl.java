@@ -28,7 +28,6 @@ public class MakeAppointmentUseCaseImpl implements MakeAppointmentUseCase {
         this.warehouseInfoPort = warehouseInfoPort;
     }
 
-
     @Override
     @Transactional
     public Appointment makeAppointment(CreateAppointmentCommand createAppointmentCommand) {
@@ -36,6 +35,11 @@ public class MakeAppointmentUseCaseImpl implements MakeAppointmentUseCase {
                 createAppointmentCommand.sellerId(),
                 createAppointmentCommand.materialType()
         );
+
+        if (warehouseInfo.isFullCapacity()) {
+            logger.warning("Fail schedule appointment. Warehouse is full");
+            throw new WarehouseHasFullCapacityException(String.format("Warehouse %d has full capacity", warehouseInfo.warehouseNumber()));
+        }
 
         DaySchedule schedule = scheduleDetailsPort.createOrLoadScheduleByDate(createAppointmentCommand
                 .scheduleDateTime()
@@ -52,10 +56,7 @@ public class MakeAppointmentUseCaseImpl implements MakeAppointmentUseCase {
             logger.warning("Fail schedule appointment. Day full");
             throw new AppointmentCannotBeScheduledException(String.format("Appointment cannot be scheduled for %s", createAppointmentCommand.scheduleDateTime()));
         }
-        if (warehouseInfo.isFullCapacity()) {
-            logger.warning("Fail schedule appointment. Warehouse is full");
-            throw new WarehouseHasFullCapacityException(String.format("Warehouse %d has full capacity", warehouseInfo.warehouseNumber()));
-        }
+
         Appointment newAppointment = appointment.get();
         appointmentCreatedPort.saveAppointment(newAppointment, schedule.getId());
         logger.info(String.format(

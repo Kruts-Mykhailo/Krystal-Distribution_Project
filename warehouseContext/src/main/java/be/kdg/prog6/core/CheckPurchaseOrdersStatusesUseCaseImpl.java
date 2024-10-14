@@ -16,7 +16,6 @@ public class CheckPurchaseOrdersStatusesUseCaseImpl implements CheckPurchaseOrde
         this.purchaseOrderFoundPort = purchaseOrderFoundPort;
     }
 
-
     @Override
     public List<PurchaseOrder> getAllPurchaseOrders() {
         return purchaseOrderFoundPort.getAllPurchaseOrders();
