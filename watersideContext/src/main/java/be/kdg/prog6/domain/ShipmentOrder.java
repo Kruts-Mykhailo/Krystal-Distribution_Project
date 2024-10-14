@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 public class ShipmentOrder {
     private String poReferenceNumber;
-    private List<OrderLine> orderLines;
     private String customerEnterpriseNumber;
     private String vesselNumber;
     private LocalDate arrivalDate;
@@ -18,9 +17,8 @@ public class ShipmentOrder {
     private Boolean isMatchedWithPO;
     private ShipmentStatus shipmentStatus;
 
-    public ShipmentOrder(String poReferenceNumber, List<OrderLine> orderLines, String customerEnterpriseNumber, String vesselNumber, LocalDate arrivalDate, LocalDate departureDate, IO inspectionOperation, BO bunkeringOperation, Boolean isMatchedWithPO, ShipmentStatus shipmentStatus) {
+    public ShipmentOrder(String poReferenceNumber, String customerEnterpriseNumber, String vesselNumber, LocalDate arrivalDate, LocalDate departureDate, IO inspectionOperation, BO bunkeringOperation, Boolean isMatchedWithPO, ShipmentStatus shipmentStatus) {
         this.poReferenceNumber = poReferenceNumber;
-        this.orderLines = orderLines;
         this.customerEnterpriseNumber = customerEnterpriseNumber;
         this.vesselNumber = vesselNumber;
         this.arrivalDate = arrivalDate;
@@ -31,14 +29,8 @@ public class ShipmentOrder {
         this.shipmentStatus = shipmentStatus;
     }
 
-    public void matchPurchaseOrder(List<OrderLine> purchaseOrderOrderLines) {
-        Map<OrderLine, Long> thisOrderLineCounts = this.orderLines.stream()
-                .collect(Collectors.groupingBy(orderLine -> orderLine, Collectors.counting()));
-
-        Map<OrderLine, Long> purchaseOrderLineCounts = purchaseOrderOrderLines.stream()
-                .collect(Collectors.groupingBy(orderLine -> orderLine, Collectors.counting()));
-
-        this.isMatchedWithPO = thisOrderLineCounts.equals(purchaseOrderLineCounts);
+    public void matchPurchaseOrder() {
+        this.isMatchedWithPO = true;
     }
 
     public void leave() {
@@ -103,13 +95,6 @@ public class ShipmentOrder {
         this.poReferenceNumber = poReferenceNumber;
     }
 
-    public List<OrderLine> getOrderLines() {
-        return orderLines;
-    }
-
-    public void setOrderLines(List<OrderLine> orderLines) {
-        this.orderLines = orderLines;
-    }
 
     public String getCustomerEnterpriseNumber() {
         return customerEnterpriseNumber;

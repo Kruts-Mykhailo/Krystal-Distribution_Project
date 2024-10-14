@@ -1,7 +1,8 @@
 package be.kdg.prog6.core;
 
 import be.kdg.prog6.domain.*;
-import be.kdg.prog6.port.in.ShipOperationsFinishedUseCase;
+import be.kdg.prog6.events.POFulfilledEvent;
+import be.kdg.prog6.port.in.PurchaseOrderFulfilledUseCase;
 import be.kdg.prog6.port.out.*;
 import org.springframework.stereotype.Service;
 
@@ -11,22 +12,24 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class ShipOperationsFinishedUseCaseImpl implements ShipOperationsFinishedUseCase {
+public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilledUseCase {
 
     private final PayloadRecordSavedPort payloadRecordSavedPort;
     private final PurchaseOrderFoundPort purchaseOrderFoundPort;
     private final PurchaseOrderUpdatedPort purchaseOrderUpdatedPort;
     private final WarehouseFoundPort warehouseFoundPort;
+    private final SendPOForCommissionPort commissionInfoPort;
 
-    public ShipOperationsFinishedUseCaseImpl(PayloadRecordSavedPort payloadRecordSavedPort, PurchaseOrderFoundPort purchaseOrderFoundPort, PurchaseOrderUpdatedPort purchaseOrderUpdatedPort, WarehouseFoundPort warehouseFoundPort) {
+    public PurchaseOrderFulfilledUseCaseImpl(PayloadRecordSavedPort payloadRecordSavedPort, PurchaseOrderFoundPort purchaseOrderFoundPort, PurchaseOrderUpdatedPort purchaseOrderUpdatedPort, WarehouseFoundPort warehouseFoundPort, SendPOForCommissionPort commissionInfoPort) {
         this.payloadRecordSavedPort = payloadRecordSavedPort;
         this.purchaseOrderFoundPort = purchaseOrderFoundPort;
         this.purchaseOrderUpdatedPort = purchaseOrderUpdatedPort;
         this.warehouseFoundPort = warehouseFoundPort;
+        this.commissionInfoPort = commissionInfoPort;
     }
 
     @Override
-    public void initiateLoading(ShippingOrder shippingOrder) {
+    public void deductMaterial(ShippingOrder shippingOrder) {
         PurchaseOrder purchaseOrder = purchaseOrderFoundPort.matchByPurchaseOrderNumber(shippingOrder.poNumber());
         List<PayloadCommand> payloadCommands = purchaseOrder.orderLines()
                 .stream()
@@ -44,6 +47,11 @@ public class ShipOperationsFinishedUseCaseImpl implements ShipOperationsFinished
 
         payloadRecordSavedPort.saveMultiplePayloadRecords(payloadCommands);
         purchaseOrderUpdatedPort.update(purchaseOrder, PurchaseOrder.OrderStatus.FILLED);
+        commissionInfoPort.sendInfoForCommission(new POFulfilledEvent(
+                purchaseOrder.orderLines(),
+                purchaseOrder.sellerId().id(),
+                purchaseOrder.poNumber()
+        ));
 
     }
 }

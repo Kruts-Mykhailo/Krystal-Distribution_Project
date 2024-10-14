@@ -9,10 +9,6 @@ import java.util.List;
 public class VesselInputDTO {
     private String purchaseOrderNumber;
     private String customerEnterpriseNumber;
-    private List<OrderLineDTO> orderLines;
     private LocalDate departureDate;
 
-    public record OrderLineDTO(Double weight, String materialType, String uom) {
-
-    }
 }

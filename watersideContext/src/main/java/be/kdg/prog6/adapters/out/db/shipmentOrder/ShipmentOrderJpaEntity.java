@@ -1,12 +1,10 @@
 package be.kdg.prog6.adapters.out.db.shipmentOrder;
 
-import be.kdg.prog6.adapters.out.db.shipmentOrderLine.ShipmentOrderLineJpaEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -44,8 +42,7 @@ public class ShipmentOrderJpaEntity {
     @Column(nullable = false)
     private String shipmentStatus;
 
-    @OneToMany(mappedBy = "shipmentOrder")
-    private List<ShipmentOrderLineJpaEntity> shipmentOrderLines;
+
 
     public ShipmentOrderJpaEntity() {
     }
@@ -54,13 +51,13 @@ public class ShipmentOrderJpaEntity {
         this.poReferenceNumber = poReferenceNumber;
     }
 
-    public ShipmentOrderJpaEntity(String poReferenceNumber, String customerEnterpriseNumber, String vesselNumber, LocalDate arrivalDate, LocalDate departureDate, List<ShipmentOrderLineJpaEntity> shipmentOrderLines) {
+    public ShipmentOrderJpaEntity(String poReferenceNumber, String customerEnterpriseNumber, String vesselNumber, LocalDate arrivalDate, LocalDate departureDate) {
         this.poReferenceNumber = poReferenceNumber;
         this.customerEnterpriseNumber = customerEnterpriseNumber;
         this.vesselNumber = vesselNumber;
         this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
-        this.shipmentOrderLines = shipmentOrderLines;
+
     }
 
     public ShipmentOrderJpaEntity(String poReferenceNumber, String customerEnterpriseNumber, String vesselNumber, LocalDate arrivalDate, LocalDate departureDate, LocalDate bunkeringOperationDate, LocalDate inspectionOperationDate, String inspectorSignature, Boolean isMatchedWithPO, String shipmentStatus) {

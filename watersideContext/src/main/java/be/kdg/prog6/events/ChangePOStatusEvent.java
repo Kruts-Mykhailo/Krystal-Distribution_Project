@@ -2,8 +2,8 @@ package be.kdg.prog6.events;
 
 import java.util.Objects;
 
-public record ShipOperationsCompletedEvent(String poNumber) {
-    public ShipOperationsCompletedEvent {
+public record ChangePOStatusEvent(String poNumber) {
+    public ChangePOStatusEvent {
         Objects.requireNonNull(poNumber);
 
         if (!poNumber.startsWith("PO")) {

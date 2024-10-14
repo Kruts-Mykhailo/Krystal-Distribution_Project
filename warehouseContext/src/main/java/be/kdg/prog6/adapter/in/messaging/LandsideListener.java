@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class LandsideListener {
 
+    public static final String PAYLOAD_DELIVERY_TICKET_QUEUE = "payload_delivery_ticket_queue";
     private final AdjustWarehouseInventoryUseCase adjustWarehouseInventoryUseCase;
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
@@ -17,7 +18,7 @@ public class LandsideListener {
         this.adjustWarehouseInventoryUseCase = adjustWarehouseInventoryUseCase;
     }
 
-    @RabbitListener(queues = MQTopology.PAYLOAD_DELIVERY_TICKET_QUEUE, messageConverter = "jackson2JsonMessageConverter")
+    @RabbitListener(queues = PAYLOAD_DELIVERY_TICKET_QUEUE, messageConverter = "jackson2JsonMessageConverter")
     public void payloadDelivered(PDTReceivedEvent pdtReceivedEvent) {
         logger.info(
                 "Payload of %s delivered to warehouse %s"

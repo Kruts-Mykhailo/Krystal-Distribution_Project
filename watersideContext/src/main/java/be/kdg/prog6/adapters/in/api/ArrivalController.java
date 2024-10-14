@@ -31,11 +31,6 @@ public class ArrivalController {
         InputVesselInfoCommand inputVesselInfoCommand = new InputVesselInfoCommand(
                 vesselInputDTO.getPurchaseOrderNumber(),
                 vesselNumber,
-                vesselInputDTO.getOrderLines().stream().map(ol -> new OrderLine(
-                        MaterialType.fromCode(ol.materialType()),
-                        ol.weight(),
-                        UOM.fromCode(ol.uom())
-                )).toList(),
                 vesselInputDTO.getCustomerEnterpriseNumber()
         );
         inputSOAndVesselInfoUseCase.inputInformation(inputVesselInfoCommand);

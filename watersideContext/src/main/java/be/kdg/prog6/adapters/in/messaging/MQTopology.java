@@ -16,40 +16,34 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MQTopology {
 
-    public static final String FINISH_OPERATIONS_QUEUE = "finish_operations_queue";
-    public static final String FINISH_OPERATIONS_EXCHANGE = "finish_operations_exchange";
-    public static final String COMMISSIONS_QUEUE = "commissions_queue";
+    public static final String CHANGE_ORDER_STATUS_EXCHANGE = "change_order_status_exchange";
+    public static final String MATCH_ORDER_STATUS_QUEUE = "match_order_status_queue";
+    public static final String FUlFILL_ORDER_STATUS_QUEUE = "full_order_status_queue";
 
     @Bean
-    TopicExchange finishOperationsExchange() {
-        return new TopicExchange(FINISH_OPERATIONS_EXCHANGE);
+    TopicExchange changeOrderStatusExchange() {
+        return new TopicExchange(CHANGE_ORDER_STATUS_EXCHANGE);
     }
 
     @Bean
-    Queue finishOperationsQueue() {
-        return new Queue(FINISH_OPERATIONS_QUEUE, true);
+    Queue fulfillOrderStatusQueue() {
+        return new Queue(FUlFILL_ORDER_STATUS_QUEUE, true);
     }
 
     @Bean
-    Queue commissionsQueue() {
-        return new Queue(COMMISSIONS_QUEUE, true);
+    Queue matchOrderStatusQueue() {
+        return new Queue(MATCH_ORDER_STATUS_QUEUE, true);
     }
 
+
     @Bean
-    Binding bindingFinishOperations(TopicExchange exchange, Queue finishOperationsQueue) {
+    Binding bindingMatchOrderStatus(TopicExchange exchange, Queue matchOrderStatusQueue) {
         return BindingBuilder.
-                bind(finishOperationsQueue).
+                bind(matchOrderStatusQueue).
                 to(exchange).
-                with("operations.#.finished");
+                with("status.#.matched");
     }
 
-    @Bean
-    Binding bindingCommissions(TopicExchange exchange, Queue commissionsQueue) {
-        return BindingBuilder.
-                bind(commissionsQueue).
-                to(exchange).
-                with("#.commissions");
-    }
 
     @Bean
     RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {

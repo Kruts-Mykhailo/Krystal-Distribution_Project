@@ -5,5 +5,5 @@ import be.kdg.prog6.domain.OrderLine;
 import java.util.List;
 import java.util.UUID;
 
-public record CommissionEvent(List<OrderLine> orderLines, UUID sellerId, String poNumber) {
+public record POFulfilledEvent(List<OrderLine> orderLines, UUID sellerId, String poNumber) {
 }

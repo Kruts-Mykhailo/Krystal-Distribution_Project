@@ -1,12 +1,13 @@
 package be.kdg.prog6.adapters.in.messaging;
 
-import be.kdg.prog6.events.ShipOperationsCompletedEvent;
-import be.kdg.prog6.ports.out.ShipmentOrderFulfilledPort;
+import be.kdg.prog6.events.ChangePOStatusEvent;
+import be.kdg.prog6.ports.out.SendMatchingEventPort;
+import be.kdg.prog6.ports.out.SendShipmentOrderFulfilledPort;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class WarehousePublisher implements ShipmentOrderFulfilledPort {
+public class WarehousePublisher implements SendShipmentOrderFulfilledPort, SendMatchingEventPort {
 
     private final RabbitTemplate rabbitTemplate;
 
@@ -16,11 +17,21 @@ public class WarehousePublisher implements ShipmentOrderFulfilledPort {
 
     @Override
     public void deductMaterialFromWarehouse(String poNumber) {
-        String routingKey = "operations.%s.finished".formatted(poNumber);
+        String routingKey = "status.%s.fulfilled".formatted(poNumber);
         this.rabbitTemplate.convertAndSend(
-                MQTopology.FINISH_OPERATIONS_EXCHANGE,
+                MQTopology.CHANGE_ORDER_STATUS_EXCHANGE,
                 routingKey,
-                new ShipOperationsCompletedEvent(poNumber)
+                new ChangePOStatusEvent(poNumber)
+        );
+    }
+
+    @Override
+    public void sendMatchingEvent(String poNumber) {
+        String routingKey = "status.%s.fulfilled".formatted(poNumber);
+        this.rabbitTemplate.convertAndSend(
+                MQTopology.CHANGE_ORDER_STATUS_EXCHANGE,
+                routingKey,
+                new ChangePOStatusEvent(poNumber)
         );
     }
 }

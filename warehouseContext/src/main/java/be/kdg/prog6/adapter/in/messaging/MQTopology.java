@@ -15,29 +15,49 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MQTopology {
-    public static final String PAYLOAD_DELIVERY_TICKET_QUEUE = "payload_delivery_ticket_queue";
     public static final String WAREHOUSE_FULLNESS_QUEUE = "warehouse_capacity_change";
     public static final String WAREHOUSE_FULLNESS_EXCHANGE = "warehouse_capacity_exchange";
 
+    public static final String INVOICING_EXCHANGE = "invoicing_exchange";
+    public static final String COMMISSIONS_QUEUE = "commissions_queue";
 
     @Bean
     TopicExchange warehouseCapacityExchange() {
         return new TopicExchange(WAREHOUSE_FULLNESS_EXCHANGE);
     }
 
-
     @Bean
     Queue warehouseCapacityQueue() {
         return new Queue(WAREHOUSE_FULLNESS_QUEUE, true);
     }
     @Bean
-    Binding bindingWarehouseCapacityChanged(TopicExchange exchange, Queue queue) {
+    Binding bindingWarehouseCapacityChanged(TopicExchange warehouseCapacityExchange, Queue warehouseCapacityQueue) {
         return BindingBuilder
-                .bind(queue)
-                .to(exchange)
+                .bind(warehouseCapacityQueue)
+                .to(warehouseCapacityExchange)
                 .with("warehouse.#.capacity.changed");
 
     }
+
+    @Bean
+    TopicExchange invoicingExchange() {
+        return new TopicExchange(INVOICING_EXCHANGE);
+    }
+
+    @Bean
+    Queue commissionsQueue() {
+        return new Queue(COMMISSIONS_QUEUE, true);
+    }
+
+    @Bean
+    Binding bindingCommissionsInitiated(TopicExchange invoicingExchange, Queue commissionsQueue) {
+        return BindingBuilder
+                .bind(commissionsQueue)
+                .to(invoicingExchange)
+                .with("commission.#.initiate");
+    }
+
+
 
     @Bean
     RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {

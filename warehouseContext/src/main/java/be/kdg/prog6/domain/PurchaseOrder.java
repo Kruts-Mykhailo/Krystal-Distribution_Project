@@ -24,6 +24,6 @@ public record PurchaseOrder(Seller.SellerId sellerId, List<OrderLine> orderLines
     }
 
     public enum OrderStatus {
-        OUTSTANDING, FILLED
+        OUTSTANDING, MATCHED, FILLED
     }
 }
