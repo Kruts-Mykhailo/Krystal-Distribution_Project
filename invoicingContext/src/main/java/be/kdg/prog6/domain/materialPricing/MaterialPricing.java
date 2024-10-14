@@ -17,11 +17,4 @@ public abstract class MaterialPricing {
         return tonnage * pricePerTon;
     }
 
-    public double getPricePerTon() {
-        return pricePerTon;
-    }
-
-    public double getStoragePricePerTonPerDay() {
-        return storagePricePerTonPerDay;
-    }
 }

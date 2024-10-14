@@ -47,19 +47,6 @@ public class ShipmentOrderJpaEntity {
     public ShipmentOrderJpaEntity() {
     }
 
-    public ShipmentOrderJpaEntity(String poReferenceNumber) {
-        this.poReferenceNumber = poReferenceNumber;
-    }
-
-    public ShipmentOrderJpaEntity(String poReferenceNumber, String customerEnterpriseNumber, String vesselNumber, LocalDate arrivalDate, LocalDate departureDate) {
-        this.poReferenceNumber = poReferenceNumber;
-        this.customerEnterpriseNumber = customerEnterpriseNumber;
-        this.vesselNumber = vesselNumber;
-        this.arrivalDate = arrivalDate;
-        this.departureDate = departureDate;
-
-    }
-
     public ShipmentOrderJpaEntity(String poReferenceNumber, String customerEnterpriseNumber, String vesselNumber, LocalDate arrivalDate, LocalDate departureDate, LocalDate bunkeringOperationDate, LocalDate inspectionOperationDate, String inspectorSignature, Boolean isMatchedWithPO, String shipmentStatus) {
         this.poReferenceNumber = poReferenceNumber;
         this.customerEnterpriseNumber = customerEnterpriseNumber;

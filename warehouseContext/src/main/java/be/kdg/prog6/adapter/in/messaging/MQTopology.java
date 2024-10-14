@@ -72,8 +72,6 @@ public class MQTopology {
                 .with("payload.#.delivered");
     }
 
-
-
     @Bean
     RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
