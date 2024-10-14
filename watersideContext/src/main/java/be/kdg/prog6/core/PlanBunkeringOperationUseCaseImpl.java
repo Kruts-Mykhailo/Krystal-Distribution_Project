@@ -36,11 +36,13 @@ public class PlanBunkeringOperationUseCaseImpl implements PlanBunkeringOperation
         ShipmentOrder shipmentOrder = findSOPort.findShipmentOrderByVesselNumber(command.vesselNumber());
         shipmentOrder.scheduleBO(command.date());
         updateSOPort.updateShipmentOrder(shipmentOrder);
+        log.info("Bunkering operation for vessel {} is scheduled for {} ", command.vesselNumber(), command.date());
+
         if (shipmentOrder.canVesselLeave()) {
             shipmentOrder.leave();
             shipmentOrder = updateSOPort.updateShipmentOrder(shipmentOrder);
             sendShipmentOrderFulfilledPort.deductMaterialFromWarehouse(shipmentOrder.getPoReferenceNumber());
+            log.info("Ship %s left site".formatted(shipmentOrder.getVesselNumber()));
         }
-        log.info("Bunkering operation for vessel {} is scheduled for {} ", command.vesselNumber(), command.date());
     }
 }

@@ -27,7 +27,7 @@ public class WarehousePublisher implements SendShipmentOrderFulfilledPort, SendM
 
     @Override
     public void sendMatchingEvent(String poNumber) {
-        String routingKey = "status.%s.fulfilled".formatted(poNumber);
+        String routingKey = "status.%s.matched".formatted(poNumber);
         this.rabbitTemplate.convertAndSend(
                 MQTopology.CHANGE_ORDER_STATUS_EXCHANGE,
                 routingKey,

@@ -31,11 +31,12 @@ public class MatchSOAndPOUseCaseImpl implements MatchSOAndPOUseCase {
         shipmentOrder.matchPurchaseOrder();
         updateSOPort.updateShipmentOrder(shipmentOrder);
         sendMatchingEventPort.sendMatchingEvent(shipmentOrder.getPoReferenceNumber());
+        log.info("Matched SO and PO with vessel number {}", vesselNumber);
         if (shipmentOrder.canVesselLeave()) {
             shipmentOrder.leave();
             shipmentOrder = updateSOPort.updateShipmentOrder(shipmentOrder);
             sendShipmentOrderFulfilledPort.deductMaterialFromWarehouse(shipmentOrder.getPoReferenceNumber());
+            log.info("Ship %s left site".formatted(shipmentOrder.getVesselNumber()));
         }
-        log.info("Matched SO and PO with vessel number {}", vesselNumber);
     }
 }

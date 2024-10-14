@@ -30,14 +30,16 @@ public class CompleteVesselInspectionUseCaseImpl implements CompleteVesselInspec
         ShipmentOrder shipmentOrder = findSOPort.findShipmentOrderByVesselNumber(command.vesselNumber());
         shipmentOrder.completeIO(command.inspectionDate(), command.inspectorSignature());
         updateSOPort.updateShipmentOrder(shipmentOrder);
-        if (shipmentOrder.canVesselLeave()) {
-            shipmentOrder.leave();
-            shipmentOrder = updateSOPort.updateShipmentOrder(shipmentOrder);
-            sendShipmentOrderFulfilledPort.deductMaterialFromWarehouse(shipmentOrder.getPoReferenceNumber());
-        }
         log.info("Vessel {} was inspected by {} on {}",
                 command.vesselNumber(),
                 command.inspectorSignature(),
                 command.inspectionDate());
+
+        if (shipmentOrder.canVesselLeave()) {
+            shipmentOrder.leave();
+            shipmentOrder = updateSOPort.updateShipmentOrder(shipmentOrder);
+            sendShipmentOrderFulfilledPort.deductMaterialFromWarehouse(shipmentOrder.getPoReferenceNumber());
+            log.info("Ship %s left site".formatted(shipmentOrder.getVesselNumber()));
+        }
     }
 }
