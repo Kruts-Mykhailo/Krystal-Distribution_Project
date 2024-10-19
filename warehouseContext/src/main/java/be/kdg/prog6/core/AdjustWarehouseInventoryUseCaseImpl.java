@@ -53,7 +53,8 @@ public class AdjustWarehouseInventoryUseCaseImpl implements AdjustWarehouseInven
 
         projectWarehouseInfoPort.projectWarehouseCapacity(
                 warehouseId,
-                warehouse.getWarehouseMaterialAmount().amount()
+                netWeight,
+                ActivityType.DELIVERY
         );
 
         logger.info("%d warehouse received a payload of %.2f tons".formatted(

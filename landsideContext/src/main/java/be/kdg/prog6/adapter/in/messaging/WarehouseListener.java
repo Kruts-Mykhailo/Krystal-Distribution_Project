@@ -1,5 +1,6 @@
 package be.kdg.prog6.adapter.in.messaging;
 
+import be.kdg.prog6.domain.OperationType;
 import be.kdg.prog6.events.WarehouseUpdatedEvent;
 import be.kdg.prog6.port.in.WarehouseInfoProjector;
 import org.slf4j.Logger;
@@ -20,10 +21,11 @@ public class WarehouseListener {
 
     @RabbitListener(queues = MQTopology.WAREHOUSE_FULLNESS_QUEUE, messageConverter = "#{jackson2JsonMessageConverter}")
     public void warehouseUpdatedListener(WarehouseUpdatedEvent warehouseUpdatedEvent) {
-        LOGGER.info("Warehouse {} has capacity of: {}",
+        LOGGER.info("Warehouse {} updated", warehouseUpdatedEvent.warehouseId());
+        warehouseInfoProjector.project(
                 warehouseUpdatedEvent.warehouseId(),
-                warehouseUpdatedEvent.initialCapacity());
-        warehouseInfoProjector.project(warehouseUpdatedEvent.warehouseId(), warehouseUpdatedEvent.initialCapacity());
+                warehouseUpdatedEvent.initialCapacity(),
+                OperationType.valueOf(warehouseUpdatedEvent.operationType()));
 
     }
 }

@@ -1,16 +1,18 @@
 package be.kdg.prog6.adapter.out.db.warehouse;
 
+import be.kdg.prog6.adapter.exceptions.WarehouseNotFoundException;
 import be.kdg.prog6.domain.MaterialType;
 import be.kdg.prog6.domain.Seller;
 import be.kdg.prog6.domain.WarehouseInfo;
-import be.kdg.prog6.port.out.WarehouseInfoPort;
+import be.kdg.prog6.port.out.WarehouseProjectionFoundPort;
+import be.kdg.prog6.port.out.WarehouseProjectionUpdatedPort;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 import java.util.UUID;
 
 @Component
-public class WarehouseInfoDatabaseAdapter implements WarehouseInfoPort {
+public class WarehouseInfoDatabaseAdapter implements WarehouseProjectionFoundPort, WarehouseProjectionUpdatedPort {
 
     private final WarehouseInfoJpaRepository warehouseInfoJpaRepository;
 
@@ -20,34 +22,23 @@ public class WarehouseInfoDatabaseAdapter implements WarehouseInfoPort {
 
     @Override
     public WarehouseInfo getWarehouse(Seller.SellerId sellerId, MaterialType materialType) {
-        Optional<WarehouseInfoJpaEntity> warehouse = warehouseInfoJpaRepository.
-                findBySellerIdAndMaterialType(sellerId.id(), materialType.name());
-
-        if (warehouse.isEmpty()) {
-            return null;
-        }
-
-        WarehouseInfoJpaEntity warehouseInfoJpa = warehouse.get();
-
-        return new WarehouseInfo(
-                MaterialType.valueOf(warehouseInfoJpa.getMaterialType()),
-                new Seller.SellerId(warehouseInfoJpa.getSellerId()),
-                warehouseInfoJpa.getWarehouseId(),
-                warehouseInfoJpa.getWarehouseNumber(),
-                warehouseInfoJpa.getInitialCapacity(),
-                warehouseInfoJpa.getMaxCapacity());
+        return WarehouseInfoConverter.convert(warehouseInfoJpaRepository
+                .findBySellerIdAndMaterialType(sellerId.id(), materialType.name())
+                .orElseThrow(
+                        () -> new WarehouseNotFoundException("Warehouse for seller %s and material type %s"
+                                .formatted(sellerId.id(), materialType.name()))
+                ));
     }
 
     @Override
-    public void updateWarehouse(UUID warehouseId, Double value) {
-        Optional<WarehouseInfoJpaEntity> warehouse = warehouseInfoJpaRepository.findById(warehouseId);
-
-        if (warehouse.isPresent()) {
-            WarehouseInfoJpaEntity warehouseInfo = warehouse.get();
-            warehouseInfo.setInitialCapacity(value);
-            warehouseInfoJpaRepository.save(warehouseInfo);
-        }
-
+    public WarehouseInfo getWarehouseById(UUID warehouseId) {
+        return WarehouseInfoConverter.convert(warehouseInfoJpaRepository.findById(warehouseId)
+                .orElseThrow(() -> new WarehouseNotFoundException("Warehouse %s not found".formatted(warehouseId))));
     }
 
+
+    @Override
+    public void update(WarehouseInfo warehouseInfo) {
+        warehouseInfoJpaRepository.save(WarehouseInfoConverter.convert(warehouseInfo));
+    }
 }

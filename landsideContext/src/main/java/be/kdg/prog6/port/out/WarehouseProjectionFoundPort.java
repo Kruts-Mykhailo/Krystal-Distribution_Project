@@ -6,7 +6,7 @@ import be.kdg.prog6.domain.WarehouseInfo;
 
 import java.util.UUID;
 
-public interface WarehouseInfoPort {
+public interface WarehouseProjectionFoundPort {
     WarehouseInfo getWarehouse(Seller.SellerId sellerId, MaterialType materialType);
-    void updateWarehouse(UUID warehouseId, Double value);
+    WarehouseInfo getWarehouseById(UUID warehouseId);
 }

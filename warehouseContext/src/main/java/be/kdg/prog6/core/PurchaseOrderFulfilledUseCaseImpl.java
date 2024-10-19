@@ -19,13 +19,15 @@ public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilled
     private final PurchaseOrderUpdatedPort purchaseOrderUpdatedPort;
     private final WarehouseFoundPort warehouseFoundPort;
     private final PurchaseOrderFulfilledPort commissionInfoPort;
+    private final ProjectWarehouseInfoPort projectWarehouseInfoPort;
 
-    public PurchaseOrderFulfilledUseCaseImpl(PayloadRecordSavedPort payloadRecordSavedPort, PurchaseOrderFoundPort purchaseOrderFoundPort, PurchaseOrderUpdatedPort purchaseOrderUpdatedPort, WarehouseFoundPort warehouseFoundPort, PurchaseOrderFulfilledPort commissionInfoPort) {
+    public PurchaseOrderFulfilledUseCaseImpl(PayloadRecordSavedPort payloadRecordSavedPort, PurchaseOrderFoundPort purchaseOrderFoundPort, PurchaseOrderUpdatedPort purchaseOrderUpdatedPort, WarehouseFoundPort warehouseFoundPort, PurchaseOrderFulfilledPort commissionInfoPort, ProjectWarehouseInfoPort projectWarehouseInfoPort) {
         this.payloadRecordSavedPort = payloadRecordSavedPort;
         this.purchaseOrderFoundPort = purchaseOrderFoundPort;
         this.purchaseOrderUpdatedPort = purchaseOrderUpdatedPort;
         this.warehouseFoundPort = warehouseFoundPort;
         this.commissionInfoPort = commissionInfoPort;
+        this.projectWarehouseInfoPort = projectWarehouseInfoPort;
     }
 
     @Override
@@ -34,12 +36,20 @@ public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilled
         List<PayloadCommand> payloadCommands = purchaseOrder.orderLines()
                 .stream()
                 .map(orderLine -> {
+                    Double amount = orderLine.quantity() * orderLine.uom().getMeasureCoefficient();
+
                     UUID warehouseId = warehouseFoundPort.getWarehouseIdByOwnerIdAndMaterialType(
                             purchaseOrder.sellerId(),
                             orderLine.materialType());
+                    projectWarehouseInfoPort.projectWarehouseCapacity(
+                            warehouseId,
+                            amount,
+                            ActivityType.PURCHASE
+                    );
+
                     return new PayloadCommand(
                             ActivityType.PURCHASE,
-                            orderLine.quantity() * orderLine.uom().getMeasureCoefficient(),
+                            amount,
                             warehouseId,
                             LocalDateTime.now()
                     );})

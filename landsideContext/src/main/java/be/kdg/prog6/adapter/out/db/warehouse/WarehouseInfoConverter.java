@@ -14,4 +14,15 @@ public class WarehouseInfoConverter {
                 warehouseInfoJpa.getInitialCapacity(),
                 warehouseInfoJpa.getMaxCapacity());
     }
+
+    public static WarehouseInfoJpaEntity convert(WarehouseInfo warehouseInfo) {
+        return new WarehouseInfoJpaEntity(
+               warehouseInfo.maxAmount(),
+               warehouseInfo.warehouseCapacity(),
+               warehouseInfo.materialType().name(),
+               warehouseInfo.sellerId().id(),
+               warehouseInfo.warehouseNumber(),
+               warehouseInfo.warehouseId()
+        );
+    }
 }

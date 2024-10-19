@@ -1,5 +1,6 @@
 package be.kdg.prog6.adapter.in.messaging;
 
+import be.kdg.prog6.domain.ActivityType;
 import be.kdg.prog6.events.UpdateWarehouseCapacityEvent;
 import be.kdg.prog6.port.out.ProjectWarehouseInfoPort;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -17,12 +18,12 @@ public class LandsidePublisher implements ProjectWarehouseInfoPort {
     }
 
     @Override
-    public void projectWarehouseCapacity(UUID warehouseId, Double capacity) {
+    public void projectWarehouseCapacity(UUID warehouseId, Double capacity, ActivityType activityType) {
         String routingKey = String.format("warehouse.%s.capacity.changed", warehouseId);
         this.rabbitTemplate.convertAndSend(
                 MQTopology.WAREHOUSE_FULLNESS_EXCHANGE,
                 routingKey,
-                new UpdateWarehouseCapacityEvent(warehouseId, capacity)
+                new UpdateWarehouseCapacityEvent(warehouseId, capacity, activityType)
         );
     }
 }

@@ -7,7 +7,7 @@ import be.kdg.prog6.port.in.CreateAppointmentCommand;
 import be.kdg.prog6.port.in.MakeAppointmentUseCase;
 import be.kdg.prog6.port.out.AppointmentCreatedPort;
 import be.kdg.prog6.port.out.ScheduleDetailsPort;
-import be.kdg.prog6.port.out.WarehouseInfoPort;
+import be.kdg.prog6.port.out.WarehouseProjectionFoundPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,19 +19,19 @@ public class MakeAppointmentUseCaseImpl implements MakeAppointmentUseCase {
 
     private final AppointmentCreatedPort appointmentCreatedPort;
     private final ScheduleDetailsPort scheduleDetailsPort;
-    private final WarehouseInfoPort warehouseInfoPort;
+    private final WarehouseProjectionFoundPort warehouseProjectionFoundPort;
     private final Logger logger = Logger.getLogger(MakeAppointmentUseCaseImpl.class.getName());
 
-    public MakeAppointmentUseCaseImpl(AppointmentCreatedPort appointmentCreatedPort, ScheduleDetailsPort scheduleDetailsPort, WarehouseInfoPort warehouseInfoPort) {
+    public MakeAppointmentUseCaseImpl(AppointmentCreatedPort appointmentCreatedPort, ScheduleDetailsPort scheduleDetailsPort, WarehouseProjectionFoundPort warehouseProjectionFoundPort) {
         this.appointmentCreatedPort = appointmentCreatedPort;
         this.scheduleDetailsPort = scheduleDetailsPort;
-        this.warehouseInfoPort = warehouseInfoPort;
+        this.warehouseProjectionFoundPort = warehouseProjectionFoundPort;
     }
 
     @Override
     @Transactional
     public Appointment makeAppointment(CreateAppointmentCommand createAppointmentCommand) {
-        WarehouseInfo warehouseInfo = warehouseInfoPort.getWarehouse(
+        WarehouseInfo warehouseInfo = warehouseProjectionFoundPort.getWarehouse(
                 createAppointmentCommand.sellerId(),
                 createAppointmentCommand.materialType()
         );

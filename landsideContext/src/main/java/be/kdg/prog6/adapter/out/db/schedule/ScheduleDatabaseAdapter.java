@@ -21,17 +21,6 @@ public class ScheduleDatabaseAdapter implements ScheduleDetailsPort {
         this.scheduleJpaRepository = scheduleJpaRepository;
     }
 
-    @Override
-    public DaySchedule loadScheduleByDate(LocalDate date) {
-        ScheduleJpaEntity schedule = scheduleJpaRepository.findByScheduleDate(date)
-                .orElseThrow(() -> new IllegalArgumentException("No schedule found for the given date: " + date));
-
-        List<Appointment> appointments = schedule.getAppointmentJpaEntities()
-                .stream()
-                .map(AppointmentConverter::toAppointment).collect(Collectors.toList());
-
-        return new DaySchedule(schedule.getScheduleId(), schedule.getScheduleDate(), appointments);
-    }
 
     @Override
     public DaySchedule createOrLoadScheduleByDate(LocalDate date) {
