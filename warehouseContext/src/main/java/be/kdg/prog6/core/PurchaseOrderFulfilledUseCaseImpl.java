@@ -33,35 +33,41 @@ public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilled
     @Override
     public void deductMaterial(ShippingOrder shippingOrder) {
         PurchaseOrder purchaseOrder = purchaseOrderFoundPort.matchByPurchaseOrderNumber(shippingOrder.poNumber());
-        List<PayloadCommand> payloadCommands = purchaseOrder.orderLines()
-                .stream()
-                .map(orderLine -> {
-                    Double amount = orderLine.quantity() * orderLine.uom().getMeasureCoefficient();
 
-                    UUID warehouseId = warehouseFoundPort.getWarehouseIdByOwnerIdAndMaterialType(
-                            purchaseOrder.sellerId(),
-                            orderLine.materialType());
-                    projectWarehouseInfoPort.projectWarehouseCapacity(
-                            warehouseId,
-                            amount,
-                            ActivityType.PURCHASE
-                    );
+        if (purchaseOrder.status() != PurchaseOrder.OrderStatus.MATCHED) {
+            List<PayloadCommand> payloadCommands = purchaseOrder.orderLines()
+                    .stream()
+                    .map(orderLine -> {
+                        Double amount = orderLine.quantity() * orderLine.uom().getMeasureCoefficient();
 
-                    return new PayloadCommand(
-                            ActivityType.PURCHASE,
-                            amount,
-                            warehouseId,
-                            LocalDateTime.now()
-                    );})
-                .collect(Collectors.toList());
+                        UUID warehouseId = warehouseFoundPort.getWarehouseIdByOwnerIdAndMaterialType(
+                                purchaseOrder.sellerId(),
+                                orderLine.materialType());
 
-        payloadRecordSavedPort.saveMultiplePayloadRecords(payloadCommands);
-        purchaseOrderUpdatedPort.update(purchaseOrder, PurchaseOrder.OrderStatus.FILLED);
-        commissionInfoPort.sendInfoForCommission(new POFulfilledEvent(
-                purchaseOrder.orderLines(),
-                purchaseOrder.sellerId().id(),
-                purchaseOrder.poNumber()
-        ));
+                        projectWarehouseInfoPort.projectWarehouseCapacity(
+                                warehouseId,
+                                amount,
+                                ActivityType.PURCHASE
+                        );
+
+                        return new PayloadCommand(
+                                ActivityType.PURCHASE,
+                                amount,
+                                warehouseId,
+                                LocalDateTime.now()
+                        );})
+                    .collect(Collectors.toList());
+
+            payloadRecordSavedPort.saveMultiplePayloadRecords(payloadCommands);
+            purchaseOrderUpdatedPort.update(purchaseOrder, PurchaseOrder.OrderStatus.FILLED);
+            commissionInfoPort.sendInfoForCommission(new POFulfilledEvent(
+                    purchaseOrder.orderLines(),
+                    purchaseOrder.sellerId().id(),
+                    purchaseOrder.poNumber()
+            ));
+        }
+
+
 
     }
 }
