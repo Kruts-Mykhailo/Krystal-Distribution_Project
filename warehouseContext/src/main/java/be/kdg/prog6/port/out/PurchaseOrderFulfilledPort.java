@@ -1,7 +1,7 @@
 package be.kdg.prog6.port.out;
 
-import be.kdg.prog6.events.POFulfilledEvent;
+import be.kdg.prog6.events.CalculateCommissionForPurchaseOrderEvent;
 
 public interface PurchaseOrderFulfilledPort {
-    void sendInfoForCommission(POFulfilledEvent POFulfilledEvent);
+    void sendInfoForCommission(CalculateCommissionForPurchaseOrderEvent CalculateCommissionForPurchaseOrderEvent);
 }

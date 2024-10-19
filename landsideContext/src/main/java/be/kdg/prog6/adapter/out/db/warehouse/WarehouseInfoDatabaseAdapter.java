@@ -8,7 +8,6 @@ import be.kdg.prog6.port.out.WarehouseProjectionFoundPort;
 import be.kdg.prog6.port.out.WarehouseProjectionUpdatedPort;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Component

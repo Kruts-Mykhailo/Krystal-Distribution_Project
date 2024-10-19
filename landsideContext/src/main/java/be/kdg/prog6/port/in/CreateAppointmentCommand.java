@@ -5,7 +5,6 @@ import be.kdg.prog6.domain.LicensePlate;
 import be.kdg.prog6.domain.MaterialType;
 import be.kdg.prog6.domain.Seller;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 public record CreateAppointmentCommand(MaterialType materialType, LicensePlate licensePlate, Seller.SellerId sellerId, LocalDateTime scheduleDateTime) {
     public CreateAppointmentCommand {

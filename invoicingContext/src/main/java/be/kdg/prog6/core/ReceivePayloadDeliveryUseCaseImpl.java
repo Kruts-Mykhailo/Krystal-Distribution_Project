@@ -3,7 +3,7 @@ package be.kdg.prog6.core;
 import be.kdg.prog6.domain.MaterialType;
 import be.kdg.prog6.domain.Seller;
 import be.kdg.prog6.domain.Warehouse;
-import be.kdg.prog6.events.StorageChangedEvent;
+import be.kdg.prog6.events.StorageChangeEvent;
 import be.kdg.prog6.port.in.ReceivePayloadDeliveryUseCase;
 import be.kdg.prog6.port.out.UpdateWarehouseStoragePort;
 import be.kdg.prog6.port.out.WarehouseFoundPort;
@@ -26,16 +26,16 @@ public class ReceivePayloadDeliveryUseCaseImpl implements ReceivePayloadDelivery
 
     @Override
     @Transactional
-    public void addPayload(StorageChangedEvent storageChangedEvent) {
+    public void addPayload(StorageChangeEvent storageChangeEvent) {
         Warehouse warehouse = warehouseFoundPort.getBySellerIdAndMaterialType(
-                new Seller.SellerId(storageChangedEvent.sellerId()),
-                MaterialType.valueOf(storageChangedEvent.materialType()));
-        warehouse.addPayload(storageChangedEvent.tons(), storageChangedEvent.arrivalTime());
+                new Seller.SellerId(storageChangeEvent.sellerId()),
+                MaterialType.valueOf(storageChangeEvent.materialType()));
+        warehouse.addPayload(storageChangeEvent.tons(), storageChangeEvent.arrivalTime());
         warehouseStoragePort.update(warehouse);
 
         log.info("Seller %s received %s %.2f tons".formatted(
-                storageChangedEvent.sellerId(),
-                storageChangedEvent.materialType(),
-                storageChangedEvent.tons()));
+                storageChangeEvent.sellerId(),
+                storageChangeEvent.materialType(),
+                storageChangeEvent.tons()));
     }
 }

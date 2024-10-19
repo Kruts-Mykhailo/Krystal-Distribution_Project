@@ -3,7 +3,6 @@ package be.kdg.prog6.core;
 import be.kdg.prog6.adapter.exceptions.AppointmentNotFoundException;
 import be.kdg.prog6.events.PayloadDeliveredEvent;
 import be.kdg.prog6.domain.*;
-import be.kdg.prog6.events.StorageChangedEvent;
 import be.kdg.prog6.port.in.LeaveWeighingBridgeUseCase;
 import be.kdg.prog6.port.in.PassBridgeCommand;
 import be.kdg.prog6.port.out.*;
@@ -55,7 +54,7 @@ public class LeaveWeighingBridgeUseCaseImpl implements LeaveWeighingBridgeUseCas
                 appointment.getWarehouseId(),
                 LocalDateTime.now(),
                 netWeight,
-                appointment.getMaterialType()));
+                appointment.getMaterialType().name()));
 
         logger.info(String.format("Truck %s left site", passBridgeCommand.licensePlate().licensePlate()));
         return new WBT(

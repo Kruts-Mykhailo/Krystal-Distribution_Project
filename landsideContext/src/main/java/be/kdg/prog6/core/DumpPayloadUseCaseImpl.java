@@ -43,7 +43,7 @@ public class DumpPayloadUseCaseImpl implements DumpPayloadUseCase {
                 appointment.getWarehouseId(),
                 LocalDateTime.now(),
                 0.0,
-                appointment.getMaterialType()));
+                appointment.getMaterialType().name()));
         logger.info(String.format("Truck %s dumped material on conveyor belt.", licensePlate.licensePlate()));
 
         return new PDT(appointment.getWarehouseNumber(), LocalDateTime.now(), appointment.getMaterialType());

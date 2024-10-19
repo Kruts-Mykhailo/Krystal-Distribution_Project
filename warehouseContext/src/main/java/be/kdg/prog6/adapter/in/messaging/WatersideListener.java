@@ -1,7 +1,6 @@
 package be.kdg.prog6.adapter.in.messaging;
 
 import be.kdg.prog6.domain.PONumber;
-import be.kdg.prog6.domain.ShippingOrder;
 import be.kdg.prog6.events.ChangePOStatusEvent;
 import be.kdg.prog6.port.in.MatchPOAndSOUseCase;
 import be.kdg.prog6.port.in.PurchaseOrderFulfilledUseCase;

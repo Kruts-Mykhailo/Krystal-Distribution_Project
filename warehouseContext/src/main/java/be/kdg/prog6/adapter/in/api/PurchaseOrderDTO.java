@@ -1,11 +1,7 @@
 package be.kdg.prog6.adapter.in.api;
 
-import be.kdg.prog6.domain.MaterialType;
 import be.kdg.prog6.domain.PurchaseOrder;
 import be.kdg.prog6.domain.Seller;
-
-import java.util.List;
-import java.util.UUID;
 
 public class PurchaseOrderDTO {
     private PurchaseOrder.OrderStatus orderStatus;

@@ -1,7 +1,7 @@
 package be.kdg.prog6.adapter.in.messaging;
 
 import be.kdg.prog6.events.CommissionEvent;
-import be.kdg.prog6.events.StorageChangedEvent;
+import be.kdg.prog6.events.StorageChangeEvent;
 import be.kdg.prog6.port.in.CalculateCommissionFeeUseCase;
 import be.kdg.prog6.port.in.ReceivePayloadDeliveryUseCase;
 import org.slf4j.Logger;
@@ -30,7 +30,7 @@ public class WarehouseListener {
     }
 
     @RabbitListener(queues = PAYLOAD_DELIVERY_QUEUE, messageConverter = "#{jackson2JsonMessageConverter}")
-    public void receivePayloadDeliveryInfo(StorageChangedEvent storageChangedEvent) {
-        receivePayloadDeliveryUseCase.addPayload(storageChangedEvent);
+    public void receivePayloadDeliveryInfo(StorageChangeEvent storageChangeEvent) {
+        receivePayloadDeliveryUseCase.addPayload(storageChangeEvent);
     }
 }

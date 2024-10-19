@@ -1,7 +1,7 @@
 package be.kdg.prog6.port.in;
 
-import be.kdg.prog6.events.StorageChangedEvent;
+import be.kdg.prog6.events.StorageChangeEvent;
 
 public interface ReceivePayloadDeliveryUseCase {
-    void addPayload(StorageChangedEvent storageChangedEvent);
+    void addPayload(StorageChangeEvent storageChangeEvent);
 }

@@ -1,7 +1,7 @@
 package be.kdg.prog6.core;
 
 import be.kdg.prog6.domain.*;
-import be.kdg.prog6.events.POFulfilledEvent;
+import be.kdg.prog6.events.CalculateCommissionForPurchaseOrderEvent;
 import be.kdg.prog6.port.in.PurchaseOrderFulfilledUseCase;
 import be.kdg.prog6.port.out.*;
 import org.springframework.stereotype.Service;
@@ -60,7 +60,7 @@ public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilled
 
             payloadRecordSavedPort.saveMultiplePayloadRecords(payloadCommands);
             purchaseOrderUpdatedPort.update(purchaseOrder, PurchaseOrder.OrderStatus.FILLED);
-            commissionInfoPort.sendInfoForCommission(new POFulfilledEvent(
+            commissionInfoPort.sendInfoForCommission(new CalculateCommissionForPurchaseOrderEvent(
                     purchaseOrder.orderLines(),
                     purchaseOrder.sellerId().id(),
                     purchaseOrder.poNumber().number()

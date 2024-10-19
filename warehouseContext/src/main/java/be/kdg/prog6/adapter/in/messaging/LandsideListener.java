@@ -1,6 +1,6 @@
 package be.kdg.prog6.adapter.in.messaging;
 
-import be.kdg.prog6.events.PDTReceivedEvent;
+import be.kdg.prog6.events.PayloadDeliveredEvent;
 import be.kdg.prog6.port.in.AdjustWarehouseInventoryUseCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ public class LandsideListener {
     }
 
     @RabbitListener(queues = PAYLOAD_DELIVERY_TICKET_QUEUE, messageConverter = "jackson2JsonMessageConverter")
-    public void payloadDelivered(PDTReceivedEvent pdtReceivedEvent) {
+    public void payloadDelivered(PayloadDeliveredEvent pdtReceivedEvent) {
         logger.info(
                 "Payload of %s delivered to warehouse %s"
                         .formatted(
