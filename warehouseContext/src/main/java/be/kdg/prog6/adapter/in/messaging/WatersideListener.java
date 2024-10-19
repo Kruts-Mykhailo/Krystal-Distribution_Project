@@ -1,5 +1,6 @@
 package be.kdg.prog6.adapter.in.messaging;
 
+import be.kdg.prog6.domain.PONumber;
 import be.kdg.prog6.domain.ShippingOrder;
 import be.kdg.prog6.events.ChangePOStatusEvent;
 import be.kdg.prog6.port.in.MatchPOAndSOUseCase;
@@ -26,13 +27,13 @@ public class WatersideListener {
     @RabbitListener(queues = FUlFILL_ORDER_STATUS_QUEUE, messageConverter = "jackson2JsonMessageConverter")
     public void fulfillPurchaseOrder(ChangePOStatusEvent event) {
         logger.info("Initiate deducting of payload for PO: %s".formatted(event.poNumber()));
-        purchaseOrderFulfilledUseCase.deductMaterial(new ShippingOrder(event.poNumber()));
+        purchaseOrderFulfilledUseCase.deductMaterial(new PONumber(event.poNumber()));
 
     }
 
     @RabbitListener(queues = MATCH_ORDER_STATUS_QUEUE, messageConverter = "jackson2JsonMessageConverter")
     public void matchPOAndSO(ChangePOStatusEvent event) {
         logger.info("Initiate matching of payload for PO: %s".formatted(event.poNumber()));
-        matchPOAndSOUseCase.matchOrders(new ShippingOrder(event.poNumber()));
+        matchPOAndSOUseCase.matchOrders(new PONumber(event.poNumber()));
     }
 }

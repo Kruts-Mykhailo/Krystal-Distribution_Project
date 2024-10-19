@@ -37,7 +37,7 @@ public class CalculateCommissionFeeUseCaseImpl implements CalculateCommissionFee
     @Override
     @Transactional
     public void calculate(CommissionEvent commissionEvent) {
-        Optional<CommissionFee> existingCommissionFee = commissionFeeFoundPort.findByPoNumber(commissionEvent.poNumber());
+        Optional<CommissionFee> existingCommissionFee = commissionFeeFoundPort.findByPoNumber(new PONumber(commissionEvent.poNumber()));
         if (existingCommissionFee.isEmpty()) {
             Double value = commissionEvent
                     .orderLines()
@@ -56,7 +56,7 @@ public class CalculateCommissionFeeUseCaseImpl implements CalculateCommissionFee
             CommissionFee commissionFee = new CommissionFee(
                     new Seller.SellerId(commissionEvent.sellerId()),
                     value,
-                    commissionEvent.poNumber(),
+                    new PONumber(commissionEvent.poNumber()),
                     LocalDateTime.now(),
                     CommissionFee.FeeStatus.CREATED);
 

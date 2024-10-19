@@ -1,5 +1,6 @@
 package be.kdg.prog6.adapters.in.messaging;
 
+import be.kdg.prog6.domain.PONumber;
 import be.kdg.prog6.events.ChangePOStatusEvent;
 import be.kdg.prog6.ports.out.SendMatchingEventPort;
 import be.kdg.prog6.ports.out.SendShipmentOrderFulfilledPort;
@@ -16,7 +17,7 @@ public class WarehousePublisher implements SendShipmentOrderFulfilledPort, SendM
     }
 
     @Override
-    public void deductMaterialFromWarehouse(String poNumber) {
+    public void deductMaterialFromWarehouse(PONumber poNumber) {
         String routingKey = "status.%s.fulfilled".formatted(poNumber);
         this.rabbitTemplate.convertAndSend(
                 MQTopology.CHANGE_ORDER_STATUS_EXCHANGE,
@@ -26,7 +27,7 @@ public class WarehousePublisher implements SendShipmentOrderFulfilledPort, SendM
     }
 
     @Override
-    public void sendMatchingEvent(String poNumber) {
+    public void sendMatchingEvent(PONumber poNumber) {
         String routingKey = "status.%s.matched".formatted(poNumber);
         this.rabbitTemplate.convertAndSend(
                 MQTopology.CHANGE_ORDER_STATUS_EXCHANGE,

@@ -54,7 +54,7 @@ public class PurchaseOrderAdapter implements PurchaseOrderUpdatedPort, PurchaseO
 
     @Override
     public void update(PurchaseOrder purchaseOrder, PurchaseOrder.OrderStatus status) {
-        PurchaseOrderJpaEntity purchaseOrderJpaEntity = purchaseOrderJpaRepository.findById(purchaseOrder.poNumber())
+        PurchaseOrderJpaEntity purchaseOrderJpaEntity = purchaseOrderJpaRepository.findById(purchaseOrder.poNumber().number())
                 .orElseThrow(() -> new PurchaseOrderNotFoundException(
                         "Purchase order %s not found".formatted(purchaseOrder.poNumber())));
         purchaseOrderJpaEntity.setOrderStatus(status.name());

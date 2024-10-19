@@ -1,7 +1,7 @@
 package be.kdg.prog6.core;
 
+import be.kdg.prog6.domain.PONumber;
 import be.kdg.prog6.domain.PurchaseOrder;
-import be.kdg.prog6.domain.ShippingOrder;
 import be.kdg.prog6.port.in.MatchPOAndSOUseCase;
 import be.kdg.prog6.port.out.PurchaseOrderFoundPort;
 import be.kdg.prog6.port.out.PurchaseOrderUpdatedPort;
@@ -19,8 +19,8 @@ public class MatchPOAndSOUseCaseImpl implements MatchPOAndSOUseCase {
     }
 
     @Override
-    public void matchOrders(ShippingOrder shippingOrder) {
-        PurchaseOrder purchaseOrder = purchaseOrderFoundPort.matchByPurchaseOrderNumber(shippingOrder.poNumber());
+    public void matchOrders(PONumber poNumber) {
+        PurchaseOrder purchaseOrder = purchaseOrderFoundPort.matchByPurchaseOrderNumber(poNumber.number());
         if (purchaseOrder.status() == PurchaseOrder.OrderStatus.OUTSTANDING) {
             purchaseOrderUpdatedPort.update(purchaseOrder, PurchaseOrder.OrderStatus.MATCHED);
         }

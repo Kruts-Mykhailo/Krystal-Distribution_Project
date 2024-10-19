@@ -5,7 +5,7 @@ import be.kdg.prog6.events.PurchaseOrderReceivedEvent;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public record PurchaseOrder(Seller.SellerId sellerId, List<OrderLine> orderLines, String poNumber, OrderStatus status) {
+public record PurchaseOrder(Seller.SellerId sellerId, List<OrderLine> orderLines, PONumber poNumber, OrderStatus status) {
 
     public static PurchaseOrder fromEvent(PurchaseOrderReceivedEvent receivedEvent) {
         return new PurchaseOrder(
@@ -18,7 +18,7 @@ public record PurchaseOrder(Seller.SellerId sellerId, List<OrderLine> orderLines
                                 UOM.fromCode(ol.getUom())
                         ))
                         .collect(Collectors.toList()),
-                receivedEvent.getPurchaseOrder().getPoNumber(),
+                new PONumber(receivedEvent.getPurchaseOrder().getPoNumber()),
                 PurchaseOrder.OrderStatus.OUTSTANDING
         );
     }

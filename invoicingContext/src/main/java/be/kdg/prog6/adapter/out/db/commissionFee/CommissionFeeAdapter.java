@@ -1,6 +1,7 @@
 package be.kdg.prog6.adapter.out.db.commissionFee;
 
 import be.kdg.prog6.domain.CommissionFee;
+import be.kdg.prog6.domain.PONumber;
 import be.kdg.prog6.port.out.CommissionFeeFoundPort;
 import be.kdg.prog6.port.out.SaveCommissionFeePort;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,7 @@ public class CommissionFeeAdapter implements SaveCommissionFeePort, CommissionFe
 
 
     @Override
-    public Optional<CommissionFee> findByPoNumber(String poNumber) {
-     return cfJpaEntityRepository.findByPoNumber(poNumber).map(CommissionFeeConverter::fromJpaEntity);
+    public Optional<CommissionFee> findByPoNumber(PONumber poNumber) {
+     return cfJpaEntityRepository.findByPoNumber(poNumber.number()).map(CommissionFeeConverter::fromJpaEntity);
     }
 }

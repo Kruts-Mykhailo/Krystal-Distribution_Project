@@ -1,13 +1,10 @@
 package be.kdg.prog6.domain;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 
 public class ShipmentOrder {
-    private String poReferenceNumber;
+    private PONumber poReferenceNumber;
     private String customerEnterpriseNumber;
     private String vesselNumber;
     private LocalDate arrivalDate;
@@ -17,7 +14,7 @@ public class ShipmentOrder {
     private Boolean isMatchedWithPO;
     private ShipmentStatus shipmentStatus;
 
-    public ShipmentOrder(String poReferenceNumber, String customerEnterpriseNumber, String vesselNumber, LocalDate arrivalDate, LocalDate departureDate, IO inspectionOperation, BO bunkeringOperation, Boolean isMatchedWithPO, ShipmentStatus shipmentStatus) {
+    public ShipmentOrder(PONumber poReferenceNumber, String customerEnterpriseNumber, String vesselNumber, LocalDate arrivalDate, LocalDate departureDate, IO inspectionOperation, BO bunkeringOperation, Boolean isMatchedWithPO, ShipmentStatus shipmentStatus) {
         this.poReferenceNumber = poReferenceNumber;
         this.customerEnterpriseNumber = customerEnterpriseNumber;
         this.vesselNumber = vesselNumber;
@@ -87,11 +84,11 @@ public class ShipmentOrder {
         this.bunkeringOperation = bunkeringOperation;
     }
 
-    public String getPoReferenceNumber() {
+    public PONumber getPoReferenceNumber() {
         return poReferenceNumber;
     }
 
-    public void setPoReferenceNumber(String poReferenceNumber) {
+    public void setPoReferenceNumber(PONumber poReferenceNumber) {
         this.poReferenceNumber = poReferenceNumber;
     }
 

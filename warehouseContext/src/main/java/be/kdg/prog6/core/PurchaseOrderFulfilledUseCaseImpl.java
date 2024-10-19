@@ -31,8 +31,8 @@ public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilled
     }
 
     @Override
-    public void deductMaterial(ShippingOrder shippingOrder) {
-        PurchaseOrder purchaseOrder = purchaseOrderFoundPort.matchByPurchaseOrderNumber(shippingOrder.poNumber());
+    public void deductMaterial(PONumber poNumber) {
+        PurchaseOrder purchaseOrder = purchaseOrderFoundPort.matchByPurchaseOrderNumber(poNumber.number());
 
         if (purchaseOrder.status() != PurchaseOrder.OrderStatus.MATCHED) {
             List<PayloadCommand> payloadCommands = purchaseOrder.orderLines()
@@ -63,7 +63,7 @@ public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilled
             commissionInfoPort.sendInfoForCommission(new POFulfilledEvent(
                     purchaseOrder.orderLines(),
                     purchaseOrder.sellerId().id(),
-                    purchaseOrder.poNumber()
+                    purchaseOrder.poNumber().number()
             ));
         }
 
