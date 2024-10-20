@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -14,4 +15,9 @@ public interface ScheduleJpaRepository extends JpaRepository<ScheduleJpaEntity, 
     "left join fetch s.appointmentJpaEntities " +
     "where s.scheduleDate = :scheduleDate")
     Optional<ScheduleJpaEntity> findByScheduleDate(LocalDate scheduleDate);
+
+    @Query("select s from ScheduleJpaEntity s " +
+            "left join fetch s.appointmentJpaEntities " +
+            "where s.scheduleDate >= :date")
+    List<ScheduleJpaEntity> findAllAfterDateFetched(LocalDate date);
 }

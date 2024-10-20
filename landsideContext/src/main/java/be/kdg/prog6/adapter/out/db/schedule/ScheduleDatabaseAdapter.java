@@ -2,6 +2,7 @@ package be.kdg.prog6.adapter.out.db.schedule;
 
 import be.kdg.prog6.adapter.out.db.appointment.AppointmentConverter;
 import be.kdg.prog6.domain.*;
+import be.kdg.prog6.port.out.ScheduleFoundPort;
 import be.kdg.prog6.port.out.ScheduleUpdatedPort;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
-public class ScheduleDatabaseAdapter implements ScheduleUpdatedPort {
+public class ScheduleDatabaseAdapter implements ScheduleUpdatedPort, ScheduleFoundPort {
 
     private final ScheduleJpaRepository scheduleJpaRepository;
 
@@ -36,4 +37,11 @@ public class ScheduleDatabaseAdapter implements ScheduleUpdatedPort {
     }
 
 
+    @Override
+    public List<DaySchedule> findAllAfterDate(LocalDate date) {
+        return scheduleJpaRepository.findAllAfterDateFetched(date)
+                .stream()
+                .map(ScheduleConverter::fromJpaFetched)
+                .toList();
+    }
 }
