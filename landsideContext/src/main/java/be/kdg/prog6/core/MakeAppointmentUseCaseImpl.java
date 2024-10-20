@@ -6,7 +6,7 @@ import be.kdg.prog6.domain.*;
 import be.kdg.prog6.port.in.CreateAppointmentCommand;
 import be.kdg.prog6.port.in.MakeAppointmentUseCase;
 import be.kdg.prog6.port.out.AppointmentCreatedPort;
-import be.kdg.prog6.port.out.ScheduleDetailsPort;
+import be.kdg.prog6.port.out.ScheduleUpdatedPort;
 import be.kdg.prog6.port.out.WarehouseProjectionFoundPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,13 +18,13 @@ import java.util.logging.Logger;
 public class MakeAppointmentUseCaseImpl implements MakeAppointmentUseCase {
 
     private final AppointmentCreatedPort appointmentCreatedPort;
-    private final ScheduleDetailsPort scheduleDetailsPort;
+    private final ScheduleUpdatedPort scheduleUpdatedPort;
     private final WarehouseProjectionFoundPort warehouseProjectionFoundPort;
     private final Logger logger = Logger.getLogger(MakeAppointmentUseCaseImpl.class.getName());
 
-    public MakeAppointmentUseCaseImpl(AppointmentCreatedPort appointmentCreatedPort, ScheduleDetailsPort scheduleDetailsPort, WarehouseProjectionFoundPort warehouseProjectionFoundPort) {
+    public MakeAppointmentUseCaseImpl(AppointmentCreatedPort appointmentCreatedPort, ScheduleUpdatedPort scheduleUpdatedPort, WarehouseProjectionFoundPort warehouseProjectionFoundPort) {
         this.appointmentCreatedPort = appointmentCreatedPort;
-        this.scheduleDetailsPort = scheduleDetailsPort;
+        this.scheduleUpdatedPort = scheduleUpdatedPort;
         this.warehouseProjectionFoundPort = warehouseProjectionFoundPort;
     }
 
@@ -41,7 +41,7 @@ public class MakeAppointmentUseCaseImpl implements MakeAppointmentUseCase {
             throw new WarehouseHasFullCapacityException(String.format("Warehouse %d has full capacity", warehouseInfo.warehouseNumber()));
         }
 
-        DaySchedule schedule = scheduleDetailsPort.createOrLoadScheduleByDate(createAppointmentCommand
+        DaySchedule schedule = scheduleUpdatedPort.createOrLoadScheduleByDate(createAppointmentCommand
                 .scheduleDateTime()
                 .toLocalDate());
 

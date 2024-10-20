@@ -1,10 +1,8 @@
 package be.kdg.prog6.adapter.out.db.schedule;
 
 import be.kdg.prog6.adapter.out.db.appointment.AppointmentConverter;
-import be.kdg.prog6.adapter.out.db.appointment.AppointmentJpaEntity;
-import be.kdg.prog6.adapter.out.db.appointment.AppointmentJpaRepository;
 import be.kdg.prog6.domain.*;
-import be.kdg.prog6.port.out.ScheduleDetailsPort;
+import be.kdg.prog6.port.out.ScheduleUpdatedPort;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -13,7 +11,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
-public class ScheduleDatabaseAdapter implements ScheduleDetailsPort {
+public class ScheduleDatabaseAdapter implements ScheduleUpdatedPort {
 
     private final ScheduleJpaRepository scheduleJpaRepository;
 

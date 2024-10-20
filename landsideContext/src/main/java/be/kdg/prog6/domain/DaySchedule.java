@@ -58,4 +58,15 @@ public class DaySchedule {
 
     }
 
+    public int getTruckAmountPerWindow() {
+        return truckAmountPerWindow;
+    }
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public LocalDate getScheduleDate() {
+        return scheduleDate;
+    }
 }

@@ -4,7 +4,7 @@ import be.kdg.prog6.domain.DaySchedule;
 
 import java.time.LocalDate;
 
-public interface ScheduleDetailsPort {
+public interface ScheduleUpdatedPort {
     DaySchedule createOrLoadScheduleByDate(LocalDate date);
 
 }
