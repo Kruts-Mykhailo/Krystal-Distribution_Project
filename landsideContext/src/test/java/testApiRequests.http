@@ -5,7 +5,7 @@ Content-Type: application/json
 {
   "licensePlate": "B-123JD-F",
   "materialType": "GYPSUM",
-  "scheduleDateTime": "2024-10-13T15:00:00"
+  "scheduleDateTime": "2024-10-21T23:00:00"
 }
 
 ### Get truck status
@@ -13,6 +13,10 @@ GET http://localhost:8091/lsc/trucks/B-123JD-F
 
 ### Get all trucks on site
 GET http://localhost:8091/lsc/trucks
+
+### Get all schedules
+GET localhost:8091/lsc/schedules
+
 
 ### POST Test license plate on gate recognition
 POST http://localhost:8091/lsc/gate/B-123JD-F/arrive

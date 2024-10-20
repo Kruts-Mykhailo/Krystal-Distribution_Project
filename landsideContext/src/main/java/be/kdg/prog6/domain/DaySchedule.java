@@ -15,7 +15,7 @@ public class DaySchedule {
 
     private final int truckAmountPerWindow;
 
-    private final int TRUCK_AMOUNT_DEFAULT = 40;
+    private final int TRUCK_AMOUNT_DEFAULT = 1;
 
 
     public DaySchedule(UUID id, LocalDate scheduleDate, List<Appointment> appointments) {

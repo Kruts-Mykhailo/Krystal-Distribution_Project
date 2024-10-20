@@ -42,6 +42,6 @@ public class ScheduleDatabaseAdapter implements ScheduleUpdatedPort, ScheduleFou
         return scheduleJpaRepository.findAllAfterDateFetched(date)
                 .stream()
                 .map(ScheduleConverter::fromJpaFetched)
-                .toList();
+                .collect(Collectors.toList());
     }
 }

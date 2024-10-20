@@ -18,6 +18,18 @@ public class ScheduleDTO {
         this.timeWindows = timeWindows;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public Integer getWindowAppointmentLimit() {
+        return windowAppointmentLimit;
+    }
+
+    public List<TimeWindowDTO> getTimeWindows() {
+        return timeWindows;
+    }
+
     public static List<ScheduleDTO> fromDomain(List<DaySchedule> daySchedules) {
         return daySchedules.stream()
                 .map(s -> new ScheduleDTO(
@@ -30,7 +42,7 @@ public class ScheduleDTO {
                                 .entrySet()
                                 .stream()
                                 .map(entry -> new TimeWindowDTO(entry.getKey(), entry.getValue()))
-                                .toList()))
-                .toList();
+                                .collect(Collectors.toList())))
+                .collect(Collectors.toList());
     }
 }

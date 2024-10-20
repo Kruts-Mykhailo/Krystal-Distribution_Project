@@ -6,7 +6,7 @@ public class PurchaseOrderConverter {
     public static PurchaseOrderDTO convert(PurchaseOrder purchaseOrder) {
         return new PurchaseOrderDTO(
                 purchaseOrder.status(),
-                purchaseOrder.poNumber(),
+                purchaseOrder.poNumber().number(),
                 purchaseOrder.sellerId()
         );
     }
