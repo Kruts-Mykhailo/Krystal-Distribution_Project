@@ -4,5 +4,5 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public interface AdjustWarehouseInventoryUseCase {
-    void savePayloadRecord(UUID warehouseId, LocalDateTime sendTime, Double netWeight);
+    void savePayloadRecord(AdjustInventoryCommand command);
 }

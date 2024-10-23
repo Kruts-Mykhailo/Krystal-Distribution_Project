@@ -6,18 +6,14 @@ import java.util.UUID;
 public final class WarehouseInfo {
     private final MaterialType materialType;
     private final Seller.SellerId sellerId;
-    private final UUID warehouseId;
-    private final int warehouseNumber;
+    private final WarehouseNumber warehouseNumber;
     private Double warehouseCapacity;
     private final Double maxAmount;
 
 
-    public WarehouseInfo(MaterialType materialType, Seller.SellerId sellerId, UUID warehouseId, int warehouseNumber, Double warehouseCapacity, Double maxAmount) {
-        Objects.requireNonNull(sellerId);
-        Objects.requireNonNull(warehouseId);
+    public WarehouseInfo(MaterialType materialType, Seller.SellerId sellerId, WarehouseNumber warehouseNumber, Double warehouseCapacity, Double maxAmount) {
         this.materialType = materialType;
         this.sellerId = sellerId;
-        this.warehouseId = warehouseId;
         this.warehouseNumber = warehouseNumber;
         this.warehouseCapacity = warehouseCapacity;
         this.maxAmount = maxAmount;
@@ -45,11 +41,7 @@ public final class WarehouseInfo {
         return sellerId;
     }
 
-    public UUID warehouseId() {
-        return warehouseId;
-    }
-
-    public int warehouseNumber() {
+    public WarehouseNumber warehouseNumber() {
         return warehouseNumber;
     }
 
@@ -69,7 +61,6 @@ public final class WarehouseInfo {
         var that = (WarehouseInfo) obj;
         return Objects.equals(this.materialType, that.materialType) &&
                 Objects.equals(this.sellerId, that.sellerId) &&
-                Objects.equals(this.warehouseId, that.warehouseId) &&
                 this.warehouseNumber == that.warehouseNumber &&
                 Objects.equals(this.warehouseCapacity, that.warehouseCapacity) &&
                 Objects.equals(this.maxAmount, that.maxAmount);
@@ -77,7 +68,7 @@ public final class WarehouseInfo {
 
     @Override
     public int hashCode() {
-        return Objects.hash(materialType, sellerId, warehouseId, warehouseNumber, warehouseCapacity, maxAmount);
+        return Objects.hash(materialType, sellerId, warehouseNumber, warehouseCapacity, maxAmount);
     }
 
     @Override
@@ -85,7 +76,6 @@ public final class WarehouseInfo {
         return "WarehouseInfo[" +
                 "materialType=" + materialType + ", " +
                 "sellerId=" + sellerId + ", " +
-                "warehouseId=" + warehouseId + ", " +
                 "warehouseNumber=" + warehouseNumber + ", " +
                 "warehouseCapacity=" + warehouseCapacity + ", " +
                 "maxAmount=" + maxAmount + ']';

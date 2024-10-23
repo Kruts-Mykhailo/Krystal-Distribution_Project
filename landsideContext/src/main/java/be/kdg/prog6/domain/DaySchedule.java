@@ -49,10 +49,9 @@ public class DaySchedule {
     public Optional<Appointment> scheduleAppointment(LocalDateTime scheduleDateTime,
                                                      LicensePlate truckLicensePlate,
                                                      MaterialType materialType,
-                                                     UUID warehouseId,
-                                                     int warehouseNumber) {
+                                                     WarehouseNumber warehouseNumber) {
         if (isTimeWindowAvailable(scheduleDateTime)) {
-            return Optional.of(new Appointment(truckLicensePlate, materialType, scheduleDateTime, warehouseId, warehouseNumber, AppointmentStatus.SCHEDULED));
+            return Optional.of(new Appointment(truckLicensePlate, materialType, scheduleDateTime, warehouseNumber, AppointmentStatus.SCHEDULED));
         }
         return Optional.empty();
 

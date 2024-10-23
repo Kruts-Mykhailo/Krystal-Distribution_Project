@@ -18,9 +18,7 @@ import java.util.UUID;
 public class WarehouseJpaEntity {
 
     @Id
-    private UUID warehouseId;
-
-    private int warehouseNumber;
+    private String warehouseNumber;
 
     private String materialType;
 
@@ -34,7 +32,7 @@ public class WarehouseJpaEntity {
 
     }
 
-    public WarehouseJpaEntity(UUID warehouseId) {
-        this.warehouseId = warehouseId;
+    public WarehouseJpaEntity(String warehouseNumber) {
+        this.warehouseNumber = warehouseNumber;
     }
 }

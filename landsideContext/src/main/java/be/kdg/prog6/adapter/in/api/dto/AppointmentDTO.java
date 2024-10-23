@@ -1,16 +1,18 @@
 package be.kdg.prog6.adapter.in.api.dto;
 
+import be.kdg.prog6.domain.WarehouseNumber;
+
 import java.time.LocalDateTime;
 
 public class AppointmentDTO {
 
     private String licensePlateNumber;
     private String materialType;
-    private int warehouseNumber;
+    private WarehouseNumber warehouseNumber;
     private LocalDateTime windowStartTime;
     private LocalDateTime windowEndTime;
 
-    public AppointmentDTO(String licensePlateNumber, String materialType, int warehouseNumber, LocalDateTime windowStartTime) {
+    public AppointmentDTO(String licensePlateNumber, String materialType, WarehouseNumber warehouseNumber, LocalDateTime windowStartTime) {
         this.licensePlateNumber = licensePlateNumber;
         this.materialType = materialType;
         this.warehouseNumber = warehouseNumber;
@@ -34,11 +36,11 @@ public class AppointmentDTO {
         this.materialType = materialType;
     }
 
-    public int getWarehouseNumber() {
+    public WarehouseNumber getWarehouseNumber() {
         return warehouseNumber;
     }
 
-    public void setWarehouseNumber(int warehouseNumber) {
+    public void setWarehouseNumber(WarehouseNumber warehouseNumber) {
         this.warehouseNumber = warehouseNumber;
     }
 

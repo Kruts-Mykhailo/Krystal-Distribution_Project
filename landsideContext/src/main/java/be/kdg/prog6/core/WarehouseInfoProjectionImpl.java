@@ -2,6 +2,7 @@ package be.kdg.prog6.core;
 
 import be.kdg.prog6.domain.OperationType;
 import be.kdg.prog6.domain.WarehouseInfo;
+import be.kdg.prog6.domain.WarehouseNumber;
 import be.kdg.prog6.port.in.WarehouseInfoProjector;
 import be.kdg.prog6.port.out.WarehouseProjectionFoundPort;
 import be.kdg.prog6.port.out.WarehouseProjectionUpdatedPort;
@@ -21,8 +22,8 @@ public class WarehouseInfoProjectionImpl implements WarehouseInfoProjector {
     }
 
     @Override
-    public void project(UUID warehouseId, Double value, OperationType operationType) {
-        WarehouseInfo warehouseInfo = warehouseProjectionFoundPort.getWarehouseById(warehouseId);
+    public void project(WarehouseNumber warehouseNumber, Double value, OperationType operationType) {
+        WarehouseInfo warehouseInfo = warehouseProjectionFoundPort.getWarehouseByNumber(warehouseNumber);
         warehouseInfo.updateCapacity(value, operationType);
         warehouseProjectionUpdatedPort.update(warehouseInfo);
     }

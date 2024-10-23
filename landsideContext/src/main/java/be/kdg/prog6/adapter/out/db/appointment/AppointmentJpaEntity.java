@@ -3,6 +3,7 @@ package be.kdg.prog6.adapter.out.db.appointment;
 import be.kdg.prog6.adapter.out.db.appointmentActivity.AppointmentActivityJpaEntity;
 import be.kdg.prog6.adapter.out.db.schedule.ScheduleJpaEntity;
 import be.kdg.prog6.adapter.out.db.truckweight.TruckWeightJpaEntity;
+import be.kdg.prog6.domain.WarehouseNumber;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,7 +37,7 @@ public class AppointmentJpaEntity {
     private LocalDateTime appointmentEndDateTime;
 
     @Column(name = "warehouse_number", nullable = false)
-    private int warehouseNumber;
+    private WarehouseNumber warehouseNumber;
 
     @Column(nullable = false)
     private String status;
@@ -50,7 +51,7 @@ public class AppointmentJpaEntity {
     @OneToMany(mappedBy = "appointment")
     private List<TruckWeightJpaEntity> recordedTruckWeight;
 
-    public AppointmentJpaEntity(UUID appointmentId, String licensePlate, String materialType, UUID warehouseId, LocalDateTime appointmentDateTime, int warehouseNumber, String status) {
+    public AppointmentJpaEntity(UUID appointmentId, String licensePlate, String materialType, UUID warehouseId, LocalDateTime appointmentDateTime, WarehouseNumber warehouseNumber, String status) {
         this.appointmentId = appointmentId;
         this.licensePlate = licensePlate;
         this.materialType = materialType;

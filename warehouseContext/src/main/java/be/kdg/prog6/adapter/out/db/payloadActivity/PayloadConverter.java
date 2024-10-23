@@ -1,5 +1,6 @@
 package be.kdg.prog6.adapter.out.db.payloadActivity;
 
+import be.kdg.prog6.adapter.out.db.warehouse.WarehouseJpaEntity;
 import be.kdg.prog6.domain.ActivityType;
 import be.kdg.prog6.domain.PayloadActivity;
 import be.kdg.prog6.domain.PayloadDeliveryEvent;
@@ -16,6 +17,14 @@ public class PayloadConverter {
             return new PayloadDeliveryEvent(payloadActivityJpaEntity.getAmount(), payloadActivityJpaEntity.getRecordTime());
         }
         return new PayloadPurchaseEvent(payloadActivityJpaEntity.getAmount(), payloadActivityJpaEntity.getRecordTime());
+    }
+    public static PayloadActivityJpaEntity toJpaEntity(PayloadActivity payloadActivity, WarehouseJpaEntity warehouse) {
+        return new PayloadActivityJpaEntity(
+                payloadActivity.getActivityType().name(),
+                payloadActivity.getAmount(),
+                payloadActivity.getEventDateTime(),
+                warehouse
+        );
     }
 
     public static List<PayloadActivity> toPayloadActivities(List<PayloadActivityJpaEntity> payloadActivityJpaEntities) {

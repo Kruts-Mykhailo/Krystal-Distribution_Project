@@ -14,15 +14,15 @@ import java.util.stream.Collectors;
 @Service
 public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilledUseCase {
 
-    private final PayloadRecordSavedPort payloadRecordSavedPort;
+    private final PayloadActivitySavedPort payloadActivitySavedPort;
     private final PurchaseOrderFoundPort purchaseOrderFoundPort;
     private final PurchaseOrderUpdatedPort purchaseOrderUpdatedPort;
     private final WarehouseFoundPort warehouseFoundPort;
     private final PurchaseOrderFulfilledPort commissionInfoPort;
     private final ProjectWarehouseInfoPort projectWarehouseInfoPort;
 
-    public PurchaseOrderFulfilledUseCaseImpl(PayloadRecordSavedPort payloadRecordSavedPort, PurchaseOrderFoundPort purchaseOrderFoundPort, PurchaseOrderUpdatedPort purchaseOrderUpdatedPort, WarehouseFoundPort warehouseFoundPort, PurchaseOrderFulfilledPort commissionInfoPort, ProjectWarehouseInfoPort projectWarehouseInfoPort) {
-        this.payloadRecordSavedPort = payloadRecordSavedPort;
+    public PurchaseOrderFulfilledUseCaseImpl(PayloadActivitySavedPort payloadActivitySavedPort, PurchaseOrderFoundPort purchaseOrderFoundPort, PurchaseOrderUpdatedPort purchaseOrderUpdatedPort, WarehouseFoundPort warehouseFoundPort, PurchaseOrderFulfilledPort commissionInfoPort, ProjectWarehouseInfoPort projectWarehouseInfoPort) {
+        this.payloadActivitySavedPort = payloadActivitySavedPort;
         this.purchaseOrderFoundPort = purchaseOrderFoundPort;
         this.purchaseOrderUpdatedPort = purchaseOrderUpdatedPort;
         this.warehouseFoundPort = warehouseFoundPort;
@@ -35,33 +35,25 @@ public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilled
         PurchaseOrder purchaseOrder = purchaseOrderFoundPort.matchByPurchaseOrderNumber(poNumber.number());
 
         if (purchaseOrder.isNotFilled()) {
-            List<PayloadCommand> payloadCommands = purchaseOrder.orderLines()
-                    .stream()
-                    .map(orderLine -> {
-                        Double amount = orderLine.quantity() * orderLine.uom().getMeasureCoefficient();
+            for (OrderLine orderLine : purchaseOrder.orderLines()) {
+                Double amount = orderLine.quantity() * orderLine.uom().getMeasureCoefficient();
 
-                        UUID warehouseId = warehouseFoundPort.getWarehouseIdByOwnerIdAndMaterialType(
-                                purchaseOrder.sellerId(),
-                                orderLine.materialType());
-
-                        return new PayloadCommand(
-                                ActivityType.PURCHASE,
-                                amount,
-                                warehouseId,
-                                LocalDateTime.now()
-                        );})
-                    .collect(Collectors.toList());
-
-
-            payloadRecordSavedPort.saveMultiplePayloadRecords(payloadCommands);
-
+                Warehouse warehouse = warehouseFoundPort.getWarehouseByOwnerIdAndMaterialType(
+                        purchaseOrder.sellerId(),
+                        orderLine.materialType()
+                );
+                PayloadPurchaseEvent event = new PayloadPurchaseEvent(
+                        amount,
+                        LocalDateTime.now()
+                );
+                payloadActivitySavedPort.savePayloadActivity(event, warehouse.getWarehouseNumber());
+                projectWarehouseInfoPort.projectWarehouseCapacity(
+                        warehouse.getWarehouseNumber(),
+                        amount,
+                        ActivityType.PURCHASE
+                );
+            }
             purchaseOrderUpdatedPort.update(purchaseOrder, PurchaseOrder.OrderStatus.FILLED);
-
-            payloadCommands.forEach(c -> projectWarehouseInfoPort.projectWarehouseCapacity(
-                    c.warehouseId(),
-                    c.amount(),
-                    ActivityType.PURCHASE
-            ));
             commissionInfoPort.sendInfoForCommission(new CalculateCommissionForPurchaseOrderEvent(
                     purchaseOrder.orderLines(),
                     purchaseOrder.sellerId().id(),

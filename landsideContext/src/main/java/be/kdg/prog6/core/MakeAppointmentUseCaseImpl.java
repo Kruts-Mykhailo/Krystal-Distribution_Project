@@ -38,7 +38,8 @@ public class MakeAppointmentUseCaseImpl implements MakeAppointmentUseCase {
 
         if (warehouseInfo.isFullCapacity()) {
             logger.warning("Fail schedule appointment. Warehouse is full");
-            throw new WarehouseHasFullCapacityException(String.format("Warehouse %d has full capacity", warehouseInfo.warehouseNumber()));
+            throw new WarehouseHasFullCapacityException(
+                    String.format("Warehouse %s has full capacity", warehouseInfo.warehouseNumber().number()));
         }
 
         DaySchedule schedule = scheduleUpdatedPort.createOrLoadScheduleByDate(createAppointmentCommand
@@ -49,7 +50,6 @@ public class MakeAppointmentUseCaseImpl implements MakeAppointmentUseCase {
                 createAppointmentCommand.scheduleDateTime(),
                 createAppointmentCommand.licensePlate(),
                 createAppointmentCommand.materialType(),
-                warehouseInfo.warehouseId(),
                 warehouseInfo.warehouseNumber()
         );
         if (appointment.isEmpty()) {

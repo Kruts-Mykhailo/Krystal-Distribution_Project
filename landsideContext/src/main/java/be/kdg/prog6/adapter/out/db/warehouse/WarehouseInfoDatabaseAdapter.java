@@ -4,6 +4,7 @@ import be.kdg.prog6.adapter.exceptions.WarehouseNotFoundException;
 import be.kdg.prog6.domain.MaterialType;
 import be.kdg.prog6.domain.Seller;
 import be.kdg.prog6.domain.WarehouseInfo;
+import be.kdg.prog6.domain.WarehouseNumber;
 import be.kdg.prog6.port.out.WarehouseProjectionFoundPort;
 import be.kdg.prog6.port.out.WarehouseProjectionUpdatedPort;
 import org.springframework.stereotype.Component;
@@ -28,11 +29,16 @@ public class WarehouseInfoDatabaseAdapter implements WarehouseProjectionFoundPor
                                 .formatted(sellerId.id(), materialType.name()))
                 ));
     }
+    
 
     @Override
-    public WarehouseInfo getWarehouseById(UUID warehouseId) {
-        return WarehouseInfoConverter.convert(warehouseInfoJpaRepository.findById(warehouseId)
-                .orElseThrow(() -> new WarehouseNotFoundException("Warehouse %s not found".formatted(warehouseId))));
+    public WarehouseInfo getWarehouseByNumber(WarehouseNumber warehouseNumber) {
+        return warehouseInfoJpaRepository
+                .findByWarehouseNumber(warehouseNumber.number())
+                .map(WarehouseInfoConverter::convert)
+                .orElseThrow(
+                        () -> new WarehouseNotFoundException("Warehouse %s not found".formatted(warehouseNumber))
+                );
     }
 
 

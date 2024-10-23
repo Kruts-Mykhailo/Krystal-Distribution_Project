@@ -3,16 +3,26 @@ package be.kdg.prog6.domain;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public record PayloadPurchaseEvent(Double amount, LocalDateTime eventDateTime) implements PayloadActivity {
-    public PayloadPurchaseEvent {
-        Objects.requireNonNull(amount);
-        if (amount < 0) {
-            throw new IllegalArgumentException("Value should not be less than 0");
-        }
+public final class PayloadPurchaseEvent extends PayloadActivity {
+
+    public PayloadPurchaseEvent(Double amount, LocalDateTime eventDateTime) {
+        super(eventDateTime, ActivityType.PURCHASE, amount);
+
     }
 
     @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+
+    @Override
     public Double payload() {
-        return -Math.abs(amount);
+        return -Math.abs(this.getAmount());
     }
 }

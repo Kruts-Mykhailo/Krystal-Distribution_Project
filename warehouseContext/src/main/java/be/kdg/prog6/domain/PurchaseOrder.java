@@ -25,6 +25,7 @@ public record PurchaseOrder(Seller.SellerId sellerId, List<OrderLine> orderLines
     public boolean isNotFilled() {
         return !status.equals(OrderStatus.FILLED);
     }
+
     public boolean isOutstanding() {
         return status.equals(OrderStatus.OUTSTANDING);
     }

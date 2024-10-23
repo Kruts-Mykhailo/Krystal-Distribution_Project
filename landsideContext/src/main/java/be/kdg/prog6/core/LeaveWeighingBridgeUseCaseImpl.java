@@ -49,10 +49,9 @@ public class LeaveWeighingBridgeUseCaseImpl implements LeaveWeighingBridgeUseCas
 
         truckWeightSavedPort.saveTruckWeight(truckWeightRecord, appointment.getId());
         appointmentUpdatedPort.updateAppointment(appointment, AppointmentStatus.LEFT_SITE);
-
         createPdtPort.sendPdt(new PayloadDeliveredEvent(
-                appointment.getWarehouseId(),
-                LocalDateTime.now(),
+                appointment.getWarehouseNumber().number(),
+                appointment.getDumpPayloadDateTime(),
                 netWeight,
                 appointment.getMaterialType().name()));
 

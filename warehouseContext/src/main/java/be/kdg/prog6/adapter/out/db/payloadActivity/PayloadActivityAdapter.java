@@ -1,21 +1,19 @@
 package be.kdg.prog6.adapter.out.db.payloadActivity;
 
+import be.kdg.prog6.adapter.exceptions.PayloadActivityNotFoundException;
 import be.kdg.prog6.adapter.out.db.warehouse.WarehouseJpaEntity;
-import be.kdg.prog6.adapter.out.db.warehouse.WarehouseJpaRepository;
-import be.kdg.prog6.domain.OrderLine;
 import be.kdg.prog6.domain.PayloadActivity;
-import be.kdg.prog6.domain.PurchaseOrder;
-import be.kdg.prog6.port.out.PayloadCommand;
-import be.kdg.prog6.port.out.PayloadRecordSavedPort;
+import be.kdg.prog6.domain.WarehouseNumber;
+import be.kdg.prog6.port.out.PayloadActivityFoundPort;
+import be.kdg.prog6.port.out.PayloadActivityUpdatedPort;
+import be.kdg.prog6.port.out.PayloadActivitySavedPort;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
-public class PayloadActivityAdapter implements PayloadRecordSavedPort {
+public class PayloadActivityAdapter implements PayloadActivitySavedPort, PayloadActivityUpdatedPort, PayloadActivityFoundPort {
 
     private final PayloadActivityJpaRepository payloadActivityJpaRepository;
 
@@ -24,37 +22,30 @@ public class PayloadActivityAdapter implements PayloadRecordSavedPort {
     }
 
     @Override
-    public void saveOrUpdatePayloadRecord(PayloadCommand payloadCommand) {
-        Optional<PayloadActivityJpaEntity> optionalActivity = payloadActivityJpaRepository
+    public void savePayloadActivity(PayloadActivity payloadActivity, WarehouseNumber warehouseNumber) {
+        payloadActivityJpaRepository.save(PayloadConverter.toJpaEntity(
+                payloadActivity,
+                new WarehouseJpaEntity(warehouseNumber.number())));
+    }
+
+
+    @Override
+    public void updateZeroWeightActivity(PayloadActivity payloadActivity, WarehouseNumber warehouseNumber) {
+        PayloadActivityJpaEntity payloadActivityJpaEntity = payloadActivityJpaRepository
                 .findFirstByWarehouseAndAmountOrderByRecordTimeAsc(
-                        new WarehouseJpaEntity(payloadCommand.warehouseId()),
+                        new WarehouseJpaEntity(warehouseNumber.number()),
                         0.0
-                );
-        if (optionalActivity.isEmpty()){
-            payloadActivityJpaRepository.save(fromCommand(payloadCommand));
-        } else {
-            PayloadActivityJpaEntity payloadActivityJpaEntity = optionalActivity.get();
-            payloadActivityJpaEntity.setAmount(payloadCommand.amount());
-            payloadActivityJpaRepository.save(payloadActivityJpaEntity);
-        }
+                ).orElseThrow(() -> new PayloadActivityNotFoundException("Payload activity not found"));
+        payloadActivityJpaEntity.setAmount(payloadActivity.getAmount());
+        payloadActivityJpaRepository.save(payloadActivityJpaEntity);
     }
 
     @Override
-    public void saveMultiplePayloadRecords(List<PayloadCommand> payloadCommands) {
-        payloadActivityJpaRepository.saveAll(payloadCommands
-                .stream()
-                .map(this::fromCommand)
-                .collect(Collectors.toList()));
+    public Optional<PayloadActivity> getFirstZeroWeightActivity(WarehouseNumber number, LocalDateTime arrivalDateTime) {
+        return payloadActivityJpaRepository.findFirstByWarehouseAndAmountAndRecordTimeOrderByRecordTimeAsc(
+                    new WarehouseJpaEntity(number.number()),
+                    0.0,
+                    arrivalDateTime
+                ).map(PayloadConverter::toPayloadActivity);
     }
-
-    private PayloadActivityJpaEntity fromCommand(PayloadCommand payloadCommand) {
-        return new PayloadActivityJpaEntity(
-                payloadCommand.activityType().name(),
-                payloadCommand.amount(),
-                payloadCommand.timestamp(),
-                new WarehouseJpaEntity(payloadCommand.warehouseId())
-        );
-    }
-
-
 }

@@ -1,5 +1,6 @@
 package be.kdg.prog6.adapter.out.db.warehouse;
 
+import be.kdg.prog6.domain.WarehouseNumber;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,11 +18,8 @@ public class WarehouseInfoJpaEntity {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "warehouse_id", columnDefinition = "BINARY(16)")
-    private UUID warehouseId;
-
     @Column(name = "warehouse_number")
-    private int warehouseNumber;
+    private String warehouseNumber;
 
     @Column(name = "seller_id", columnDefinition = "BINARY(16)")
     private UUID sellerId;
@@ -38,12 +36,11 @@ public class WarehouseInfoJpaEntity {
     public WarehouseInfoJpaEntity() {
     }
 
-    public WarehouseInfoJpaEntity(Double maxCapacity, Double initialCapacity, String materialType, UUID sellerId, int warehouseNumber, UUID warehouseId) {
+    public WarehouseInfoJpaEntity(Double maxCapacity, Double initialCapacity, String materialType, UUID sellerId, String warehouseNumber) {
         this.maxCapacity = maxCapacity;
         this.initialCapacity = initialCapacity;
         this.materialType = materialType;
         this.sellerId = sellerId;
         this.warehouseNumber = warehouseNumber;
-        this.warehouseId = warehouseId;
     }
 }

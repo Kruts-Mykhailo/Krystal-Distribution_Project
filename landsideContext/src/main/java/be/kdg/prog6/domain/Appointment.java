@@ -11,28 +11,25 @@ public class Appointment {
     private LicensePlate truckLicensePlate;
     private MaterialType materialType;
     private LocalDateTime appointmentDateTime;
-    private UUID warehouseId;
-    private int warehouseNumber;
+    private WarehouseNumber warehouseNumber;
     private AppointmentStatus appointmentStatus;
     private List<AppointmentActivity> appointmentActivities;
 
-    public Appointment(LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime appointmentDateTime, UUID warehouseId, int warehouseNumber, AppointmentStatus appointmentStatus) {
+    public Appointment(LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime appointmentDateTime, WarehouseNumber warehouseNumber, AppointmentStatus appointmentStatus) {
         this.id = UUID.randomUUID();
         this.truckLicensePlate = truckLicensePlate;
         this.materialType = materialType;
         this.appointmentDateTime = appointmentDateTime;
-        this.warehouseId = warehouseId;
         this.warehouseNumber = warehouseNumber;
         this.appointmentStatus = appointmentStatus;
         this.appointmentActivities = new ArrayList<>();
     }
 
-    public Appointment(UUID id, LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime appointmentDateTime, UUID warehouseId, int warehouseNumber, AppointmentStatus appointmentStatus, List<AppointmentActivity> appointmentActivities) {
+    public Appointment(UUID id, LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime appointmentDateTime, WarehouseNumber warehouseNumber, AppointmentStatus appointmentStatus, List<AppointmentActivity> appointmentActivities) {
         this.id = id;
         this.truckLicensePlate = truckLicensePlate;
         this.materialType = materialType;
         this.appointmentDateTime = appointmentDateTime;
-        this.warehouseId = warehouseId;
         this.warehouseNumber = warehouseNumber;
         this.appointmentStatus = appointmentStatus;
         this.appointmentActivities = appointmentActivities == null ? new ArrayList<>() : appointmentActivities;
@@ -54,11 +51,11 @@ public class Appointment {
         this.appointmentStatus = appointmentStatus;
     }
 
-    public int getWarehouseNumber() {
+    public WarehouseNumber getWarehouseNumber() {
         return warehouseNumber;
     }
 
-    public void setWarehouseNumber(int warehouseNumber) {
+    public void setWarehouseNumber(WarehouseNumber warehouseNumber) {
         this.warehouseNumber = warehouseNumber;
     }
 
@@ -95,14 +92,6 @@ public class Appointment {
         this.appointmentActivities = appointmentActivities;
     }
 
-    public UUID getWarehouseId() {
-        return warehouseId;
-    }
-
-    public void setWarehouseId(UUID warehouseId) {
-        this.warehouseId = warehouseId;
-    }
-
 
     private AppointmentStatus getTruckArrivalStatus(LocalDateTime arrivalTime) {
         return arrivalTime.isAfter(this.appointmentDateTime) &&
@@ -118,6 +107,14 @@ public class Appointment {
                 appointmentStatus
         );
         this.appointmentActivities.add(activity);
+    }
+
+    public LocalDateTime getDumpPayloadDateTime() {
+        return appointmentActivities.stream()
+                .filter(activity -> activity.activityType() == ActivityType.DUMP_LOAD)
+                .findFirst()
+                .map(AppointmentActivity::localDateTime)
+                .orElse(null);
     }
 
     public void truckArrived(LocalDateTime truckArrivalTime) {

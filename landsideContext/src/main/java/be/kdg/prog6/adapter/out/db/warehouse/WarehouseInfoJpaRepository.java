@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface WarehouseInfoJpaRepository extends JpaRepository<WarehouseInfoJpaEntity, UUID> {
     Optional<WarehouseInfoJpaEntity> findBySellerIdAndMaterialType(UUID sellerId, String materialType);
+    Optional<WarehouseInfoJpaEntity> findByWarehouseNumber(String warehouseNumber);
 }

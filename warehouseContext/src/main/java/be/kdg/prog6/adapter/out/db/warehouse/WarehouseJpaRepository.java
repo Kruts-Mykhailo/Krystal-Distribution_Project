@@ -11,15 +11,10 @@ import java.util.UUID;
 @Repository
 public interface WarehouseJpaRepository extends JpaRepository<WarehouseJpaEntity, UUID> {
 
-    @Query("select w from WarehouseJpaEntity w " +
-    "left join fetch w.payloadActivityJpaEntities " +
-    "where w.warehouseId = :id")
-    Optional<WarehouseJpaEntity> findByWarehouseIdFetched(UUID id);
-
     Optional<WarehouseJpaEntity> findByOwnerIdAndMaterialType(UUID ownerId, String materialType);
 
     @Query("select w from WarehouseJpaEntity w " +
             "left join fetch w.payloadActivityJpaEntities " +
             "where w.warehouseNumber = :warehouseNumber")
-    Optional<WarehouseJpaEntity> findByWarehouseNumberFetched(int warehouseNumber);
+    Optional<WarehouseJpaEntity> findByWarehouseNumberFetched(String warehouseNumber);
 }
