@@ -12,8 +12,7 @@ public class AppointmentConverter {
                 new LicensePlate(a.getLicensePlate()),
                 MaterialType.valueOf(a.getMaterialType()),
                 a.getAppointmentDateTime(),
-                a.getWarehouseId(),
-                a.getWarehouseNumber(),
+                new WarehouseNumber(a.getWarehouseNumber()),
                 AppointmentStatus.valueOf(a.getStatus()),
                 a.getActivities().stream().map(ac -> new AppointmentActivity(
                         ac.getActivityId(),
@@ -30,9 +29,8 @@ public class AppointmentConverter {
                 appointment.getId(),
                 appointment.getTruckLicensePlate().licensePlate(),
                 appointment.getMaterialType().name(),
-                appointment.getWarehouseId(),
                 appointment.getAppointmentDateTime(),
-                appointment.getWarehouseNumber(),
+                appointment.getWarehouseNumber().number(),
                 appointment.getAppointmentStatus().name()
         );
     }

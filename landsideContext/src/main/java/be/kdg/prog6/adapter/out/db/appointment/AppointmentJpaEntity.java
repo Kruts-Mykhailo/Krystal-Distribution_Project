@@ -27,9 +27,6 @@ public class AppointmentJpaEntity {
     @Column(nullable = false)
     private String materialType;
 
-    @Column(nullable = false, columnDefinition = "BINARY(16)")
-    private UUID warehouseId;
-
     @Column(nullable = false)
     private LocalDateTime appointmentDateTime;
 
@@ -37,7 +34,7 @@ public class AppointmentJpaEntity {
     private LocalDateTime appointmentEndDateTime;
 
     @Column(name = "warehouse_number", nullable = false)
-    private WarehouseNumber warehouseNumber;
+    private String warehouseNumber;
 
     @Column(nullable = false)
     private String status;
@@ -51,11 +48,10 @@ public class AppointmentJpaEntity {
     @OneToMany(mappedBy = "appointment")
     private List<TruckWeightJpaEntity> recordedTruckWeight;
 
-    public AppointmentJpaEntity(UUID appointmentId, String licensePlate, String materialType, UUID warehouseId, LocalDateTime appointmentDateTime, WarehouseNumber warehouseNumber, String status) {
+    public AppointmentJpaEntity(UUID appointmentId, String licensePlate, String materialType, LocalDateTime appointmentDateTime, String warehouseNumber, String status) {
         this.appointmentId = appointmentId;
         this.licensePlate = licensePlate;
         this.materialType = materialType;
-        this.warehouseId = warehouseId;
         this.appointmentDateTime = appointmentDateTime;
         this.appointmentEndDateTime = appointmentDateTime.plusHours(1);
         this.warehouseNumber = warehouseNumber;

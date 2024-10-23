@@ -27,12 +27,12 @@ public class MQTopology {
 
     @Bean
     Queue fulfillOrderStatusQueue() {
-        return new Queue(FUlFILL_ORDER_STATUS_QUEUE, true);
+        return new Queue(FUlFILL_ORDER_STATUS_QUEUE);
     }
 
     @Bean
     Queue matchOrderStatusQueue() {
-        return new Queue(MATCH_ORDER_STATUS_QUEUE, true);
+        return new Queue(MATCH_ORDER_STATUS_QUEUE);
     }
 
 

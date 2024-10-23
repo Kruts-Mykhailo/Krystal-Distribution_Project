@@ -1,16 +1,17 @@
 package be.kdg.prog6.adapter.in.api.dto;
 
 import be.kdg.prog6.domain.PDT;
+import be.kdg.prog6.domain.WarehouseNumber;
 
 import java.time.LocalDateTime;
 
 public class PdtDTO {
-    private int warehouseNumber;
+    private WarehouseNumber warehouseNumber;
     private LocalDateTime deliveryDateTime;
     private String materialType;
     private int dockNumber;
 
-    public PdtDTO(int warehouseNumber, LocalDateTime deliveryDateTime, String materialType, int dockNumber) {
+    public PdtDTO(WarehouseNumber warehouseNumber, LocalDateTime deliveryDateTime, String materialType, int dockNumber) {
         this.warehouseNumber = warehouseNumber;
         this.deliveryDateTime = deliveryDateTime;
         this.materialType = materialType;
@@ -26,11 +27,11 @@ public class PdtDTO {
         );
     }
 
-    public int getWarehouseNumber() {
+    public WarehouseNumber getWarehouseNumber() {
         return warehouseNumber;
     }
 
-    public void setWarehouseNumber(int warehouseNumber) {
+    public void setWarehouseNumber(WarehouseNumber warehouseNumber) {
         this.warehouseNumber = warehouseNumber;
     }
 

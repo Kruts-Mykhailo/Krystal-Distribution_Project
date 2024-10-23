@@ -38,7 +38,7 @@ public class MQTopology {
 
     @Bean
     Queue pdtReceivedQueue() {
-        return new Queue(PAYLOAD_DELIVERY_TICKET_QUEUE, true);
+        return new Queue(PAYLOAD_DELIVERY_TICKET_QUEUE);
     }
 
 
@@ -53,7 +53,7 @@ public class MQTopology {
 
     @Bean
     Queue payloadDeliveryQueue() {
-        return new Queue(PAYLOAD_DELIVERY_QUEUE, true);
+        return new Queue(PAYLOAD_DELIVERY_QUEUE);
     }
 
     @Bean
