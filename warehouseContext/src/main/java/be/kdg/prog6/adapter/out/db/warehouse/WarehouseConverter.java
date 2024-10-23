@@ -1,5 +1,6 @@
 package be.kdg.prog6.adapter.out.db.warehouse;
 
+import be.kdg.prog6.domain.MaterialType;
 import be.kdg.prog6.domain.PayloadActivity;
 import be.kdg.prog6.domain.Seller;
 import be.kdg.prog6.domain.Warehouse;

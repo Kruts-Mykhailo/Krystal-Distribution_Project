@@ -34,7 +34,7 @@ public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilled
     public void deductMaterial(PONumber poNumber) {
         PurchaseOrder purchaseOrder = purchaseOrderFoundPort.matchByPurchaseOrderNumber(poNumber.number());
 
-        if (purchaseOrder.status() != PurchaseOrder.OrderStatus.MATCHED) {
+        if (purchaseOrder.isNotFilled()) {
             List<PayloadCommand> payloadCommands = purchaseOrder.orderLines()
                     .stream()
                     .map(orderLine -> {
@@ -44,12 +44,6 @@ public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilled
                                 purchaseOrder.sellerId(),
                                 orderLine.materialType());
 
-                        projectWarehouseInfoPort.projectWarehouseCapacity(
-                                warehouseId,
-                                amount,
-                                ActivityType.PURCHASE
-                        );
-
                         return new PayloadCommand(
                                 ActivityType.PURCHASE,
                                 amount,
@@ -58,8 +52,16 @@ public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilled
                         );})
                     .collect(Collectors.toList());
 
+
             payloadRecordSavedPort.saveMultiplePayloadRecords(payloadCommands);
+
             purchaseOrderUpdatedPort.update(purchaseOrder, PurchaseOrder.OrderStatus.FILLED);
+
+            payloadCommands.forEach(c -> projectWarehouseInfoPort.projectWarehouseCapacity(
+                    c.warehouseId(),
+                    c.amount(),
+                    ActivityType.PURCHASE
+            ));
             commissionInfoPort.sendInfoForCommission(new CalculateCommissionForPurchaseOrderEvent(
                     purchaseOrder.orderLines(),
                     purchaseOrder.sellerId().id(),

@@ -25,7 +25,7 @@ public class InputSOAndVesselInfoUseCaseImpl implements InputSOAndVesselInfoUseC
     @Transactional
     public void inputInformation(InputVesselInfoCommand infoCommand) {
         ShipmentOrder shipmentOrder = new ShipmentOrder(
-                infoCommand.poRefernceNumber(),
+                new PONumber(infoCommand.poRefernceNumber()),
                 infoCommand.customerEnterpriseNumber(),
                 infoCommand.vesselNumber(),
                 LocalDate.now(),

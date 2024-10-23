@@ -1,6 +1,7 @@
 package be.kdg.prog6.adapter.out.db.orderLine;
 
 import be.kdg.prog6.adapter.out.db.purchaseOrder.PurchaseOrderJpaEntity;
+import be.kdg.prog6.domain.MaterialType;
 import be.kdg.prog6.domain.OrderLine;
 import be.kdg.prog6.domain.UOM;
 

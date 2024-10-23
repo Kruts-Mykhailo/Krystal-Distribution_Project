@@ -22,6 +22,12 @@ public record PurchaseOrder(Seller.SellerId sellerId, List<OrderLine> orderLines
                 PurchaseOrder.OrderStatus.OUTSTANDING
         );
     }
+    public boolean isNotFilled() {
+        return !status.equals(OrderStatus.FILLED);
+    }
+    public boolean isOutstanding() {
+        return status.equals(OrderStatus.OUTSTANDING);
+    }
 
     public enum OrderStatus {
         OUTSTANDING, MATCHED, FILLED

@@ -29,7 +29,19 @@ Content-Type: application/json
 
 {
   "properties": {},
-  "routing_key": "finish_operations_queue",
+  "routing_key": "match_order_status_queue",
+  "payload": "{\"poNumber\":\"PO123456\"}",
+  "payload_encoding": "string"
+}
+
+### Receive finish operations
+POST http://localhost:15672/api/exchanges/%2F/amq.default/publish
+Authorization: Basic bXl1c2VyOm15cGFzc3dvcmQ=
+Content-Type: application/json
+
+{
+  "properties": {},
+  "routing_key": "full_order_status_queue",
   "payload": "{\"poNumber\":\"PO123456\"}",
   "payload_encoding": "string"
 }
