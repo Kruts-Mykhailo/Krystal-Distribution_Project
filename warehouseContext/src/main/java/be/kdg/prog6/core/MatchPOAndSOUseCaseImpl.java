@@ -5,6 +5,7 @@ import be.kdg.prog6.domain.PurchaseOrder;
 import be.kdg.prog6.port.in.MatchPOAndSOUseCase;
 import be.kdg.prog6.port.out.PurchaseOrderFoundPort;
 import be.kdg.prog6.port.out.PurchaseOrderUpdatedPort;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,6 +20,7 @@ public class MatchPOAndSOUseCaseImpl implements MatchPOAndSOUseCase {
     }
 
     @Override
+    @Transactional
     public void matchOrders(PONumber poNumber) {
         PurchaseOrder purchaseOrder = purchaseOrderFoundPort.matchByPurchaseOrderNumber(poNumber.number());
         if (purchaseOrder.isOutstanding()) {

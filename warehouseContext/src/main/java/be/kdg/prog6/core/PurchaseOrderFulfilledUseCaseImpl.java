@@ -4,6 +4,7 @@ import be.kdg.prog6.domain.*;
 import be.kdg.prog6.events.CalculateCommissionForPurchaseOrderEvent;
 import be.kdg.prog6.port.in.PurchaseOrderFulfilledUseCase;
 import be.kdg.prog6.port.out.*;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,6 +32,7 @@ public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilled
     }
 
     @Override
+    @Transactional
     public void deductMaterial(PONumber poNumber) {
         PurchaseOrder purchaseOrder = purchaseOrderFoundPort.matchByPurchaseOrderNumber(poNumber.number());
 

@@ -21,7 +21,6 @@ public class MQTopology {
     public static final String WAREHOUSE_FULLNESS_QUEUE = "warehouse_capacity_change";
     public static final String PAYLOAD_DELIVERY_TICKET_EXCHANGE = "payload_delivery_exchange";
     public static final String PAYLOAD_DELIVERY_TICKET_QUEUE = "payload_delivery_ticket_queue";
-    public static final String PAYLOAD_DELIVERY_QUEUE = "payload_delivery_queue";
 
     @Bean
     public Jackson2JsonMessageConverter jackson2JsonMessageConverter() {
@@ -49,19 +48,6 @@ public class MQTopology {
                 .to(exchange)
                 .with("landside.#.pdt.received");
 
-    }
-
-    @Bean
-    Queue payloadDeliveryQueue() {
-        return new Queue(PAYLOAD_DELIVERY_QUEUE);
-    }
-
-    @Bean
-    Binding bindingPayloadDelivery(TopicExchange exchange, Queue payloadDeliveryQueue) {
-        return BindingBuilder
-                .bind(payloadDeliveryQueue)
-                .to(exchange)
-                .with("landside.#.payload.delivery");
     }
 
     @Bean

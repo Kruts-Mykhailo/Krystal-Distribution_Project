@@ -6,6 +6,7 @@ import be.kdg.prog6.ports.in.VesselInspectionCommand;
 import be.kdg.prog6.ports.out.FindSOPort;
 import be.kdg.prog6.ports.out.SendShipmentOrderFulfilledPort;
 import be.kdg.prog6.ports.out.UpdateSOPort;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class CompleteVesselInspectionUseCaseImpl implements CompleteVesselInspec
     }
 
     @Override
+    @Transactional
     public void completeVesselInspection(VesselInspectionCommand command) {
         ShipmentOrder shipmentOrder = findSOPort.findShipmentOrderByVesselNumber(command.vesselNumber());
         shipmentOrder.completeIO(command.inspectionDate(), command.inspectorSignature());
