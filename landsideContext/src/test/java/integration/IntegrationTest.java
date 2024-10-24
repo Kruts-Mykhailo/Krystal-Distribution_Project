@@ -1,24 +1,20 @@
+package integration;
 
 import be.kdg.prog6.Main;
 import be.kdg.prog6.adapter.out.db.appointment.AppointmentConverter;
 import be.kdg.prog6.adapter.out.db.appointment.AppointmentJpaEntity;
 import be.kdg.prog6.adapter.out.db.appointment.AppointmentJpaRepository;
 import be.kdg.prog6.domain.*;
-import be.kdg.prog6.port.in.CheckTruckArrivalUseCase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 

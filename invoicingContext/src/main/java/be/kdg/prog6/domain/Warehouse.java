@@ -30,6 +30,14 @@ public class Warehouse {
         this.payloads = new ArrayList<>();
     }
 
+    public Warehouse(Seller.SellerId sellerId, MaterialType materialType) {
+        this.sellerId = sellerId;
+        this.materialType = materialType;
+        this.payloads = new ArrayList<>();
+        this.materialPricing = MaterialPricingFactory.createMaterialPricing(materialType);
+    }
+
+
     public Double calculateStorageFee() {
         LocalDate calculatedDate = LocalDate.now();
         return payloads
