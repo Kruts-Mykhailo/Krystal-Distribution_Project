@@ -1,6 +1,20 @@
+
+POST http://localhost:8180/realms/kdg_realm/protocol/openid-connect/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+client_id=frontend&client_secret=cZcusLuATbvo974o0SgR8WhGEWChw8FZ&username=seller&password=password&grant_type=password&scope=openid
+
+//saving the access token
+> {%
+    client.global.set("access_token", response.body.access_token);
+%}
+
+
+
 ### POST Test create appointment
 POST http://localhost:8091/lsc/appointments/e53a47fa-9f1b-4d58-8981-cdd01beac39e
 Content-Type: application/json
+Authorization: Bearer {{access_token}}
 
 {
   "licensePlate": "B-123JD-F",
@@ -10,6 +24,7 @@ Content-Type: application/json
 
 ### Get truck status
 GET http://localhost:8091/lsc/trucks/B-123JD-F
+Authorization: Bearer {{access_token}}
 
 ### Get all trucks on site
 GET http://localhost:8091/lsc/trucks
