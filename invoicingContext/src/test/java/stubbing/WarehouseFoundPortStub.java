@@ -1,11 +1,11 @@
+package stubbing;
+
 import be.kdg.prog6.domain.MaterialType;
-import be.kdg.prog6.domain.Payload;
 import be.kdg.prog6.domain.Seller;
 import be.kdg.prog6.domain.Warehouse;
 import be.kdg.prog6.port.out.WarehouseFoundPort;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class WarehouseFoundPortStub implements WarehouseFoundPort {
