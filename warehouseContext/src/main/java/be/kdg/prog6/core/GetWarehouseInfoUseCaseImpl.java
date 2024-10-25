@@ -21,10 +21,6 @@ public class GetWarehouseInfoUseCaseImpl implements GetWarehouseInfoUseCase {
     @Transactional
     public WarehouseInfo getWarehouseInfo(WarehouseNumber warehouseNumber) {
         Warehouse warehouse = warehouseFoundPort.getWarehouseByNumber(warehouseNumber);
-        return new WarehouseInfo(
-                warehouseNumber,
-                warehouse.getOwnerId(),
-                warehouse.getWarehouseMaterialAmount().amount(),
-                warehouse.getMaterialType());
+        return warehouse.provideInformation();
     }
 }

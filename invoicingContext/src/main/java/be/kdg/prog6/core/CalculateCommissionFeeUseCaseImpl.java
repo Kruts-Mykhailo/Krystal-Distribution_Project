@@ -50,7 +50,8 @@ public class CalculateCommissionFeeUseCaseImpl implements CalculateCommissionFee
                         );
                         warehouse.removeOldestPayload(tons);
                         warehouseStoragePort.update(warehouse);
-                        return warehouse.calculateCommissionFee(tons);})
+                        return warehouse.calculateCommissionFee(tons);
+                    })
                     .sum();
 
             CommissionFee commissionFee = new CommissionFee(

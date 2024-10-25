@@ -1,10 +1,5 @@
 package be.kdg.prog6.ports.in;
 
-import be.kdg.prog6.domain.OrderLine;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
 
 public record InputVesselInfoCommand(String poRefernceNumber, String vesselNumber, String customerEnterpriseNumber) {
     public InputVesselInfoCommand {

@@ -7,6 +7,7 @@ public record CommissionFee(Seller.SellerId sellerId,
                             PONumber poNumber,
                             LocalDateTime calculationDateTime,
                             FeeStatus status) {
+
     public enum FeeStatus {
         CREATED, PAYED
     }

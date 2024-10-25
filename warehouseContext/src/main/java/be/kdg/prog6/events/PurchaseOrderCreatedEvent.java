@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Getter
-public class PurchaseOrderReceivedEvent {
+public class PurchaseOrderCreatedEvent {
 
     @JsonProperty("purchaseOrder")
     private OrderBody purchaseOrder;

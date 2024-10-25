@@ -1,27 +1,22 @@
 package be.kdg.prog6.domain;
 
-import be.kdg.prog6.events.PurchaseOrderReceivedEvent;
-
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
-public record PurchaseOrder(Seller.SellerId sellerId, List<OrderLine> orderLines, PONumber poNumber, OrderStatus status) {
 
-    public static PurchaseOrder fromEvent(PurchaseOrderReceivedEvent receivedEvent) {
-        return new PurchaseOrder(
-                new Seller.SellerId(receivedEvent.getPurchaseOrder().getSellerParty().getUuid()),
-                receivedEvent.getPurchaseOrder().getOrderLines()
-                        .stream()
-                        .map(ol -> new OrderLine(
-                                MaterialType.fromCode(ol.getMaterialType()),
-                                (double) ol.getQuantity(),
-                                UOM.fromCode(ol.getUom())
-                        ))
-                        .collect(Collectors.toList()),
-                new PONumber(receivedEvent.getPurchaseOrder().getPoNumber()),
-                PurchaseOrder.OrderStatus.OUTSTANDING
-        );
+public final class PurchaseOrder {
+    private final Seller.SellerId sellerId;
+    private final List<OrderLine> orderLines;
+    private final PONumber poNumber;
+    private OrderStatus status;
+
+    public PurchaseOrder(Seller.SellerId sellerId, List<OrderLine> orderLines, PONumber poNumber, OrderStatus status) {
+        this.sellerId = sellerId;
+        this.orderLines = orderLines;
+        this.poNumber = poNumber;
+        this.status = status;
     }
+
     public boolean isNotFilled() {
         return !status.equals(OrderStatus.FILLED);
     }
@@ -29,6 +24,52 @@ public record PurchaseOrder(Seller.SellerId sellerId, List<OrderLine> orderLines
     public boolean isOutstanding() {
         return status.equals(OrderStatus.OUTSTANDING);
     }
+
+    public void fillOrder() {
+        this.status = OrderStatus.FILLED;
+    }
+
+    public Seller.SellerId sellerId() {
+        return sellerId;
+    }
+
+    public List<OrderLine> orderLines() {
+        return orderLines;
+    }
+
+    public PONumber poNumber() {
+        return poNumber;
+    }
+
+    public OrderStatus status() {
+        return status;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (PurchaseOrder) obj;
+        return Objects.equals(this.sellerId, that.sellerId) &&
+                Objects.equals(this.orderLines, that.orderLines) &&
+                Objects.equals(this.poNumber, that.poNumber) &&
+                Objects.equals(this.status, that.status);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sellerId, orderLines, poNumber, status);
+    }
+
+    @Override
+    public String toString() {
+        return "PurchaseOrder[" +
+                "sellerId=" + sellerId + ", " +
+                "orderLines=" + orderLines + ", " +
+                "poNumber=" + poNumber + ", " +
+                "status=" + status + ']';
+    }
+
 
     public enum OrderStatus {
         OUTSTANDING, MATCHED, FILLED

@@ -4,4 +4,5 @@ import be.kdg.prog6.domain.PurchaseOrder;
 
 public interface PurchaseOrderUpdatedPort {
     void update(PurchaseOrder purchaseOrder, PurchaseOrder.OrderStatus status);
+    void update(PurchaseOrder purchaseOrder);
 }

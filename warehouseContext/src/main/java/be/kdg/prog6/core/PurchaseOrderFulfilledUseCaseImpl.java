@@ -38,7 +38,7 @@ public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilled
 
         if (purchaseOrder.isNotFilled()) {
             for (OrderLine orderLine : purchaseOrder.orderLines()) {
-                Double amount = orderLine.quantity() * orderLine.uom().getMeasureCoefficient();
+                Double amount = orderLine.getAmount();
 
                 Warehouse warehouse = warehouseFoundPort.getWarehouseByOwnerIdAndMaterialType(
                         purchaseOrder.sellerId(),
@@ -55,7 +55,8 @@ public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilled
                         ActivityType.PURCHASE
                 );
             }
-            purchaseOrderUpdatedPort.update(purchaseOrder, PurchaseOrder.OrderStatus.FILLED);
+            purchaseOrder.fillOrder();
+            purchaseOrderUpdatedPort.update(purchaseOrder);
             commissionInfoPort.sendInfoForCommission(new CalculateCommissionForPurchaseOrderEvent(
                     purchaseOrder.orderLines(),
                     purchaseOrder.sellerId().id(),

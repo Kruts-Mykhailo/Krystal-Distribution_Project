@@ -1,12 +1,14 @@
 package be.kdg.prog6.adapter.in.messaging;
 
 import be.kdg.prog6.domain.*;
-import be.kdg.prog6.events.PurchaseOrderReceivedEvent;
+import be.kdg.prog6.events.PurchaseOrderCreatedEvent;
 import be.kdg.prog6.port.in.ReceivePOUseCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 
 @Component
@@ -21,8 +23,20 @@ public class POListener {
     }
 
     @RabbitListener(queues = PURCHASE_ORDER_QUEUE, messageConverter = "jackson2JsonMessageConverter")
-    public void receivePurchaseOrder(PurchaseOrderReceivedEvent receivedEvent) {
-        PurchaseOrder purchaseOrder = PurchaseOrder.fromEvent(receivedEvent);
+    public void receivePurchaseOrder(PurchaseOrderCreatedEvent receivedEvent) {
+        PurchaseOrder purchaseOrder = new PurchaseOrder(
+                new Seller.SellerId(receivedEvent.getPurchaseOrder().getSellerParty().getUuid()),
+                receivedEvent.getPurchaseOrder().getOrderLines()
+                        .stream()
+                        .map(ol -> new OrderLine(
+                                MaterialType.fromCode(ol.getMaterialType()),
+                                (double) ol.getQuantity(),
+                                UOM.fromCode(ol.getUom())
+                        ))
+                        .collect(Collectors.toList()),
+                new PONumber(receivedEvent.getPurchaseOrder().getPoNumber()),
+                PurchaseOrder.OrderStatus.OUTSTANDING
+        );
         logger.info("Received purchase order: {}", purchaseOrder);
         receivePOUseCase.receivePO(purchaseOrder);
     }
