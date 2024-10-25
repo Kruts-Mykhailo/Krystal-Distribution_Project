@@ -4,7 +4,6 @@
     <file url="file://$PROJECT_DIR$/invoicingContext/src/main/resources/data.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/landsideContext/src/main/resources/data.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/landsideContext/src/main/resources/db/db_creation.sql" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/landsideContext/src/test/resources/data.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/warehouseContext/src/main/resources/data.sql" dialect="MySQL" />
     <file url="PROJECT" dialect="MySQL" />
   </component>
