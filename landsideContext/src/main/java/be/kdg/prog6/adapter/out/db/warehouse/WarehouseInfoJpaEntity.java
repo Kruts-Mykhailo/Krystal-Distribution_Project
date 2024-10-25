@@ -9,8 +9,8 @@ import java.util.UUID;
 
 @Setter
 @Getter
-@Entity(name = "warehouse_info")
-@Table(name = "warehouses", catalog = "landside")
+@Entity
+@Table(name = "warehouses")
 public class WarehouseInfoJpaEntity {
 
     @Id

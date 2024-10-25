@@ -32,3 +32,8 @@ spring:
         jwt:
           jwk-set-uri: http://localhost:8180/realms/kdg_realm/protocol/openid-connect/certs
           issuer-uri: http://localhost:8180/realms/kdg_realm
+  logging:
+    level:
+      org:
+        springframework:
+          security: DEBUG
