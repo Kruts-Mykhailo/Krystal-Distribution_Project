@@ -79,6 +79,15 @@ public class AppointmentCreatedAdapter implements AppointmentCreatedPort, Appoin
     }
 
     @Override
+    public List<Appointment> getAllTruckAppointmentsBetween(LocalDateTime from, LocalDateTime to) {
+        return appointmentJpaRepository.findAllByAppointmentDateTimeBetween(from, to)
+                .stream()
+                .map(AppointmentConverter::toAppointment)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
     public List<Appointment> getAllAppointmentsOnSite() {
         return appointmentJpaRepository
                 .findAllByStatusIn(List.of(AppointmentStatus.ON_SITE.name(), AppointmentStatus.ARRIVED_LATE.name()))

@@ -2,9 +2,7 @@ package be.kdg.prog6.adapter.in.api;
 
 import be.kdg.prog6.adapter.in.api.dto.AppointmentDTO;
 import be.kdg.prog6.adapter.in.api.dto.AppointmentRequestDTO;
-import be.kdg.prog6.adapter.in.api.dto.TruckArrivalDTO;
 import be.kdg.prog6.domain.*;
-import be.kdg.prog6.port.in.CheckTruckArrivalUseCase;
 import be.kdg.prog6.port.in.CreateAppointmentCommand;
 import be.kdg.prog6.port.in.MakeAppointmentUseCase;
 import org.springframework.http.HttpStatus;
@@ -15,11 +13,11 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/appointments")
-public class MakeAppointmentController {
+public class AppointmentController {
 
     private final MakeAppointmentUseCase makeAppointmentUseCase;
 
-    public MakeAppointmentController(MakeAppointmentUseCase makeAppointmentUseCase) {
+    public AppointmentController(MakeAppointmentUseCase makeAppointmentUseCase) {
         this.makeAppointmentUseCase = makeAppointmentUseCase;
     }
 
@@ -42,4 +40,5 @@ public class MakeAppointmentController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(appointmentDTO);
     }
+
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class WarehouseAdapter implements WarehouseFoundPort {
@@ -36,6 +37,15 @@ public class WarehouseAdapter implements WarehouseFoundPort {
         List<PayloadActivity> payloadActivityJpaEntities = PayloadConverter
                 .toPayloadActivities(warehouseJpaEntity.getPayloadActivityJpaEntities());
         return WarehouseConverter.toWarehouseFetched(warehouseJpaEntity, payloadActivityJpaEntities);
+    }
+
+    @Override
+    public List<Warehouse> getAllWarehouses() {
+        return warehouseJpaRepository
+                .findAll()
+                .stream()
+                .map(WarehouseConverter::toWarehouse)
+                .collect(Collectors.toList());
     }
 
 
