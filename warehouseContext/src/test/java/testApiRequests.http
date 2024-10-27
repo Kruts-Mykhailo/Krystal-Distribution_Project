@@ -1,5 +1,18 @@
+POST http://localhost:8180/realms/kdg_realm/protocol/openid-connect/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+client_id=frontend&client_secret=cZcusLuATbvo974o0SgR8WhGEWChw8FZ&username=seller&password=password&grant_type=password&scope=openid
+
+//saving the access token
+> {%
+    client.global.set("access_token", response.body.access_token);
+%}
+
+
+
 ### Receive purchase orders and their status
 GET http://localhost:8093/wc/purchaseOrders
+Authorization: Bearer {{access_token}}
 
 ### Get warehouse info
 GET http://localhost:8093/wc/warehouses/1

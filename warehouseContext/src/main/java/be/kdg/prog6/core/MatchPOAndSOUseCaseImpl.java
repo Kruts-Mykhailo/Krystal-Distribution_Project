@@ -22,7 +22,7 @@ public class MatchPOAndSOUseCaseImpl implements MatchPOAndSOUseCase {
     @Override
     @Transactional
     public void matchOrders(PONumber poNumber) {
-        PurchaseOrder purchaseOrder = purchaseOrderFoundPort.matchByPurchaseOrderNumber(poNumber.number());
+        PurchaseOrder purchaseOrder = purchaseOrderFoundPort.getByPurchaseOrderNumber(poNumber.number());
         if (purchaseOrder.isOutstanding()) {
             purchaseOrderUpdatedPort.update(purchaseOrder, PurchaseOrder.OrderStatus.MATCHED);
         }

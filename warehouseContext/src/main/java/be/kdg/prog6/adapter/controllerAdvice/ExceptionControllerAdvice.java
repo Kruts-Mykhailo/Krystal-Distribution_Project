@@ -1,5 +1,6 @@
 package be.kdg.prog6.adapter.controllerAdvice;
 
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.ErrorResponse;
@@ -16,6 +17,11 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(value = { EntityNotFoundException.class })
     private ErrorResponse handleEntityNotFoundException(EntityNotFoundException ex, WebRequest request) {
         return ErrorResponse.create(ex, HttpStatus.NOT_FOUND, ex.getLocalizedMessage());
+    }
+
+    @ExceptionHandler(value = { EntityExistsException.class })
+    private ErrorResponse handleEntityExistsException(EntityExistsException ex, WebRequest request) {
+        return ErrorResponse.create(ex, HttpStatus.CONFLICT, ex.getLocalizedMessage());
     }
 
 }

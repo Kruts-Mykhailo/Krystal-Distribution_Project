@@ -24,7 +24,7 @@ public class PurchaseOrderAdapter implements PurchaseOrderUpdatedPort, PurchaseO
     }
 
     @Override
-    public PurchaseOrder matchByPurchaseOrderNumber(String purchaseOrderNumber) {
+    public PurchaseOrder getByPurchaseOrderNumber(String purchaseOrderNumber) {
         PurchaseOrderJpaEntity purchaseOrderJpaEntity = purchaseOrderJpaRepository
                 .findByPurchaseOrderNumberFetched(purchaseOrderNumber)
                 .orElseThrow(() -> new PurchaseOrderNotFoundException(

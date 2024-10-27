@@ -8,9 +8,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilledUseCase {
@@ -34,7 +31,7 @@ public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilled
     @Override
     @Transactional
     public void deductMaterial(PONumber poNumber) {
-        PurchaseOrder purchaseOrder = purchaseOrderFoundPort.matchByPurchaseOrderNumber(poNumber.number());
+        PurchaseOrder purchaseOrder = purchaseOrderFoundPort.getByPurchaseOrderNumber(poNumber.number());
 
         if (purchaseOrder.isNotFilled()) {
             for (OrderLine orderLine : purchaseOrder.orderLines()) {
