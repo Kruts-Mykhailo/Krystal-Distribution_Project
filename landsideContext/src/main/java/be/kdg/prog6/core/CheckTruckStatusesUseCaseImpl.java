@@ -21,6 +21,6 @@ public class CheckTruckStatusesUseCaseImpl implements CheckAllTrucksStatusesUseC
     @Override
     @Transactional
     public List<Appointment> checkStatusesOfTrucks(LocalDate date) {
-        return appointmentFoundPort.getAllTruckAppointments(date.atStartOfDay());
+        return appointmentFoundPort.getAllTruckAppointmentsByDate(date);
     }
 }

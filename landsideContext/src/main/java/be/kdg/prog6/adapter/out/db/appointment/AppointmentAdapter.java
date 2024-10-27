@@ -11,6 +11,7 @@ import be.kdg.prog6.port.out.AppointmentFoundPort;
 import be.kdg.prog6.port.out.AppointmentUpdatedPort;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -72,8 +73,8 @@ public class AppointmentAdapter implements AppointmentCreatedPort, AppointmentUp
     }
 
     @Override
-    public List<Appointment> getAllTruckAppointments(LocalDateTime when) {
-        return appointmentJpaRepository.findAllByAppointmentDateTime(when)
+    public List<Appointment> getAllTruckAppointmentsByDate(LocalDate when) {
+        return appointmentJpaRepository.findAllByAppointmentDateTime(when.atStartOfDay())
                 .stream()
                 .map(AppointmentConverter::toAppointment)
                 .collect(Collectors.toList());
