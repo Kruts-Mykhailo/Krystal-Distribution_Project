@@ -1,5 +1,6 @@
 package be.kdg.prog6.core;
 
+import be.kdg.prog6.adapters.exceptions.VesselAlreadyLeftException;
 import be.kdg.prog6.domain.ShipmentOrder;
 import be.kdg.prog6.ports.in.MatchSOAndPOUseCase;
 import be.kdg.prog6.ports.out.*;
@@ -28,6 +29,10 @@ public class MatchSOAndPOUseCaseImpl implements MatchSOAndPOUseCase {
     @Transactional
     public void matchSOAndPO(String vesselNumber) {
         ShipmentOrder shipmentOrder = findSOPort.findShipmentOrderByVesselNumber(vesselNumber);
+        if (shipmentOrder.getShipmentStatus() == ShipmentOrder.ShipmentStatus.LEFT_PORT) {
+            throw new VesselAlreadyLeftException("Vessel %s already left the site".formatted(vesselNumber));
+        }
+
         shipmentOrder.matchPurchaseOrder();
         updateSOPort.updateShipmentOrder(shipmentOrder);
         sendMatchingEventPort.sendMatchingEvent(shipmentOrder.getPoReferenceNumber());

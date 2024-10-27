@@ -1,6 +1,7 @@
 package be.kdg.prog6.core;
 
 import be.kdg.prog6.adapters.exceptions.BunkeringOperationDayLimitException;
+import be.kdg.prog6.adapters.exceptions.VesselAlreadyLeftException;
 import be.kdg.prog6.domain.BO;
 import be.kdg.prog6.domain.ShipmentOrder;
 import be.kdg.prog6.ports.in.PlanBunkeringOperationCommand;
@@ -34,6 +35,11 @@ public class PlanBunkeringOperationUseCaseImpl implements PlanBunkeringOperation
             throw new BunkeringOperationDayLimitException("Bunkering operation day limit exceeded. Pick another date.");
         }
         ShipmentOrder shipmentOrder = findSOPort.findShipmentOrderByVesselNumber(command.vesselNumber());
+
+        if (shipmentOrder.getShipmentStatus() == ShipmentOrder.ShipmentStatus.LEFT_PORT) {
+            throw new VesselAlreadyLeftException("Vessel %s already left the site".formatted(command.vesselNumber()));
+        }
+
         shipmentOrder.scheduleBO(command.date());
         updateSOPort.updateShipmentOrder(shipmentOrder);
         log.info("Bunkering operation for vessel {} is scheduled for {} ", command.vesselNumber(), command.date());

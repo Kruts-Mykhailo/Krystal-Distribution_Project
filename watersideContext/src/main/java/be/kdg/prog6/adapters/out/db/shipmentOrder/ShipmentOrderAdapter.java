@@ -32,11 +32,6 @@ public class ShipmentOrderAdapter implements SaveSOPort, FindSOPort, UpdateSOPor
     public ShipmentOrder findShipmentOrderByVesselNumber(String vesselNumber) {
         ShipmentOrderJpaEntity shipmentOrderJpaEntity = soRepository.findOrderByVesselNumberFetched(vesselNumber)
                 .orElseThrow(() -> new ShipmentOrderNotFoundException("No shipment order found for vessel number " + vesselNumber));
-
-        if (ShipmentOrder.ShipmentStatus.valueOf(shipmentOrderJpaEntity.getShipmentStatus()) == ShipmentOrder.ShipmentStatus.LEFT_PORT) {
-            throw new VesselAlreadyLeftException("Vessel %s already left the site".formatted(vesselNumber));
-        }
-
         return ShipmentOrderConverter.toShipmentOrderEntity(shipmentOrderJpaEntity);
     }
 
