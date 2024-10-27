@@ -36,17 +36,19 @@ public class GetTruckAmountOnSiteTest extends AbstractDatabaseTest{
         // Arrange
         LocalDateTime dateTime = LocalDateTime.now().withMinute(0).withSecond(0).withNano(0);
 
-        when(appointmentFoundPort.getAllAppointmentsOnSite()).thenReturn(List.of(
+        when(appointmentFoundPort.getAllAppointmentsByStatusIn(
+                List.of(TruckArrivalStatus.ON_SITE, TruckArrivalStatus.ARRIVED_LATE)
+        )).thenReturn(List.of(
                 new Appointment(new LicensePlate("XXX-001"),
                         MaterialType.GYPSUM,
                         dateTime,
                         new WarehouseNumber("W-01"),
-                        AppointmentStatus.ARRIVED_LATE),
+                        TruckArrivalStatus.ARRIVED_LATE),
                 new Appointment(new LicensePlate("XXX-002"),
                         MaterialType.PETROULEUM_COKE,
                         dateTime,
                         new WarehouseNumber("W-01"),
-                        AppointmentStatus.ON_SITE)
+                        TruckArrivalStatus.ON_SITE)
         ));
 
         // Act

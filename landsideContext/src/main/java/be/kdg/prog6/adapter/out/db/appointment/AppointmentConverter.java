@@ -13,13 +13,13 @@ public class AppointmentConverter {
                 MaterialType.valueOf(a.getMaterialType()),
                 a.getAppointmentDateTime(),
                 new WarehouseNumber(a.getWarehouseNumber()),
-                AppointmentStatus.valueOf(a.getStatus()),
+                TruckArrivalStatus.valueOf(a.getStatus()),
                 a.getActivities().stream().map(ac -> new AppointmentActivity(
                         ac.getActivityId(),
                         new LicensePlate(ac.getLicensePlate()),
                         ActivityType.valueOf(ac.getActivityType()),
                         ac.getDateTime(),
-                        AppointmentStatus.valueOf(ac.getTruckStatus())
+                        TruckArrivalStatus.valueOf(ac.getTruckStatus())
                 )).collect(Collectors.toList())
         );
     }
@@ -29,9 +29,9 @@ public class AppointmentConverter {
                 appointment.getId(),
                 appointment.getTruckLicensePlate().licensePlate(),
                 appointment.getMaterialType().name(),
-                appointment.getAppointmentDateTime(),
+                appointment.getScheduledArrivalTime(),
                 appointment.getWarehouseNumber().number(),
-                appointment.getAppointmentStatus().name()
+                appointment.getTruckArrivalStatus().name()
         );
     }
 }

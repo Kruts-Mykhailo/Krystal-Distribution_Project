@@ -1,6 +1,5 @@
 package be.kdg.prog6.adapter.out.db.appointment;
 
-import be.kdg.prog6.domain.AppointmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -31,7 +30,7 @@ public interface AppointmentJpaRepository extends JpaRepository<AppointmentJpaEn
     "where a.licensePlate = :licensePlate and a.status != :status")
     Optional<AppointmentJpaEntity> findByLicensePlateAndNotStatusFetched(String licensePlate, String status);
 
-    List<AppointmentJpaEntity> findAllByAppointmentDateTimeBetween(LocalDateTime from, LocalDateTime to);
+    List<AppointmentJpaEntity> findAllByAppointmentDateTime(LocalDateTime dateTime);
 
     List<AppointmentJpaEntity> findAllByStatusIn(List<String> statuses);
 }

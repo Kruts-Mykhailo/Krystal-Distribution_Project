@@ -36,7 +36,7 @@ public class AppointmentController {
                 appointment.getTruckLicensePlate().licensePlate(),
                 appointment.getMaterialType().name(),
                 appointment.getWarehouseNumber(),
-                appointment.getAppointmentDateTime());
+                appointment.getScheduledArrivalTime());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(appointmentDTO);
     }

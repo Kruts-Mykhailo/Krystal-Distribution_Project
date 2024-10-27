@@ -28,6 +28,7 @@ Authorization: Bearer {{access_token}}
 
 ### Get all trucks on site
 GET http://localhost:8091/lsc/trucks
+Authorization: Bearer {{access_token}}
 
 ### Get all schedules
 GET localhost:8091/lsc/schedules

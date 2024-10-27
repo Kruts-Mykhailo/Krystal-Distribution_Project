@@ -2,7 +2,7 @@ package be.kdg.prog6.core;
 
 import be.kdg.prog6.adapter.exceptions.AppointmentNotFoundException;
 import be.kdg.prog6.domain.Appointment;
-import be.kdg.prog6.domain.AppointmentStatus;
+import be.kdg.prog6.domain.TruckArrivalStatus;
 import be.kdg.prog6.domain.TruckWeightRecord;
 import be.kdg.prog6.port.in.PassBridgeCommand;
 import be.kdg.prog6.port.in.EnterWeighingBridgeUseCase;
@@ -32,8 +32,9 @@ public class EnterWeighingBridgeUseCaseImpl implements EnterWeighingBridgeUseCas
     @Override
     @Transactional
     public void enterWeighingBridge(PassBridgeCommand passBridgeCommand) {
-        Appointment appointment = appointmentFoundPort.getTruckAppointmentOnSite(passBridgeCommand.licensePlate())
-                .orElseThrow(() -> new AppointmentNotFoundException("Truck on site not recognized"));
+        Appointment appointment = appointmentFoundPort.getByLicensePlateAndNotStatus(
+                passBridgeCommand.licensePlate(),
+                TruckArrivalStatus.SCHEDULED);
 
         appointment.enterByWeighingBridge(passBridgeCommand.time());
         TruckWeightRecord truckWeightRecord = new TruckWeightRecord(
@@ -41,8 +42,9 @@ public class EnterWeighingBridgeUseCaseImpl implements EnterWeighingBridgeUseCas
                 passBridgeCommand.weight(),
                 LocalDateTime.now()
         );
+        appointmentUpdatedPort.update(appointment);
         truckWeightSavedPort.saveTruckWeight(truckWeightRecord, appointment.getId());
-        appointmentUpdatedPort.updateAppointment(appointment, AppointmentStatus.ON_SITE);
+
         logger.info(String.format(
                 "Truck %s passed weighing bridge at %s",
                 passBridgeCommand.licensePlate().licensePlate(),

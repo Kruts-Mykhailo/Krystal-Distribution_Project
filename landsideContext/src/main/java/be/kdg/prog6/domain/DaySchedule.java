@@ -39,7 +39,7 @@ public class DaySchedule {
     private boolean isTimeWindowAvailable(LocalDateTime desiredScheduleDateTime) {
         Map<LocalDateTime, Long> appointmentCountByHour = appointments.stream()
                 .collect(Collectors.groupingBy(
-                        appointment -> appointment.getAppointmentDateTime().withMinute(0).withSecond(0).withNano(0),
+                        appointment -> appointment.getScheduledArrivalTime().withMinute(0).withSecond(0).withNano(0),
                         Collectors.counting()
                 ));
         long trucksScheduled = appointmentCountByHour.getOrDefault(desiredScheduleDateTime, 0L);
@@ -51,7 +51,7 @@ public class DaySchedule {
                                                      MaterialType materialType,
                                                      WarehouseNumber warehouseNumber) {
         if (isTimeWindowAvailable(scheduleDateTime)) {
-            return Optional.of(new Appointment(truckLicensePlate, materialType, scheduleDateTime, warehouseNumber, AppointmentStatus.SCHEDULED));
+            return Optional.of(new Appointment(truckLicensePlate, materialType, scheduleDateTime, warehouseNumber, TruckArrivalStatus.SCHEDULED));
         }
         return Optional.empty();
 

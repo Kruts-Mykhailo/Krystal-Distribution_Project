@@ -1,7 +1,6 @@
 package core;
 
 import be.kdg.prog6.Main;
-import be.kdg.prog6.adapter.out.db.appointment.AppointmentJpaEntity;
 import be.kdg.prog6.core.MakeAppointmentUseCaseImpl;
 import be.kdg.prog6.domain.*;
 import be.kdg.prog6.port.in.CreateAppointmentCommand;
@@ -11,9 +10,6 @@ import be.kdg.prog6.port.out.ScheduleUpdatedPort;
 import be.kdg.prog6.port.out.WarehouseProjectionFoundPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -77,11 +73,11 @@ public class TestMakeAppointmentUsingMockitoTest {
 
         // Act
         Appointment appointment = makeAppointmentUseCase.makeAppointment(command);
-        Appointment foundAppointment = appointmentFoundPort.getAppointmentOfTruck(licensePlate);
+        Appointment foundAppointment = appointmentFoundPort.getByLicensePlateAndNotStatus(licensePlate, TruckArrivalStatus.ON_SITE);
 
 
         // Assert
-        assertEquals(appointment.getAppointmentDateTime(), dateTime);
+        assertEquals(appointment.getScheduledArrivalTime(), dateTime);
         assertEquals(appointment.getMaterialType(), MaterialType.GYPSUM);
         assertEquals(foundAppointment.getWarehouseNumber(), new WarehouseNumber("W-00"));
         verify(warehouseProjectionFoundPort, times(1));

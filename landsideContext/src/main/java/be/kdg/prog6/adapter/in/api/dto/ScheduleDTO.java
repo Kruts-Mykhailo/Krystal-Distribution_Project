@@ -37,7 +37,7 @@ public class ScheduleDTO {
                         s.getTruckAmountPerWindow(),
                         s.getAppointments().stream()
                                 .collect(Collectors.groupingBy(
-                                        appointment -> appointment.getAppointmentDateTime().getHour(),
+                                        appointment -> appointment.getScheduledArrivalTime().getHour(),
                                         Collectors.summingInt(appointment -> 1)))
                                 .entrySet()
                                 .stream()

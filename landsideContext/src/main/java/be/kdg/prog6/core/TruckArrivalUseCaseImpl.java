@@ -4,6 +4,7 @@ import be.kdg.prog6.adapter.exceptions.AppointmentNotFoundException;
 import be.kdg.prog6.domain.*;
 import be.kdg.prog6.port.in.TruckArrivalCommand;
 import be.kdg.prog6.port.in.TruckArrivalUseCase;
+import be.kdg.prog6.port.out.AppointmentFoundPort;
 import be.kdg.prog6.port.out.AppointmentUpdatedPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,11 +16,13 @@ import java.util.logging.Logger;
 public class TruckArrivalUseCaseImpl implements TruckArrivalUseCase {
 
     private final AppointmentUpdatedPort appointmentUpdatedPort;
+    private final AppointmentFoundPort appointmentFoundPort;
 
     private final Logger logger = Logger.getLogger(TruckArrivalUseCaseImpl.class.getName());
 
-    public TruckArrivalUseCaseImpl(AppointmentUpdatedPort appointmentUpdatedPort) {
+    public TruckArrivalUseCaseImpl(AppointmentUpdatedPort appointmentUpdatedPort, AppointmentFoundPort appointmentFoundPort) {
         this.appointmentUpdatedPort = appointmentUpdatedPort;
+        this.appointmentFoundPort = appointmentFoundPort;
     }
 
     @Override
@@ -28,14 +31,14 @@ public class TruckArrivalUseCaseImpl implements TruckArrivalUseCase {
         LicensePlate licensePlate = truckArrivalCommand.licensePlate();
         LocalDateTime arrivalTime = truckArrivalCommand.arrivalTime();
 
-        Appointment appointment = appointmentUpdatedPort.getAppointmentByArrivalTime(licensePlate, arrivalTime)
-                .orElseThrow(() -> new AppointmentNotFoundException(
-                        String.format("Appointment for %s has not been found", licensePlate.licensePlate())
-                ));
+        Appointment appointment = appointmentFoundPort.getAppointmentByArrivalTime(licensePlate, arrivalTime);
+
 
         appointment.truckArrived(arrivalTime);
+        appointmentUpdatedPort.update(appointment);
+
         logger.info(String.format("Truck %s arrived to facility at %s", licensePlate.licensePlate(), arrivalTime));
-        appointmentUpdatedPort.updateAppointment(appointment, AppointmentStatus.ON_SITE);
+
 
     }
 }

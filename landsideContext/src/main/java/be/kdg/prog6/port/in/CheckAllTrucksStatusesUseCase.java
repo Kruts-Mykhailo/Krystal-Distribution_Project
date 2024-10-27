@@ -7,5 +7,5 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface CheckAllTrucksStatusesUseCase {
-    List<Appointment> checkStatusesOfTrucks(LocalDateTime from, LocalDateTime to);
+    List<Appointment> checkStatusesOfTrucks(LocalDate date);
 }

@@ -35,10 +35,9 @@ public class LeaveWeighingBridgeUseCaseImpl implements LeaveWeighingBridgeUseCas
     @Override
     @Transactional
     public WBT leaveWeighingBridge(PassBridgeCommand passBridgeCommand) {
-        Appointment appointment = appointmentFoundPort.getTruckAppointmentOnSite(passBridgeCommand.licensePlate())
-                .orElseThrow(() -> new AppointmentNotFoundException("Truck on site not recognized"));
-
+        Appointment appointment = appointmentFoundPort.getByLicensePlateAndNotStatus(passBridgeCommand.licensePlate(), TruckArrivalStatus.SCHEDULED);
         appointment.leaveByWeighingBridge(LocalDateTime.now());
+
         TruckWeightRecord truckWeightRecord = new TruckWeightRecord(
                 passBridgeCommand.licensePlate(),
                 passBridgeCommand.weight(),
@@ -48,7 +47,7 @@ public class LeaveWeighingBridgeUseCaseImpl implements LeaveWeighingBridgeUseCas
         Double netWeight = enterWeightRecord.weight() - truckWeightRecord.weight();
 
         truckWeightSavedPort.saveTruckWeight(truckWeightRecord, appointment.getId());
-        appointmentUpdatedPort.updateAppointment(appointment, AppointmentStatus.LEFT_SITE);
+        appointmentUpdatedPort.update(appointment);
         createPdtPort.sendPdt(new PayloadDeliveredEvent(
                 appointment.getWarehouseNumber().number(),
                 appointment.getDumpPayloadDateTime(),

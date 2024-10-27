@@ -3,6 +3,7 @@ package be.kdg.prog6.core;
 import be.kdg.prog6.domain.Appointment;
 import be.kdg.prog6.domain.LicensePlate;
 import be.kdg.prog6.domain.PDT;
+import be.kdg.prog6.domain.TruckArrivalStatus;
 import be.kdg.prog6.events.PayloadDeliveredEvent;
 import be.kdg.prog6.port.in.DumpPayloadUseCase;
 import be.kdg.prog6.port.out.AppointmentFoundPort;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -32,13 +32,12 @@ public class DumpPayloadUseCaseImpl implements DumpPayloadUseCase {
     @Override
     @Transactional
     public PDT dumpPayload(LicensePlate licensePlate) {
-        Appointment appointment = appointmentFoundPort.getTruckAppointmentOnSite(licensePlate)
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "Truck %s is not recognized on conveyor belt".formatted(licensePlate.licensePlate())
-                ));
+        Appointment appointment = appointmentFoundPort.getByLicensePlateAndNotStatus(
+                licensePlate,
+                TruckArrivalStatus.SCHEDULED);
 
         appointment.dumpPayload(LocalDateTime.now());
-        appointmentUpdatedPort.updateAppointment(appointment, appointment.getAppointmentStatus());
+        appointmentUpdatedPort.update(appointment);
         createPdtPort.sendPdt(new PayloadDeliveredEvent(
                 appointment.getWarehouseNumber().number(),
                 LocalDateTime.now(),

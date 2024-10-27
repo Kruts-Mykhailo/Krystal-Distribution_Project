@@ -10,28 +10,28 @@ public class Appointment {
     private UUID id;
     private LicensePlate truckLicensePlate;
     private MaterialType materialType;
-    private LocalDateTime appointmentDateTime;
+    private LocalDateTime scheduledArrivalTime;
     private WarehouseNumber warehouseNumber;
-    private AppointmentStatus appointmentStatus;
+    private TruckArrivalStatus truckArrivalStatus;
     private List<AppointmentActivity> appointmentActivities;
 
-    public Appointment(LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime appointmentDateTime, WarehouseNumber warehouseNumber, AppointmentStatus appointmentStatus) {
+    public Appointment(LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime scheduledArrivalTime, WarehouseNumber warehouseNumber, TruckArrivalStatus truckArrivalStatus) {
         this.id = UUID.randomUUID();
         this.truckLicensePlate = truckLicensePlate;
         this.materialType = materialType;
-        this.appointmentDateTime = appointmentDateTime;
+        this.scheduledArrivalTime = scheduledArrivalTime;
         this.warehouseNumber = warehouseNumber;
-        this.appointmentStatus = appointmentStatus;
+        this.truckArrivalStatus = truckArrivalStatus;
         this.appointmentActivities = new ArrayList<>();
     }
 
-    public Appointment(UUID id, LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime appointmentDateTime, WarehouseNumber warehouseNumber, AppointmentStatus appointmentStatus, List<AppointmentActivity> appointmentActivities) {
+    public Appointment(UUID id, LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime scheduledArrivalTime, WarehouseNumber warehouseNumber, TruckArrivalStatus truckArrivalStatus, List<AppointmentActivity> appointmentActivities) {
         this.id = id;
         this.truckLicensePlate = truckLicensePlate;
         this.materialType = materialType;
-        this.appointmentDateTime = appointmentDateTime;
+        this.scheduledArrivalTime = scheduledArrivalTime;
         this.warehouseNumber = warehouseNumber;
-        this.appointmentStatus = appointmentStatus;
+        this.truckArrivalStatus = truckArrivalStatus;
         this.appointmentActivities = appointmentActivities == null ? new ArrayList<>() : appointmentActivities;
     }
 
@@ -43,12 +43,12 @@ public class Appointment {
         this.id = id;
     }
 
-    public AppointmentStatus getAppointmentStatus() {
-        return appointmentStatus;
+    public TruckArrivalStatus getTruckArrivalStatus() {
+        return truckArrivalStatus;
     }
 
-    public void setAppointmentStatus(AppointmentStatus appointmentStatus) {
-        this.appointmentStatus = appointmentStatus;
+    public void setTruckArrivalStatus(TruckArrivalStatus truckArrivalStatus) {
+        this.truckArrivalStatus = truckArrivalStatus;
     }
 
     public WarehouseNumber getWarehouseNumber() {
@@ -75,13 +75,20 @@ public class Appointment {
         this.materialType = materialType;
     }
 
-
-    public LocalDateTime getAppointmentDateTime() {
-        return appointmentDateTime;
+    public LocalDateTime getWindowStartTime() {
+        return scheduledArrivalTime;
     }
 
-    public void setAppointmentDateTime(LocalDateTime appointmentDateTime) {
-        this.appointmentDateTime = appointmentDateTime;
+    public LocalDateTime getWindowEndTime() {
+        return scheduledArrivalTime.plusHours(1);
+    }
+
+    public LocalDateTime getScheduledArrivalTime() {
+        return scheduledArrivalTime;
+    }
+
+    public void setScheduledArrivalTime(LocalDateTime scheduledArrivalTime) {
+        this.scheduledArrivalTime = scheduledArrivalTime;
     }
 
     public List<AppointmentActivity> getAppointmentActivities() {
@@ -93,18 +100,18 @@ public class Appointment {
     }
 
 
-    private AppointmentStatus getTruckArrivalStatus(LocalDateTime arrivalTime) {
-        return arrivalTime.isAfter(this.appointmentDateTime) &&
-                arrivalTime.isBefore(this.appointmentDateTime.plusHours(1))
-                ? AppointmentStatus.ARRIVED_ON_TIME : AppointmentStatus.ARRIVED_LATE;
+    private TruckArrivalStatus updateArrivalStatus(LocalDateTime arrivalTime) {
+        return arrivalTime.isAfter(this.scheduledArrivalTime) &&
+                arrivalTime.isBefore(this.scheduledArrivalTime.plusHours(1))
+                ? TruckArrivalStatus.ON_SITE : TruckArrivalStatus.ARRIVED_LATE;
     }
-    private void addActivity(ActivityType activityType, AppointmentStatus appointmentStatus, LocalDateTime dateTime) {
+    private void addActivity(ActivityType activityType, TruckArrivalStatus truckArrivalStatus, LocalDateTime dateTime) {
         AppointmentActivity activity = new AppointmentActivity(
                 UUID.randomUUID(),
                 this.truckLicensePlate,
                 activityType,
                 dateTime,
-                appointmentStatus
+                truckArrivalStatus
         );
         this.appointmentActivities.add(activity);
     }
@@ -118,19 +125,20 @@ public class Appointment {
     }
 
     public void truckArrived(LocalDateTime truckArrivalTime) {
-        addActivity(ActivityType.ARRIVAL, this.getTruckArrivalStatus(truckArrivalTime), truckArrivalTime);
+        this.truckArrivalStatus = updateArrivalStatus(truckArrivalTime);
+        addActivity(ActivityType.ARRIVAL, this.truckArrivalStatus, truckArrivalTime);
     }
 
     public void enterByWeighingBridge(LocalDateTime eventTime) {
-        addActivity(ActivityType.PASS_WEIGHING_BRIDGE, AppointmentStatus.ON_SITE, eventTime);
+        addActivity(ActivityType.PASS_WEIGHING_BRIDGE, TruckArrivalStatus.ON_SITE, eventTime);
     }
 
     public void dumpPayload(LocalDateTime eventTime) {
-        addActivity(ActivityType.DUMP_LOAD, AppointmentStatus.ON_SITE, eventTime);
+        addActivity(ActivityType.DUMP_LOAD, TruckArrivalStatus.ON_SITE, eventTime);
     }
 
     public void leaveByWeighingBridge(LocalDateTime eventTime) {
-        addActivity(ActivityType.DEPARTURE, AppointmentStatus.LEFT_SITE, eventTime);
+        addActivity(ActivityType.PASS_WEIGHING_BRIDGE, TruckArrivalStatus.LEFT_SITE, eventTime);
     }
 
 
