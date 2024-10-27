@@ -8,12 +8,17 @@ public class Warehouse {
     private Seller.SellerId ownerId;
     private MaterialType materialType;
     private List<PayloadActivity> activityRecords;
+    private final Double maxCapacity = 5_000_000.0;
 
     public Warehouse(WarehouseNumber warehouseNumber, Seller.SellerId ownerId, MaterialType materialType, List<PayloadActivity> activityRecords) {
         this.warehouseNumber = warehouseNumber;
         this.ownerId = ownerId;
         this.materialType = materialType;
         this.activityRecords = activityRecords;
+    }
+
+    public Double getMaxCapacity() {
+        return maxCapacity;
     }
 
     public WarehouseNumber getWarehouseNumber() {
