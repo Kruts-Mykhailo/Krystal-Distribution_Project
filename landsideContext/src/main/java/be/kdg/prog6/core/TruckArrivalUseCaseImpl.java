@@ -33,7 +33,6 @@ public class TruckArrivalUseCaseImpl implements TruckArrivalUseCase {
 
         Appointment appointment = appointmentFoundPort.getAppointmentByArrivalTime(licensePlate, arrivalTime);
 
-
         appointment.truckArrived(arrivalTime);
         appointmentUpdatedPort.update(appointment);
 

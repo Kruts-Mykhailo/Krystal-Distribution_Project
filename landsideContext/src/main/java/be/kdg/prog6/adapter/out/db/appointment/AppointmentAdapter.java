@@ -54,6 +54,11 @@ public class AppointmentAdapter implements AppointmentCreatedPort, AppointmentUp
     }
 
     @Override
+    public void updateAllByStatus(List<Appointment> appointments, TruckArrivalStatus status) {
+
+    }
+
+    @Override
     public Appointment getAppointmentByArrivalTime(LicensePlate licensePlate, LocalDateTime arrivalTime) {
         return appointmentJpaRepository
                 .findEarliestScheduledAppointmentWithArrivalDateTime(licensePlate.licensePlate(), arrivalTime)

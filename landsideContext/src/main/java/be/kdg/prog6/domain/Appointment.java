@@ -8,12 +8,12 @@ import java.util.UUID;
 public class Appointment {
 
     private UUID id;
-    private LicensePlate truckLicensePlate;
+    private final LicensePlate truckLicensePlate;
     private MaterialType materialType;
-    private LocalDateTime scheduledArrivalTime;
+    private final LocalDateTime scheduledArrivalTime;
     private WarehouseNumber warehouseNumber;
     private TruckArrivalStatus truckArrivalStatus;
-    private List<AppointmentActivity> appointmentActivities;
+    private final List<AppointmentActivity> appointmentActivities;
 
     public Appointment(LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime scheduledArrivalTime, WarehouseNumber warehouseNumber, TruckArrivalStatus truckArrivalStatus) {
         this.id = UUID.randomUUID();
@@ -47,10 +47,6 @@ public class Appointment {
         return truckArrivalStatus;
     }
 
-    public void setTruckArrivalStatus(TruckArrivalStatus truckArrivalStatus) {
-        this.truckArrivalStatus = truckArrivalStatus;
-    }
-
     public WarehouseNumber getWarehouseNumber() {
         return warehouseNumber;
     }
@@ -61,10 +57,6 @@ public class Appointment {
 
     public LicensePlate getTruckLicensePlate() {
         return truckLicensePlate;
-    }
-
-    public void setTruckLicensePlate(LicensePlate truckLicensePlate) {
-        this.truckLicensePlate = truckLicensePlate;
     }
 
     public MaterialType getMaterialType() {
@@ -87,16 +79,8 @@ public class Appointment {
         return scheduledArrivalTime;
     }
 
-    public void setScheduledArrivalTime(LocalDateTime scheduledArrivalTime) {
-        this.scheduledArrivalTime = scheduledArrivalTime;
-    }
-
     public List<AppointmentActivity> getAppointmentActivities() {
         return appointmentActivities;
-    }
-
-    public void setAppointmentActivities(List<AppointmentActivity> appointmentActivities) {
-        this.appointmentActivities = appointmentActivities;
     }
 
 
