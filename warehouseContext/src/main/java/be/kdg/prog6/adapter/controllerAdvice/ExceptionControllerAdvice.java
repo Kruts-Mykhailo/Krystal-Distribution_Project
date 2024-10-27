@@ -1,4 +1,4 @@
-package be.kdg.prog6.adapter.configuration;
+package be.kdg.prog6.adapter.controllerAdvice;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;

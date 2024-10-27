@@ -1,7 +1,6 @@
 package be.kdg.prog6.core;
 
 import be.kdg.prog6.domain.Warehouse;
-import be.kdg.prog6.domain.WarehouseInfo;
 import be.kdg.prog6.port.in.GetInfosOfWarehousesUseCase;
 import be.kdg.prog6.port.out.WarehouseFoundPort;
 import jakarta.transaction.Transactional;
@@ -20,10 +19,7 @@ public class GetInfosOfWarehousesUseCaseImpl implements GetInfosOfWarehousesUseC
 
     @Override
     @Transactional
-    public List<WarehouseInfo> getInfosOfWarehouses() {
-        return warehouseFoundPort.getAllWarehouses()
-                .stream()
-                .map(Warehouse::provideInformation)
-                .toList();
+    public List<Warehouse> getInfosOfWarehouses() {
+        return warehouseFoundPort.getAllWarehouses();
     }
 }

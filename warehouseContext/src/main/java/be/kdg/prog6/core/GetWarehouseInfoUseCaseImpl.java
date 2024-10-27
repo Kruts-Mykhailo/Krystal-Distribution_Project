@@ -1,7 +1,6 @@
 package be.kdg.prog6.core;
 
 import be.kdg.prog6.domain.Warehouse;
-import be.kdg.prog6.domain.WarehouseInfo;
 import be.kdg.prog6.domain.WarehouseNumber;
 import be.kdg.prog6.port.in.GetWarehouseInfoUseCase;
 import be.kdg.prog6.port.out.WarehouseFoundPort;
@@ -19,8 +18,7 @@ public class GetWarehouseInfoUseCaseImpl implements GetWarehouseInfoUseCase {
 
     @Override
     @Transactional
-    public WarehouseInfo getWarehouseInfo(WarehouseNumber warehouseNumber) {
-        Warehouse warehouse = warehouseFoundPort.getWarehouseByNumber(warehouseNumber);
-        return warehouse.provideInformation();
+    public Warehouse getWarehouseInfo(WarehouseNumber warehouseNumber) {
+        return warehouseFoundPort.getWarehouseByNumber(warehouseNumber);
     }
 }

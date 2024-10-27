@@ -36,14 +36,6 @@ public class Warehouse {
         this.materialType = materialType;
     }
 
-    public WarehouseInfo provideInformation() {
-        return new WarehouseInfo(
-                warehouseNumber,
-                ownerId,
-                this.getWarehouseMaterialAmount().amount(),
-                materialType);
-    }
-
     public MaterialAmount getWarehouseMaterialAmount() {
         return new MaterialAmount(activityRecords.stream().mapToDouble(PayloadActivity::payload).sum(), LocalDateTime.now());
     }

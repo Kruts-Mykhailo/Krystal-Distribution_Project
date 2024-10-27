@@ -1,6 +1,5 @@
 package be.kdg.prog6.adapter.in.api;
 
-import be.kdg.prog6.domain.WarehouseInfo;
 import be.kdg.prog6.domain.WarehouseNumber;
 import be.kdg.prog6.port.in.GetInfosOfWarehousesUseCase;
 import be.kdg.prog6.port.in.GetWarehouseInfoUseCase;
@@ -25,14 +24,19 @@ public class WarehouseController {
     }
 
     @GetMapping("/{warehouseNumber}")
-    public ResponseEntity<?> getWarehouseInfo(@PathVariable String warehouseNumber) {
-        WarehouseInfo warehouseInfo = getWarehouseInfoUseCase.getWarehouseInfo(new WarehouseNumber(warehouseNumber));
+    public ResponseEntity<WarehouseInfoDTO> getWarehouseInfo(@PathVariable String warehouseNumber) {
+        WarehouseInfoDTO warehouseInfo = WarehouseInfoDTO.from(getWarehouseInfoUseCase.getWarehouseInfo(new WarehouseNumber(warehouseNumber)));
         return ResponseEntity.ok().body(warehouseInfo);
     }
 
     @GetMapping
-    public ResponseEntity<?> getWarehouses() {
-        List<WarehouseInfo> warehouseInfoList = getInfosOfWarehousesUseCase.getInfosOfWarehouses();
+    public ResponseEntity<List<WarehouseInfoDTO>> getWarehouses() {
+        List<WarehouseInfoDTO> warehouseInfoList = getInfosOfWarehousesUseCase
+                .getInfosOfWarehouses()
+                .stream()
+                .map(WarehouseInfoDTO::from)
+                .toList();
+
         if (warehouseInfoList.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
