@@ -7,7 +7,8 @@ public class PurchaseOrderConverter {
         return new PurchaseOrderDTO(
                 purchaseOrder.status().name(),
                 purchaseOrder.poNumber().number(),
-                purchaseOrder.sellerId().id()
+                purchaseOrder.sellerId().id(),
+                purchaseOrder.getReceivedDateTime()
         );
     }
 }

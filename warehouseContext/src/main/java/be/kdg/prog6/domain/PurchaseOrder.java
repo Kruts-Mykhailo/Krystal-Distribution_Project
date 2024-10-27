@@ -1,5 +1,6 @@
 package be.kdg.prog6.domain;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,12 +10,14 @@ public final class PurchaseOrder {
     private final List<OrderLine> orderLines;
     private final PONumber poNumber;
     private OrderStatus status;
+    private final LocalDateTime receivedDateTime;
 
-    public PurchaseOrder(Seller.SellerId sellerId, List<OrderLine> orderLines, PONumber poNumber, OrderStatus status) {
+    public PurchaseOrder(Seller.SellerId sellerId, List<OrderLine> orderLines, PONumber poNumber, OrderStatus status, LocalDateTime receivedDateTime) {
         this.sellerId = sellerId;
         this.orderLines = orderLines;
         this.poNumber = poNumber;
         this.status = status;
+        this.receivedDateTime = receivedDateTime;
     }
 
     public boolean isNotFilled() {
@@ -43,6 +46,10 @@ public final class PurchaseOrder {
 
     public OrderStatus status() {
         return status;
+    }
+
+    public LocalDateTime getReceivedDateTime() {
+        return receivedDateTime;
     }
 
     @Override

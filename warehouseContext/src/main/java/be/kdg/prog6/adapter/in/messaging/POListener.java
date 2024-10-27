@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 
@@ -35,7 +36,8 @@ public class POListener {
                         ))
                         .collect(Collectors.toList()),
                 new PONumber(receivedEvent.getPurchaseOrder().getPoNumber()),
-                PurchaseOrder.OrderStatus.OUTSTANDING
+                PurchaseOrder.OrderStatus.OUTSTANDING,
+                LocalDateTime.now()
         );
         logger.info("Received purchase order: {}", purchaseOrder);
         receivePOUseCase.receivePO(purchaseOrder);

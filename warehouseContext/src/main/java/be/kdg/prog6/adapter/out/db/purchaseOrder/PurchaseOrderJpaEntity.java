@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,16 +25,20 @@ public class PurchaseOrderJpaEntity {
     @Column
     private String orderStatus;
 
+    @Column
+    private LocalDateTime receivedDateTime;
+
     @OneToMany(mappedBy = "purchaseOrder")
     private List<OrderLineJpaEntity> orderLines;
 
     public PurchaseOrderJpaEntity() {
     }
 
-    public PurchaseOrderJpaEntity(String poNumber, UUID sellerId, String orderStatus) {
+    public PurchaseOrderJpaEntity(String poNumber, UUID sellerId, String orderStatus, LocalDateTime receivedDateTime) {
         this.poNumber = poNumber;
         this.sellerId = sellerId;
         this.orderStatus = orderStatus;
+        this.receivedDateTime = receivedDateTime;
     }
 
     public PurchaseOrderJpaEntity(String poNumber) {

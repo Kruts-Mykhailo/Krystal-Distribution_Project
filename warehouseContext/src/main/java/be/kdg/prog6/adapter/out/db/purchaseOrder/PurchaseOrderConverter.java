@@ -14,7 +14,8 @@ public class PurchaseOrderConverter {
         return new PurchaseOrderJpaEntity(
                 purchaseOrder.poNumber().number(),
                 purchaseOrder.sellerId().id(),
-                purchaseOrder.status().name()
+                purchaseOrder.status().name(),
+                purchaseOrder.getReceivedDateTime()
         );
     }
 
@@ -23,8 +24,8 @@ public class PurchaseOrderConverter {
                 new Seller.SellerId(purchaseOrderJpaEntity.getSellerId()),
                 orderLines,
                 new PONumber(purchaseOrderJpaEntity.getPoNumber()),
-                PurchaseOrder.OrderStatus.valueOf(purchaseOrderJpaEntity.getOrderStatus())
-        );
+                PurchaseOrder.OrderStatus.valueOf(purchaseOrderJpaEntity.getOrderStatus()),
+                purchaseOrderJpaEntity.getReceivedDateTime());
     }
 
     public static PurchaseOrder toPurchaseOrder(PurchaseOrderJpaEntity purchaseOrderJpaEntity) {
@@ -32,7 +33,8 @@ public class PurchaseOrderConverter {
                 new Seller.SellerId(purchaseOrderJpaEntity.getSellerId()),
                 new ArrayList<>(),
                 new PONumber(purchaseOrderJpaEntity.getPoNumber()),
-                PurchaseOrder.OrderStatus.valueOf(purchaseOrderJpaEntity.getOrderStatus())
+                PurchaseOrder.OrderStatus.valueOf(purchaseOrderJpaEntity.getOrderStatus()),
+                purchaseOrderJpaEntity.getReceivedDateTime()
 
         );
     }
