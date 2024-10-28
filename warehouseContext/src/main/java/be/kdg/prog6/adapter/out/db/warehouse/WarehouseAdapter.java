@@ -41,10 +41,13 @@ public class WarehouseAdapter implements WarehouseFoundPort {
 
     @Override
     public List<Warehouse> getAllWarehouses() {
-        return warehouseJpaRepository
-                .findAll()
+        var list = warehouseJpaRepository.findAllFetched();
+        return list
                 .stream()
-                .map(WarehouseConverter::toWarehouse)
+                .map(w -> WarehouseConverter.toWarehouseFetched(
+                        w,
+                        PayloadConverter.toPayloadActivities(w.getPayloadActivityJpaEntities())
+                ))
                 .collect(Collectors.toList());
     }
 

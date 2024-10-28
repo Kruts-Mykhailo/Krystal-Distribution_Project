@@ -5,10 +5,9 @@ import java.util.List;
 
 public class Warehouse {
     private WarehouseNumber warehouseNumber;
-    private Seller.SellerId ownerId;
+    private final Seller.SellerId ownerId;
     private MaterialType materialType;
-    private List<PayloadActivity> activityRecords;
-    private final Double maxCapacity = 5_000_000.0;
+    private final List<PayloadActivity> activityRecords;
 
     public Warehouse(WarehouseNumber warehouseNumber, Seller.SellerId ownerId, MaterialType materialType, List<PayloadActivity> activityRecords) {
         this.warehouseNumber = warehouseNumber;
@@ -18,7 +17,7 @@ public class Warehouse {
     }
 
     public Double getMaxCapacity() {
-        return maxCapacity;
+        return 5_000_000.0;
     }
 
     public WarehouseNumber getWarehouseNumber() {

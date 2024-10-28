@@ -6,7 +6,7 @@ Content-Type: application/json
 {
   "properties": {},
   "routing_key": "payload_delivery_ticket_queue",
-  "payload": "{\"warehouseId\":\"c56a4180-65aa-42ec-a945-5fd21dec0538\",\"sendTime\":\"2024-10-09T10:31:15.123\",\"netWeight\":10000.0,\"materialType\":\"GYPSUM\"}",
+  "payload": "{\"warehouseNumber\":\"W-01\",\"sendTime\":\"2024-10-09T10:31:15.123\",\"netWeight\":10000.0,\"materialType\":\"GYPSUM\"}",
   "payload_encoding": "string"
 }
 

@@ -15,4 +15,5 @@ GET http://localhost:8093/wc/purchaseOrders
 Authorization: Bearer {{access_token}}
 
 ### Get warehouse info
-GET http://localhost:8093/wc/warehouses/1
+GET http://localhost:8093/wc/warehouses
+Authorization: Bearer {{access_token}}

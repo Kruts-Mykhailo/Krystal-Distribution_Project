@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface WarehouseJpaRepository extends JpaRepository<WarehouseJpaEntity, UUID> {
+public interface WarehouseJpaRepository extends JpaRepository<WarehouseJpaEntity, String> {
 
     Optional<WarehouseJpaEntity> findByOwnerIdAndMaterialType(UUID ownerId, String materialType);
 
@@ -17,4 +17,8 @@ public interface WarehouseJpaRepository extends JpaRepository<WarehouseJpaEntity
             "left join fetch w.payloadActivityJpaEntities " +
             "where w.warehouseNumber = :warehouseNumber")
     Optional<WarehouseJpaEntity> findByWarehouseNumberFetched(String warehouseNumber);
+
+    @Query("select w from WarehouseJpaEntity w " +
+            "left join fetch w.payloadActivityJpaEntities ")
+    List<WarehouseJpaEntity> findAllFetched();
 }
