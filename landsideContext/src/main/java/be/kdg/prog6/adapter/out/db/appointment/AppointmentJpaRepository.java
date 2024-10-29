@@ -28,7 +28,8 @@ public interface AppointmentJpaRepository extends JpaRepository<AppointmentJpaEn
     Optional<AppointmentJpaEntity> findByLicensePlateAndNotStatusFetched(String licensePlate, String status);
 
 
-    List<AppointmentJpaEntity> findAllByAppointmentDateTime(LocalDateTime dateTime);
+    List<AppointmentJpaEntity> findAllByAppointmentDateTimeBetween(LocalDateTime from, LocalDateTime to);
 
     List<AppointmentJpaEntity> findAllByStatusIn(List<String> statuses);
+
 }

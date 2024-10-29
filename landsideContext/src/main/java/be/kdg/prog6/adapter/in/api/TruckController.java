@@ -32,7 +32,7 @@ public class TruckController {
     }
 
     @GetMapping("/{date}")
-    public ResponseEntity<?> getTruckArrivalStatusByDate(@PathVariable LocalDate date){
+    public ResponseEntity<List<TruckArrivalDTO>> getTruckArrivalStatusByDate(@PathVariable LocalDate date){
         List<TruckArrivalDTO> trucks = checkAllTrucksStatusesUseCase.checkStatusesOfTrucks(date)
                 .stream()
                 .map(TruckArrivalDTO::from)

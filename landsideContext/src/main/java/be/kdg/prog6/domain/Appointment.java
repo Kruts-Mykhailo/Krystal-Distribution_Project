@@ -83,6 +83,13 @@ public class Appointment {
         return appointmentActivities;
     }
 
+    public void adjustStatusForLateArrival() {
+        if (this.getWindowEndTime().isBefore(LocalDateTime.now()) &&
+                this.getTruckArrivalStatus() == TruckArrivalStatus.SCHEDULED) {
+            this.truckArrivalStatus = TruckArrivalStatus.NOT_ARRIVED_LATE;
+        }
+    }
+
 
     private TruckArrivalStatus updateArrivalStatus(LocalDateTime arrivalTime) {
         return arrivalTime.isAfter(this.scheduledArrivalTime) &&

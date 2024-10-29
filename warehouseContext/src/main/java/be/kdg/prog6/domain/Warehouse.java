@@ -17,7 +17,7 @@ public class Warehouse {
     }
 
     public Double getMaxCapacity() {
-        return 5_000_000.0;
+        return 40_000.0;
     }
 
     public WarehouseNumber getWarehouseNumber() {

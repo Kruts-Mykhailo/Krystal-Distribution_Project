@@ -27,13 +27,9 @@ public class CheckTruckStatusesUseCaseImpl implements CheckAllTrucksStatusesUseC
     @Transactional
     public List<Appointment> checkStatusesOfTrucks(LocalDate date) {
         List<Appointment> appointments = appointmentFoundPort.getAllTruckAppointmentsByDate(date);
-        appointmentUpdatedPort.updateAllByStatus(appointments.
-                stream()
-                .filter(a -> a.getWindowEndTime().isBefore(LocalDateTime.now()) &&
-                        a.getTruckArrivalStatus() == TruckArrivalStatus.SCHEDULED)
-                .toList(),
-                TruckArrivalStatus.NOT_ARRIVED_LATE);
+        appointments.forEach(Appointment::adjustStatusForLateArrival);
 
+        appointmentUpdatedPort.updateAllStatuses(appointments);
         return appointmentFoundPort.getAllTruckAppointmentsByDate(date);
     }
 }

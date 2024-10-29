@@ -53,8 +53,24 @@ public class AppointmentAdapter implements AppointmentCreatedPort, AppointmentUp
 
     }
 
+
     @Override
-    public void updateAllByStatus(List<Appointment> appointments, TruckArrivalStatus status) {
+    public void updateAllStatuses(List<Appointment> appointments) {
+        List<AppointmentJpaEntity> existingAppointments = appointmentJpaRepository.findAllById(
+                appointments.stream().map(Appointment::getId).collect(Collectors.toList())
+        );
+
+        for (AppointmentJpaEntity appointmentJpaEntity : existingAppointments) {
+            Appointment appointmentToUpdate = appointments.stream()
+                    .filter(a -> a.getId().equals(appointmentJpaEntity.getAppointmentId()))
+                    .findFirst()
+                    .orElseThrow(() -> new AppointmentNotFoundException(
+                            "Appointment %s not found".formatted(appointmentJpaEntity.getAppointmentId())));
+
+            if (appointmentToUpdate != null) {
+                appointmentJpaEntity.setStatus(appointmentToUpdate.getTruckArrivalStatus().name());
+            }
+        }
 
     }
 
@@ -79,7 +95,8 @@ public class AppointmentAdapter implements AppointmentCreatedPort, AppointmentUp
 
     @Override
     public List<Appointment> getAllTruckAppointmentsByDate(LocalDate when) {
-        return appointmentJpaRepository.findAllByAppointmentDateTime(when.atStartOfDay())
+        return appointmentJpaRepository
+                .findAllByAppointmentDateTimeBetween(when.atStartOfDay(), when.plusDays(1).atStartOfDay())
                 .stream()
                 .map(AppointmentConverter::toAppointment)
                 .collect(Collectors.toList());
