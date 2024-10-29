@@ -39,7 +39,7 @@ public class ArrivalController {
 
 
     @GetMapping
-    public ResponseEntity<?> viewAllShipmentsArrivals(){
+    public ResponseEntity<List<VesselStatusDTO>> viewAllShipmentsArrivals(){
         List<VesselStatusDTO> shipmentsArrivals = viewShipmentArrivalsUseCase.getAllShipmentArrivals().
                 stream().
                 map(VesselStatusDTOConverter::convert).

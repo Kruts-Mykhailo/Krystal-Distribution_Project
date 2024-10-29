@@ -1,5 +1,7 @@
 package be.kdg.prog6.domain;
 
+import be.kdg.prog6.adapters.exceptions.VesselAlreadyLeftException;
+
 import java.time.LocalDate;
 
 
@@ -33,6 +35,10 @@ public class ShipmentOrder {
     public void leave() {
         this.departureDate = LocalDate.now();
         this.shipmentStatus = ShipmentStatus.LEFT_PORT;
+    }
+
+    public void didVesselLeave() {
+        throw new VesselAlreadyLeftException("Vessel %s already left the site".formatted(vesselNumber));
     }
 
     public boolean canVesselLeave() {

@@ -20,9 +20,7 @@ public class CheckIfVesselCanLeaveUseCaseImpl implements CheckIfVesselCanLeaveUs
     @Transactional
     public ShipmentOrder checkIfVesselCanLeave(String vesselNumber) {
         ShipmentOrder shipmentOrder = findSOPort.findShipmentOrderByVesselNumber(vesselNumber);
-        if (shipmentOrder.getShipmentStatus() == ShipmentOrder.ShipmentStatus.LEFT_PORT) {
-            throw new VesselAlreadyLeftException("Vessel %s already left the site".formatted(vesselNumber));
-        }
+        shipmentOrder.didVesselLeave();
         return shipmentOrder;
     }
 }

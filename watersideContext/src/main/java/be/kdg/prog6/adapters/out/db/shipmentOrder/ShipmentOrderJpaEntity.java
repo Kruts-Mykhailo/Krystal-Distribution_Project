@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class ShipmentOrderJpaEntity {
 
     @Id
-    private PONumber poReferenceNumber;
+    private String poReferenceNumber;
 
     @Column(nullable = false)
     private String customerEnterpriseNumber;
@@ -48,7 +48,7 @@ public class ShipmentOrderJpaEntity {
     public ShipmentOrderJpaEntity() {
     }
 
-    public ShipmentOrderJpaEntity(PONumber poReferenceNumber, String customerEnterpriseNumber, String vesselNumber, LocalDate arrivalDate, LocalDate departureDate, LocalDate bunkeringOperationDate, LocalDate inspectionOperationDate, String inspectorSignature, Boolean isMatchedWithPO, String shipmentStatus) {
+    public ShipmentOrderJpaEntity(String poReferenceNumber, String customerEnterpriseNumber, String vesselNumber, LocalDate arrivalDate, LocalDate departureDate, LocalDate bunkeringOperationDate, LocalDate inspectionOperationDate, String inspectorSignature, Boolean isMatchedWithPO, String shipmentStatus) {
         this.poReferenceNumber = poReferenceNumber;
         this.customerEnterpriseNumber = customerEnterpriseNumber;
         this.vesselNumber = vesselNumber;

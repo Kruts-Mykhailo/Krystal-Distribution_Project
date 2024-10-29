@@ -20,6 +20,6 @@ public class ViewShipmentArrivalsUseCaseImpl implements ViewShipmentArrivalsUseC
     @Override
     @Transactional
     public List<ShipmentOrder> getAllShipmentArrivals() {
-        return findSOPort.findAllOnSite();
+        return findSOPort.findAllWithStatusNotIn(ShipmentOrder.ShipmentStatus.LEFT_PORT);
     }
 }

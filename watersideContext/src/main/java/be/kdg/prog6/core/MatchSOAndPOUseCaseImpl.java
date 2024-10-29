@@ -29,14 +29,13 @@ public class MatchSOAndPOUseCaseImpl implements MatchSOAndPOUseCase {
     @Transactional
     public void matchSOAndPO(String vesselNumber) {
         ShipmentOrder shipmentOrder = findSOPort.findShipmentOrderByVesselNumber(vesselNumber);
-        if (shipmentOrder.getShipmentStatus() == ShipmentOrder.ShipmentStatus.LEFT_PORT) {
-            throw new VesselAlreadyLeftException("Vessel %s already left the site".formatted(vesselNumber));
-        }
+        shipmentOrder.didVesselLeave();
 
         shipmentOrder.matchPurchaseOrder();
         updateSOPort.updateShipmentOrder(shipmentOrder);
         sendMatchingEventPort.sendMatchingEvent(shipmentOrder.getPoReferenceNumber());
         log.info("Matched SO and PO with vessel number {}", vesselNumber);
+
         if (shipmentOrder.canVesselLeave()) {
             shipmentOrder.leave();
             shipmentOrder = updateSOPort.updateShipmentOrder(shipmentOrder);

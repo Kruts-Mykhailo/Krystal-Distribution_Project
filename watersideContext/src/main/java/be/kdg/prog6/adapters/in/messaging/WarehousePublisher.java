@@ -22,7 +22,7 @@ public class WarehousePublisher implements SendShipmentOrderFulfilledPort, SendM
         this.rabbitTemplate.convertAndSend(
                 MQTopology.CHANGE_ORDER_STATUS_EXCHANGE,
                 routingKey,
-                new ChangePOStatusEvent(poNumber)
+                new ChangePOStatusEvent(poNumber.number())
         );
     }
 
@@ -32,7 +32,7 @@ public class WarehousePublisher implements SendShipmentOrderFulfilledPort, SendM
         this.rabbitTemplate.convertAndSend(
                 MQTopology.CHANGE_ORDER_STATUS_EXCHANGE,
                 routingKey,
-                new ChangePOStatusEvent(poNumber)
+                new ChangePOStatusEvent(poNumber.number())
         );
     }
 }

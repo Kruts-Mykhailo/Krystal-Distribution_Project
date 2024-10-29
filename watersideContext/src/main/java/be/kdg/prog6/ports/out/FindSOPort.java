@@ -10,5 +10,5 @@ public interface FindSOPort {
     ShipmentOrder findShipmentOrderByVesselNumber(String vesselNumber);
     List<ShipmentOrder> findAllShipmentOrderByBunkeringOperationDate(LocalDate date);
     List<ShipmentOrder> findAllWithoutIO();
-    List<ShipmentOrder> findAllOnSite();
+    List<ShipmentOrder> findAllWithStatusNotIn(ShipmentOrder.ShipmentStatus status);
 }

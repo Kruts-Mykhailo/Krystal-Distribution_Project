@@ -5,7 +5,7 @@ public class ShipmentOrderConverter {
 
     public static ShipmentOrderJpaEntity toShipmentOrderJpaEntity(ShipmentOrder shipmentOrder) {
         return new ShipmentOrderJpaEntity(
-                shipmentOrder.getPoReferenceNumber(),
+                shipmentOrder.getPoReferenceNumber().number(),
                 shipmentOrder.getCustomerEnterpriseNumber(),
                 shipmentOrder.getVesselNumber(),
                 shipmentOrder.getArrivalDate(),
@@ -23,7 +23,7 @@ public class ShipmentOrderConverter {
         IO io = new IO(shipmentOrderJpaEntity.getInspectorSignature(), shipmentOrderJpaEntity.getInspectionOperationDate());
         BO bo = new BO(shipmentOrderJpaEntity.getBunkeringOperationDate());
         return new ShipmentOrder(
-                shipmentOrderJpaEntity.getPoReferenceNumber(),
+                new PONumber(shipmentOrderJpaEntity.getPoReferenceNumber()),
                 shipmentOrderJpaEntity.getCustomerEnterpriseNumber(),
                 shipmentOrderJpaEntity.getVesselNumber(),
                 shipmentOrderJpaEntity.getArrivalDate(),
