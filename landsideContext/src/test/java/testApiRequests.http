@@ -17,9 +17,9 @@ Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 {
-  "licensePlate": "B-777JD-F",
+  "licensePlate": "A-111JD-F",
   "materialType": "GYPSUM",
-  "scheduleDateTime": "2024-10-29T10:00:00"
+  "scheduleDateTime": "2024-10-29T15:00:00"
 }
 
 ### Get truck status
@@ -35,7 +35,7 @@ GET localhost:8091/lsc/schedules
 
 
 ### POST Test license plate on gate recognition
-POST http://localhost:8091/lsc/gate/B-777JD-F/arrive
+POST http://localhost:8091/lsc/gate/A-111JD-F/arrive
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 

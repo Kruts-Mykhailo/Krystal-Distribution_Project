@@ -13,15 +13,16 @@ import java.util.UUID;
 @Repository
 public interface AppointmentJpaRepository extends JpaRepository<AppointmentJpaEntity, UUID> {
 
-    @Query("SELECT a FROM AppointmentJpaEntity a " +
-            "WHERE a.licensePlate = :licensePlate " +
-            "AND a.status = 'SCHEDULED' " +
-            "AND :arrivalDateTime >= a.appointmentDateTime " +
-            "ORDER BY a.appointmentDateTime ASC")
+    @Query(value = "SELECT * FROM appointments a " +
+            "WHERE a.license_plate = :licensePlate " +
+            "AND :arrivalDateTime >= a.appointment_date_time " +
+            "ORDER BY a.appointment_date_time " +
+            "LIMIT 1", nativeQuery = true)
     Optional<AppointmentJpaEntity> findEarliestScheduledAppointmentWithArrivalDateTime(
             @Param("licensePlate") String licensePlate,
             @Param("arrivalDateTime") LocalDateTime arrivalDateTime
     );
+
     @Query("select a from AppointmentJpaEntity a " +
     "left join fetch a.activities " +
     "where a.licensePlate = :licensePlate and a.status != :status")
