@@ -2,7 +2,6 @@ package be.kdg.prog6.core;
 
 import be.kdg.prog6.domain.Appointment;
 import be.kdg.prog6.domain.LicensePlate;
-import be.kdg.prog6.domain.PDT;
 import be.kdg.prog6.domain.TruckArrivalStatus;
 import be.kdg.prog6.events.PayloadDeliveredEvent;
 import be.kdg.prog6.port.in.DumpPayloadUseCase;
@@ -31,7 +30,7 @@ public class DumpPayloadUseCaseImpl implements DumpPayloadUseCase {
 
     @Override
     @Transactional
-    public PDT dumpPayload(LicensePlate licensePlate) {
+    public Appointment dumpPayload(LicensePlate licensePlate) {
         Appointment appointment = appointmentFoundPort.getByLicensePlateAndNotStatus(
                 licensePlate,
                 TruckArrivalStatus.SCHEDULED);
@@ -45,6 +44,6 @@ public class DumpPayloadUseCaseImpl implements DumpPayloadUseCase {
                 appointment.getMaterialType().name()));
         logger.info(String.format("Truck %s dumped material on conveyor belt.", licensePlate.licensePlate()));
 
-        return new PDT(appointment.getWarehouseNumber(), LocalDateTime.now(), appointment.getMaterialType());
+        return appointment;
     }
 }

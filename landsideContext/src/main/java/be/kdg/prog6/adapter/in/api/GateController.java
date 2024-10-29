@@ -27,7 +27,7 @@ public class GateController {
     }
 
     @PostMapping("/{licensePlate}/arrive")
-    public ResponseEntity<?> arriveToFacility(@PathVariable String licensePlate) {
+    public ResponseEntity<String> arriveToFacility(@PathVariable String licensePlate) {
 
         TruckArrivalCommand truckArrivalCommand = new TruckArrivalCommand(
                 new LicensePlate(licensePlate),

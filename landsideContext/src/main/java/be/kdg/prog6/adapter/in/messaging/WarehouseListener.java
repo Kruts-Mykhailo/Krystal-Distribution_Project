@@ -14,13 +14,14 @@ import org.springframework.stereotype.Component;
 public class WarehouseListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(WarehouseListener.class);
     private final WarehouseInfoProjector warehouseInfoProjector;
+    public static final String WAREHOUSE_FULLNESS_QUEUE = "warehouse_fullness_queue";
 
     public WarehouseListener(WarehouseInfoProjector warehouseInfoProjector) {
         this.warehouseInfoProjector = warehouseInfoProjector;
     }
 
 
-    @RabbitListener(queues = MQTopology.WAREHOUSE_FULLNESS_QUEUE, messageConverter = "#{jackson2JsonMessageConverter}")
+    @RabbitListener(queues = WAREHOUSE_FULLNESS_QUEUE, messageConverter = "#{jackson2JsonMessageConverter}")
     public void warehouseUpdatedListener(WarehouseCapacityChangeEvent warehouseCapacityChangeEvent) {
         LOGGER.info("Warehouse {} updated", warehouseCapacityChangeEvent.number());
         warehouseInfoProjector.project(

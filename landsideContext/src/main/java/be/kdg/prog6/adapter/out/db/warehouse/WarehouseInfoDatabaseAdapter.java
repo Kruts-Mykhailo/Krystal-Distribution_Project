@@ -25,7 +25,7 @@ public class WarehouseInfoDatabaseAdapter implements WarehouseProjectionFoundPor
         return WarehouseInfoConverter.convert(warehouseInfoJpaRepository
                 .findBySellerIdAndMaterialType(sellerId.id(), materialType.name())
                 .orElseThrow(
-                        () -> new WarehouseNotFoundException("Warehouse for seller %s and material type %s"
+                        () -> new WarehouseNotFoundException("Warehouse not found for seller %s and material type %s"
                                 .formatted(sellerId.id(), materialType.name()))
                 ));
     }

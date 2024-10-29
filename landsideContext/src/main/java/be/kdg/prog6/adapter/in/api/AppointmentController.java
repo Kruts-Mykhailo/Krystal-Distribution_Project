@@ -22,7 +22,7 @@ public class AppointmentController {
     }
 
     @PostMapping("/{customerId}")
-    public ResponseEntity<?> makeAppointment(@RequestBody AppointmentRequestDTO appointmentRequestDTO,
+    public ResponseEntity<AppointmentDTO> makeAppointment(@RequestBody AppointmentRequestDTO appointmentRequestDTO,
                                                           @PathVariable UUID customerId) {
         CreateAppointmentCommand command = new CreateAppointmentCommand(
                 MaterialType.valueOf(appointmentRequestDTO.getMaterialType()),

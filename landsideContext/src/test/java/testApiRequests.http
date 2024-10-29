@@ -19,10 +19,10 @@ Authorization: Bearer {{access_token}}
 {
   "licensePlate": "A-111JD-F",
   "materialType": "GYPSUM",
-  "scheduleDateTime": "2024-10-29T15:00:00"
+  "scheduleDateTime": "2024-10-30T00:00:00"
 }
 
-### Get truck status
+### Get arrivals by date
 GET http://localhost:8091/lsc/trucks/2024-10-29
 Authorization: Bearer {{access_token}}
 
@@ -32,7 +32,7 @@ Authorization: Bearer {{access_token}}
 
 ### Get all schedules
 GET localhost:8091/lsc/schedules
-
+Authorization: Bearer {{access_token}}
 
 ### POST Test license plate on gate recognition
 POST http://localhost:8091/lsc/gate/A-111JD-F/arrive
@@ -42,19 +42,22 @@ Authorization: Bearer {{access_token}}
 {}
 
 ### POST Test pass weighing bridge (enter operation)
-POST http://localhost:8091/lsc/bridge/B-123JD-F/500/true
+POST http://localhost:8091/lsc/bridge/A-111JD-F/1600/true
 Content-Type: application/json
+Authorization: Bearer {{access_token}}
 
 {}
 
 ### POST Test truck docking to conveyour belt to drop payload
-POST http://localhost:8091/lsc/conveyorBelt/B-123JD-F
+POST http://localhost:8091/lsc/conveyorBelt/A-111JD-F
 Content-Type: application/json
+Authorization: Bearer {{access_token}}
 
 {}
 
 ### POST Test truck pass weighing bridge (leave operation)
-POST http://localhost:8091/lsc/bridge/B-123JD-F/300/false
+POST http://localhost:8091/lsc/bridge/A-111JD-F/300/false
 Content-Type: application/json
+Authorization: Bearer {{access_token}}
 
 {}

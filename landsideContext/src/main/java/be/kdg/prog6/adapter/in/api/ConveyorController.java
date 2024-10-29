@@ -1,14 +1,16 @@
 package be.kdg.prog6.adapter.in.api;
 
-import be.kdg.prog6.adapter.in.api.dto.PdtDTO;
+import be.kdg.prog6.adapter.in.api.dto.PdtCopyDTO;
+import be.kdg.prog6.domain.Appointment;
 import be.kdg.prog6.domain.LicensePlate;
-import be.kdg.prog6.domain.PDT;
 import be.kdg.prog6.port.in.DumpPayloadUseCase;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
 import java.util.Random;
 
 @RestController
@@ -22,13 +24,17 @@ public class ConveyorController {
     }
 
     @PostMapping("/{licensePlate}")
-    public ResponseEntity<PdtDTO> truckDumpPayload(@PathVariable String licensePlate) {
-        PDT pdt = dumpPayloadUseCase.dumpPayload(new LicensePlate(licensePlate));
+    public ResponseEntity<PdtCopyDTO> truckDumpPayload(@PathVariable String licensePlate) {
+        Appointment updatedAppointment = dumpPayloadUseCase.dumpPayload(new LicensePlate(licensePlate));
 
         Random random = new Random();
         int dockNumber = random.nextInt(10000);
 
-        return ResponseEntity.ok(PdtDTO.fromPDT(pdt, dockNumber));
+        return ResponseEntity.ok(new PdtCopyDTO(
+                updatedAppointment.getWarehouseNumber().number(),
+                LocalDateTime.now(),
+                updatedAppointment.getMaterialType().name(),
+                dockNumber));
 
     }
 }

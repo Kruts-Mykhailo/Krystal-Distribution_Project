@@ -1,37 +1,26 @@
 package be.kdg.prog6.adapter.in.api.dto;
 
-import be.kdg.prog6.domain.PDT;
-import be.kdg.prog6.domain.WarehouseNumber;
-
 import java.time.LocalDateTime;
 
-public class PdtDTO {
-    private WarehouseNumber warehouseNumber;
+public class PdtCopyDTO {
+    private String warehouseNumber;
     private LocalDateTime deliveryDateTime;
     private String materialType;
     private int dockNumber;
 
-    public PdtDTO(WarehouseNumber warehouseNumber, LocalDateTime deliveryDateTime, String materialType, int dockNumber) {
+    public PdtCopyDTO(String warehouseNumber, LocalDateTime deliveryDateTime, String materialType, int dockNumber) {
         this.warehouseNumber = warehouseNumber;
         this.deliveryDateTime = deliveryDateTime;
         this.materialType = materialType;
         this.dockNumber = dockNumber;
     }
 
-    public static PdtDTO fromPDT(PDT pdt, int dockNumber) {
-        return new PdtDTO(
-                pdt.warehouseNumber(),
-                pdt.sendTime(),
-                pdt.materialType().name(),
-                dockNumber
-        );
-    }
 
-    public WarehouseNumber getWarehouseNumber() {
+    public String getWarehouseNumber() {
         return warehouseNumber;
     }
 
-    public void setWarehouseNumber(WarehouseNumber warehouseNumber) {
+    public void setWarehouseNumber(String warehouseNumber) {
         this.warehouseNumber = warehouseNumber;
     }
 
