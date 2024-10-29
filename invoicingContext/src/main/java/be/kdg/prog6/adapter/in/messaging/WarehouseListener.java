@@ -15,6 +15,7 @@ public class WarehouseListener {
     private static final Logger log = LoggerFactory.getLogger(WarehouseListener.class);
     public static final String COMMISSIONS_QUEUE = "commissions_queue";
     public static final String PAYLOAD_DELIVERY_QUEUE = "payload_delivery_queue";
+
     private final CalculateCommissionFeeUseCase calculateCommissionFeeUseCase;
     private final ReceivePayloadDeliveryUseCase receivePayloadDeliveryUseCase;
 

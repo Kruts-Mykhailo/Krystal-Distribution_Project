@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MQTopology {
-    public static final String WAREHOUSE_FULLNESS_QUEUE = "warehouse_capacity_change";
+    public static final String WAREHOUSE_FULLNESS_QUEUE = "warehouse_fullness_queue";
     public static final String WAREHOUSE_FULLNESS_EXCHANGE = "warehouse_capacity_exchange";
 
     public static final String INVOICING_EXCHANGE = "invoicing_exchange";
@@ -29,7 +29,7 @@ public class MQTopology {
 
     @Bean
     Queue warehouseCapacityQueue() {
-        return new Queue(WAREHOUSE_FULLNESS_QUEUE, true);
+        return new Queue(WAREHOUSE_FULLNESS_QUEUE);
     }
 
     @Bean

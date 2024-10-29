@@ -30,22 +30,26 @@ public class PayloadActivityAdapter implements PayloadActivitySavedPort, Payload
 
 
     @Override
-    public void updateZeroWeightActivity(PayloadActivity payloadActivity, WarehouseNumber warehouseNumber) {
+    public void updateWeight(PayloadActivity payloadActivity, WarehouseNumber warehouseNumber, Double netWeight) {
         PayloadActivityJpaEntity payloadActivityJpaEntity = payloadActivityJpaRepository
-                .findFirstByWarehouseAndAmountOrderByRecordTimeAsc(
-                        new WarehouseJpaEntity(warehouseNumber.number()),
-                        0.0
-                ).orElseThrow(() -> new PayloadActivityNotFoundException("Payload activity not found"));
-        payloadActivityJpaEntity.setAmount(payloadActivity.getAmount());
+                .findFirstByWarehouseAndAmountAndRecordTime(
+                        warehouseNumber.number(),
+                        payloadActivity.payload(),
+                        payloadActivity.getEventDateTime())
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new PayloadActivityNotFoundException("PayloadActivity not found"));
+
+        payloadActivityJpaEntity.setAmount(netWeight);
         payloadActivityJpaRepository.save(payloadActivityJpaEntity);
     }
 
     @Override
-    public Optional<PayloadActivity> getFirstZeroWeightActivity(WarehouseNumber number, LocalDateTime arrivalDateTime) {
-        return payloadActivityJpaRepository.findFirstByWarehouseAndAmountAndRecordTimeOrderByRecordTimeAsc(
-                    new WarehouseJpaEntity(number.number()),
-                    0.0,
+    public Optional<PayloadActivity> getActivityByWarehouseAndArrivalTimeAndAmount(WarehouseNumber number, LocalDateTime arrivalDateTime, Double amount) {
+        return payloadActivityJpaRepository.findFirstByWarehouseAndAmountAndRecordTime(
+                    number.number(),
+                    amount,
                     arrivalDateTime
-                ).map(PayloadConverter::toPayloadActivity);
+                ).stream().findFirst().map(PayloadConverter::toPayloadActivity);
     }
 }

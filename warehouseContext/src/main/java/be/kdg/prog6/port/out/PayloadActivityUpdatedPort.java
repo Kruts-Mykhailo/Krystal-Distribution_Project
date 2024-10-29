@@ -4,5 +4,5 @@ import be.kdg.prog6.domain.PayloadActivity;
 import be.kdg.prog6.domain.WarehouseNumber;
 
 public interface PayloadActivityUpdatedPort {
-    void updateZeroWeightActivity(PayloadActivity payloadActivity, WarehouseNumber warehouseNumber);
+    void updateWeight(PayloadActivity payloadActivity, WarehouseNumber warehouseNumber, Double netWeight);
 }

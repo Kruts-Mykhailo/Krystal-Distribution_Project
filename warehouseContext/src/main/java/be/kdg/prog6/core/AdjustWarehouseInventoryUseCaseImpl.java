@@ -41,14 +41,18 @@ public class AdjustWarehouseInventoryUseCaseImpl implements AdjustWarehouseInven
         Warehouse warehouse = warehouseFoundPort.getWarehouseByNumber(command.warehouseNumber());
 
         Optional<PayloadActivity> activity = payloadActivityFoundPort
-                .getFirstZeroWeightActivity(command.warehouseNumber(), command.sendTime());
+                .getActivityByWarehouseAndArrivalTimeAndAmount(
+                        command.warehouseNumber(),
+                        command.sendTime(),
+                        0.0);
 
         if (activity.isPresent()) {
             PayloadActivity payloadActivity = activity.get();
 
-            payloadActivity.setAmount(command.netWeight());
+            payloadActivityUpdatedPort.updateWeight(payloadActivity,
+                    warehouse.getWarehouseNumber(),
+                    command.netWeight());
 
-            payloadActivityUpdatedPort.updateZeroWeightActivity(payloadActivity, warehouse.getWarehouseNumber());
             invoicingStorageRecordUpdatedPort.send(
                     new StorageChangeEvent(
                             warehouse.getOwnerId().id(),

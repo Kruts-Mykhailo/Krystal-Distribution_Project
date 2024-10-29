@@ -7,5 +7,5 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface PayloadActivityFoundPort {
-    Optional<PayloadActivity> getFirstZeroWeightActivity(WarehouseNumber number, LocalDateTime arrivalDateTime);
+    Optional<PayloadActivity> getActivityByWarehouseAndArrivalTimeAndAmount(WarehouseNumber number, LocalDateTime arrivalDateTime, Double amount);
 }
