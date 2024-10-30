@@ -37,7 +37,4 @@ public class SellerJpaEntity {
         this.id = id;
     }
 
-    public SellerJpaEntity(UUID id) {
-        this.id = id;
-    }
 }

@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -18,6 +19,11 @@ public class WarehouseJpaEntity {
     private String warehouseNumber;
 
     private String materialType;
+
+    private LocalDateTime snapshotAt;
+
+    private Double snapshotAmount;
+
     @OneToMany(mappedBy = "warehouse")
     private List<PayloadActivityJpaEntity> payloadActivityJpaEntities;
 
@@ -29,7 +35,4 @@ public class WarehouseJpaEntity {
 
     }
 
-    public WarehouseJpaEntity(String warehouseNumber) {
-        this.warehouseNumber = warehouseNumber;
-    }
 }

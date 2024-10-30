@@ -2,8 +2,10 @@ package be.kdg.prog6.adapter.out.db.purchaseOrder;
 
 import be.kdg.prog6.adapter.exceptions.PurchaseOrderNotFoundException;
 import be.kdg.prog6.adapter.out.db.orderLine.OrderLineConverter;
+import be.kdg.prog6.adapter.out.db.orderLine.OrderLineJpaEntity;
 import be.kdg.prog6.adapter.out.db.orderLine.OrderLineJpaRepository;
 import be.kdg.prog6.adapter.out.db.seller.SellerJpaEntity;
+import be.kdg.prog6.adapter.out.db.seller.SellerJpaRepository;
 import be.kdg.prog6.domain.*;
 import be.kdg.prog6.port.out.PurchaseOrderFoundPort;
 import be.kdg.prog6.port.out.PurchaseOrderSavedPort;
@@ -18,10 +20,12 @@ public class PurchaseOrderAdapter implements PurchaseOrderUpdatedPort, PurchaseO
 
     private final PurchaseOrderJpaRepository purchaseOrderJpaRepository;
     private final OrderLineJpaRepository orderLineJpaRepository;
+    private final SellerJpaRepository sellerJpaRepository;
 
-    public PurchaseOrderAdapter(PurchaseOrderJpaRepository purchaseOrderJpaRepository, OrderLineJpaRepository orderLineJpaRepository) {
+    public PurchaseOrderAdapter(PurchaseOrderJpaRepository purchaseOrderJpaRepository, OrderLineJpaRepository orderLineJpaRepository, SellerJpaRepository sellerJpaRepository) {
         this.purchaseOrderJpaRepository = purchaseOrderJpaRepository;
         this.orderLineJpaRepository = orderLineJpaRepository;
+        this.sellerJpaRepository = sellerJpaRepository;
     }
 
     @Override
@@ -47,11 +51,17 @@ public class PurchaseOrderAdapter implements PurchaseOrderUpdatedPort, PurchaseO
     @Override
     public void savePurchaseOrder(PurchaseOrder purchaseOrder) {
         PurchaseOrderJpaEntity purchaseOrderJpaEntity = PurchaseOrderConverter.toPurchaseOrderJpaEntity(purchaseOrder);
-        purchaseOrderJpaEntity.setSeller(new SellerJpaEntity(purchaseOrder.getSeller().getSellerId().id()));
+        SellerJpaEntity sellerJpaEntity = sellerJpaRepository.getReferenceById(purchaseOrder.getSeller().getSellerId().id());
+        List<OrderLineJpaEntity> orderLineJpaEntities = purchaseOrder.orderLines().stream().map(OrderLineConverter::toJpa).collect(Collectors.toList());
+
+        purchaseOrderJpaEntity.setSeller(sellerJpaEntity);
         purchaseOrderJpaEntity = purchaseOrderJpaRepository.save(purchaseOrderJpaEntity);
 
-        orderLineJpaRepository.saveAll(OrderLineConverter
-                .toOrderLineJpaEntityList(purchaseOrder.orderLines(),purchaseOrderJpaEntity.getPoNumber()));
+        for (OrderLineJpaEntity o : orderLineJpaEntities) {
+            o.setPurchaseOrder(purchaseOrderJpaEntity);
+        }
+
+        orderLineJpaRepository.saveAll(orderLineJpaEntities);
     }
 
     @Override

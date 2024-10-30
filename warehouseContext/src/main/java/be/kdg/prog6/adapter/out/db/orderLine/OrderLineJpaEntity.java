@@ -29,8 +29,7 @@ public class OrderLineJpaEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private PurchaseOrderJpaEntity purchaseOrder;
 
-    public OrderLineJpaEntity(PurchaseOrderJpaEntity purchaseOrder, Double amount, String uom, String materialType) {
-        this.purchaseOrder = purchaseOrder;
+    public OrderLineJpaEntity( Double amount, String uom, String materialType) {
         this.amount = amount;
         this.uom = uom;
         this.materialType = materialType;

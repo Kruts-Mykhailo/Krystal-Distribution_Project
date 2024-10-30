@@ -20,7 +20,7 @@ public interface WarehouseJpaRepository extends JpaRepository<WarehouseJpaEntity
     Optional<WarehouseJpaEntity> findByWarehouseNumberFetched(String warehouseNumber);
 
     @Query("select w from WarehouseJpaEntity w " +
-            "left join fetch w.payloadActivityJpaEntities " +
             "left join fetch w.seller ")
-    List<WarehouseJpaEntity> findAllFetched();
+    List<WarehouseJpaEntity> findAllFetchedSeller();
+
 }

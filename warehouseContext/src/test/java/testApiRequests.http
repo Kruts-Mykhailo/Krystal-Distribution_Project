@@ -17,3 +17,10 @@ Authorization: Bearer {{access_token}}
 ### Get warehouse info
 GET http://localhost:8093/wc/warehouses
 Authorization: Bearer {{access_token}}
+
+### Snapshot warehouse
+POST http://localhost:8093/wc/warehouses/W-01
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{}

@@ -24,4 +24,9 @@ public class ExceptionControllerAdvice {
         return ErrorResponse.create(ex, HttpStatus.CONFLICT, ex.getLocalizedMessage());
     }
 
+    @ExceptionHandler(value = { IllegalStateException.class })
+    private ErrorResponse handleIllegalStateException(IllegalStateException ex, WebRequest request) {
+        return ErrorResponse.create(ex, HttpStatus.UNPROCESSABLE_ENTITY, ex.getLocalizedMessage());
+    }
+
 }

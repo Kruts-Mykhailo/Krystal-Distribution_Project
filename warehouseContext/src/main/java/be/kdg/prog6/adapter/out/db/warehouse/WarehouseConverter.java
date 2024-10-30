@@ -1,26 +1,30 @@
 package be.kdg.prog6.adapter.out.db.warehouse;
 
+import be.kdg.prog6.adapter.out.db.payloadActivity.PayloadConverter;
 import be.kdg.prog6.adapter.out.db.seller.SellerConverter;
 import be.kdg.prog6.domain.*;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Collectors;
 
 public class WarehouseConverter {
-    public static Warehouse toWarehouseFetched(WarehouseJpaEntity warehouse, List<PayloadActivity> payloadActivities) {
+    public static Warehouse fromJpaFetched(WarehouseJpaEntity warehouse) {
         return new Warehouse(
                 new WarehouseNumber(warehouse.getWarehouseNumber()),
                 SellerConverter.fromJpa(warehouse.getSeller()),
                 MaterialType.valueOf(warehouse.getMaterialType()),
-                payloadActivities
+                warehouse.getPayloadActivityJpaEntities().stream().map(PayloadConverter::fromJpa).collect(Collectors.toList()),
+                new MaterialAmount(warehouse.getSnapshotAmount(), warehouse.getSnapshotAt())
         );
     }
-    public static Warehouse toWarehouse(WarehouseJpaEntity warehouse) {
+
+    public static Warehouse fromJpa(WarehouseJpaEntity warehouse) {
         return new Warehouse(
                 new WarehouseNumber(warehouse.getWarehouseNumber()),
                 SellerConverter.fromJpa(warehouse.getSeller()),
                 MaterialType.valueOf(warehouse.getMaterialType()),
-                new ArrayList<>()
+                new ArrayList<>(),
+                new MaterialAmount(warehouse.getSnapshotAmount(), warehouse.getSnapshotAt())
         );
     }
 

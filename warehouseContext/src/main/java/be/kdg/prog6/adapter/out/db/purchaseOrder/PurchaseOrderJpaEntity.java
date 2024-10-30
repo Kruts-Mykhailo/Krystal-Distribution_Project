@@ -41,7 +41,4 @@ public class PurchaseOrderJpaEntity {
         this.receivedDateTime = receivedDateTime;
     }
 
-    public PurchaseOrderJpaEntity(String poNumber) {
-        this.poNumber = poNumber;
-    }
 }

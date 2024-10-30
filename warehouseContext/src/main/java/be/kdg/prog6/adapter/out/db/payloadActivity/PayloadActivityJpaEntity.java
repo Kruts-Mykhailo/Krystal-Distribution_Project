@@ -27,11 +27,10 @@ public class PayloadActivityJpaEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private WarehouseJpaEntity warehouse;
 
-    public PayloadActivityJpaEntity(String activityType, Double amount, LocalDateTime recordTime, WarehouseJpaEntity warehouse) {
+    public PayloadActivityJpaEntity(String activityType, Double amount, LocalDateTime recordTime) {
         this.activityType = activityType;
         this.amount = amount;
         this.recordTime = recordTime;
-        this.warehouse = warehouse;
     }
 
     public PayloadActivityJpaEntity() {

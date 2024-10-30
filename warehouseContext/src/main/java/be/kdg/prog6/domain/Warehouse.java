@@ -9,12 +9,14 @@ public class Warehouse {
     private final Seller seller;
     private MaterialType materialType;
     private final List<PayloadActivity> activityRecords;
+    private MaterialAmount currentAmount;
 
-    public Warehouse(WarehouseNumber warehouseNumber, Seller seller, MaterialType materialType, List<PayloadActivity> activityRecords) {
+    public Warehouse(WarehouseNumber warehouseNumber, Seller seller, MaterialType materialType, List<PayloadActivity> activityRecords, MaterialAmount currentAmount) {
         this.warehouseNumber = warehouseNumber;
         this.seller = seller;
         this.materialType = materialType;
         this.activityRecords = activityRecords;
+        this.currentAmount = currentAmount;
     }
 
     public Double getMaxCapacity() {
@@ -41,8 +43,24 @@ public class Warehouse {
         this.materialType = materialType;
     }
 
+    public MaterialAmount getCurrentAmount() {
+        return currentAmount;
+    }
+
+    public void setCurrentAmount(MaterialAmount currentAmount) {
+        this.currentAmount = currentAmount;
+    }
+
+    public void snapshot() {
+        if (activityRecords.stream().anyMatch(a -> a.getAmount() == 0.0)) {
+            throw new IllegalStateException("Activity records contain record with 0 weight. Try again later");
+        }
+        this.currentAmount = this.getWarehouseMaterialAmount();
+    }
+
     public MaterialAmount getWarehouseMaterialAmount() {
-        return new MaterialAmount(activityRecords.stream().mapToDouble(PayloadActivity::payload).sum(), LocalDateTime.now());
+        Double loadedAmountFromActivity = activityRecords.stream().mapToDouble(PayloadActivity::payload).sum();
+        return new MaterialAmount(currentAmount.amount() + loadedAmountFromActivity, LocalDateTime.now());
     }
 
     public Optional<PayloadActivity> isZeroWeightActivityPresent(LocalDateTime activityDateTime) {

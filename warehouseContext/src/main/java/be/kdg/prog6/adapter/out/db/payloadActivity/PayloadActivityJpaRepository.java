@@ -16,4 +16,6 @@ public interface PayloadActivityJpaRepository extends JpaRepository<PayloadActiv
     "and p.amount = :amount " +
     "and p.recordTime = :recordTime")
     List<PayloadActivityJpaEntity> findFirstByWarehouseAndAmountAndRecordTime(String warehouseNumber, Double amount, LocalDateTime recordTime);
+
+    List<PayloadActivityJpaEntity> findAllByRecordTimeAfterAndWarehouseWarehouseNumber(LocalDateTime dateTime, String warehouseNumber);
 }
