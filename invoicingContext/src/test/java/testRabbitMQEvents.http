@@ -6,7 +6,7 @@ Content-Type: application/json
 {
   "properties": {},
   "routing_key": "payload_delivery_queue",
-  "payload": "{\"sellerId\": \"e53a47fa-9f1b-4d58-8981-cdd01beac39e\", \"tons\": 300, \"arrivalTime\": \"2024-10-12T15:04:00\", \"materialType\": \"GYPSUM\"}",
+  "payload": "{\"sellerId\": \"e53a47fa-9f1b-4d58-8981-cdd01beac39e\", \"tons\": 300, \"arrivalTime\": \"2024-10-15T15:04:00\", \"materialType\": \"GYPSUM\"}",
   "payload_encoding": "string"
 }
 
@@ -18,7 +18,7 @@ Content-Type: application/json
 
 {
   "properties": {},
-  "routing_key": "finish_operations_queue",
+  "routing_key": "commissions_queue",
   "payload": "{\"orderLines\": [{\"materialType\": \"GYPSUM\", \"quantity\": 1.0, \"uom\": \"kt\"}], \"sellerId\": \"e53a47fa-9f1b-4d58-8981-cdd01beac39e\", \"poNumber\": \"PO-12345\"}",
   "payload_encoding": "string"
 }
