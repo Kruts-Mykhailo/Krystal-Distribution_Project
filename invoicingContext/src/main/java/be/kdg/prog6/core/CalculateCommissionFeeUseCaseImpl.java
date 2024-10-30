@@ -57,9 +57,7 @@ public class CalculateCommissionFeeUseCaseImpl implements CalculateCommissionFee
             CommissionFee commissionFee = new CommissionFee(
                     new Seller.SellerId(commissionEvent.sellerId()),
                     value,
-                    new PONumber(commissionEvent.poNumber()),
-                    LocalDateTime.now(),
-                    CommissionFee.FeeStatus.CREATED);
+                    new PONumber(commissionEvent.poNumber()));
 
             saveCommissionFeePort.saveCommissionFee(commissionFee);
             log.info("Calculated commission fee for purchase order {}", commissionFee.poNumber());

@@ -59,7 +59,7 @@ public class WarehouseAdapter implements WarehouseFoundPort, UpdateWarehouseStor
 
     @Override
     public Warehouse getBySellerIdAndMaterialType(Seller.SellerId sellerId, MaterialType materialType) {
-        return WarehouseConverter.toEntity(warehouseJpaEntityRepository.findBySellerIdAndMaterialTypeFetched(sellerId.uuid(), materialType.name())
+        return WarehouseConverter.fromJpa(warehouseJpaEntityRepository.findBySellerIdAndMaterialTypeFetched(sellerId.uuid(), materialType.name())
                 .orElseThrow(() -> new WarehouseNotFoundException("Warehouse not found")));
     }
 
@@ -67,7 +67,7 @@ public class WarehouseAdapter implements WarehouseFoundPort, UpdateWarehouseStor
     public List<Warehouse> getWarehousesBySellerId(Seller.SellerId sellerId) {
         return warehouseJpaEntityRepository.findAllBySellerIdFetched(sellerId.uuid())
                 .stream()
-                .map(WarehouseConverter::toEntity)
+                .map(WarehouseConverter::fromJpa)
                 .collect(Collectors.toList());
     }
 

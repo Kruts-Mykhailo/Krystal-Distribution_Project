@@ -32,9 +32,4 @@ public class WarehouseJpaEntity {
 
     }
 
-    public WarehouseJpaEntity(String materialType, UUID sellerId, List<PayloadJpaEntity> payloads) {
-        this.materialType = materialType;
-        this.sellerId = sellerId;
-        this.payloads = payloads;
-    }
 }

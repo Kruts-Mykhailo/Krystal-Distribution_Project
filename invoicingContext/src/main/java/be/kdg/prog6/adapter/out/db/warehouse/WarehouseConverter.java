@@ -9,7 +9,7 @@ import be.kdg.prog6.domain.materialPricing.MaterialPricingFactory;
 import java.util.stream.Collectors;
 
 public class WarehouseConverter {
-    public static Warehouse toEntity(WarehouseJpaEntity warehouseJpaEntity) {
+    public static Warehouse fromJpa(WarehouseJpaEntity warehouseJpaEntity) {
         return new Warehouse(
                 MaterialType.valueOf(warehouseJpaEntity.getMaterialType()),
                 warehouseJpaEntity.getPayloads()
