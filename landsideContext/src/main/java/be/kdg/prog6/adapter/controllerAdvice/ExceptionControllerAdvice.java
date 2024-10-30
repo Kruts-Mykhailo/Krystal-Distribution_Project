@@ -24,7 +24,7 @@ public class ExceptionControllerAdvice {
 
     @ExceptionHandler(value = {AppointmentCannotBeScheduledException.class })
     private ErrorResponse handleAppointmentCannotBeScheduledException(AppointmentCannotBeScheduledException ex, WebRequest request) {
-        return ErrorResponse.create(ex, HttpStatus.CONFLICT, ex.getLocalizedMessage());
+        return ErrorResponse.create(ex, HttpStatus.NOT_FOUND, ex.getLocalizedMessage());
     }
 
     @ExceptionHandler(value = {WarehouseHasFullCapacityException.class })

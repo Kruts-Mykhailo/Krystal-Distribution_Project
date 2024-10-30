@@ -14,7 +14,7 @@ public class WatersideListener {
 
     private final PurchaseOrderFulfilledUseCase purchaseOrderFulfilledUseCase;
     private final MatchPOAndSOUseCase matchPOAndSOUseCase;
-    public static final String FUlFILL_ORDER_STATUS_QUEUE = "full_order_status_queue";
+    public static final String FUlFILL_ORDER_STATUS_QUEUE = "fulfill_order_status_queue";
     public static final String MATCH_ORDER_STATUS_QUEUE = "match_order_status_queue";
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 

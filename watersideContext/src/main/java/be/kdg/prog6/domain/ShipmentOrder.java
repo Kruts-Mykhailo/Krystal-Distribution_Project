@@ -42,6 +42,7 @@ public class ShipmentOrder {
 
     public void matchPurchaseOrder() {
         this.isMatchedWithPO = true;
+        updateShipmentStatus();
     }
 
     public void leave() {

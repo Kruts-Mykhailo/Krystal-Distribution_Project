@@ -19,7 +19,7 @@ Authorization: Bearer {{access_token}}
 {
   "licensePlate": "A-111JD-F",
   "materialType": "GYPSUM",
-  "scheduleDateTime": "2024-10-30T14:00:00"
+  "scheduleDateTime": "2024-10-31T14:00:00"
 }
 
 ### Get arrivals by date

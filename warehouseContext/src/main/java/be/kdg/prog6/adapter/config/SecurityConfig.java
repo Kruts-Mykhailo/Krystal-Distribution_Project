@@ -1,4 +1,4 @@
-package be.kdg.prog6.config;
+package be.kdg.prog6.adapter.config;
 
 
 import org.springframework.context.annotation.Bean;

@@ -18,7 +18,7 @@ public class MQTopology {
 
     public static final String CHANGE_ORDER_STATUS_EXCHANGE = "change_order_status_exchange";
     public static final String MATCH_ORDER_STATUS_QUEUE = "match_order_status_queue";
-    public static final String FUlFILL_ORDER_STATUS_QUEUE = "full_order_status_queue";
+    public static final String FUlFILL_ORDER_STATUS_QUEUE = "fulfill_order_status_queue";
 
     @Bean
     TopicExchange changeOrderStatusExchange() {
@@ -33,6 +33,14 @@ public class MQTopology {
     @Bean
     Queue matchOrderStatusQueue() {
         return new Queue(MATCH_ORDER_STATUS_QUEUE);
+    }
+
+    @Bean
+    Binding bindingFulfillOrderStatus(TopicExchange exchange, Queue fulfillOrderStatusQueue) {
+        return BindingBuilder.
+                bind(fulfillOrderStatusQueue).
+                to(exchange).
+                with("status.#.matched");
     }
 
 
