@@ -17,7 +17,7 @@ import java.util.UUID;
 @Getter
 @Entity
 @Table(name = "sellers", catalog = "landside")
-public class SellerJPAEntity {
+public class SellerJpaEntity {
 
     @Id
     private UUID sellerId;
@@ -30,16 +30,13 @@ public class SellerJPAEntity {
     @OneToMany(mappedBy = "seller")
     private List<AppointmentJpaEntity> appointments;
 
-    public SellerJPAEntity() {
+    public SellerJpaEntity() {
 
     }
 
-    public SellerJPAEntity(String sellerName, UUID sellerId) {
+    public SellerJpaEntity(String sellerName, UUID sellerId) {
         this.sellerName = sellerName;
         this.sellerId = sellerId;
     }
 
-    public SellerJPAEntity(UUID sellerId) {
-        this.sellerId = sellerId;
-    }
 }

@@ -28,11 +28,10 @@ public class TruckWeightJpaEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private AppointmentJpaEntity appointment;
 
-    public TruckWeightJpaEntity(String licensePlate, Double weightRecorded, LocalDateTime recordTime, AppointmentJpaEntity appointment) {
+    public TruckWeightJpaEntity(String licensePlate, Double weightRecorded, LocalDateTime recordTime) {
         this.licensePlate = licensePlate;
         this.weightRecorded = weightRecorded;
         this.recordTime = recordTime;
-        this.appointment = appointment;
     }
 
     public TruckWeightJpaEntity() {

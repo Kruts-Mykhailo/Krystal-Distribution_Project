@@ -1,7 +1,6 @@
 package be.kdg.prog6.adapter.out.db.warehouse;
 
-import be.kdg.prog6.adapter.out.db.seller.SellerJPAEntity;
-import be.kdg.prog6.domain.WarehouseNumber;
+import be.kdg.prog6.adapter.out.db.seller.SellerJpaEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,7 +34,7 @@ public class WarehouseInfoJpaEntity {
     private Double maxCapacity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private SellerJPAEntity seller;
+    private SellerJpaEntity seller;
 
     public WarehouseInfoJpaEntity() {
     }

@@ -35,12 +35,11 @@ public class AppointmentActivityJpaEntity {
 
     }
 
-    public AppointmentActivityJpaEntity(UUID activityId, String licensePlate, String activityType, LocalDateTime dateTime, String truckStatus, AppointmentJpaEntity appointment) {
+    public AppointmentActivityJpaEntity(UUID activityId, String licensePlate, String activityType, LocalDateTime dateTime, String truckStatus) {
         this.activityId = activityId;
         this.licensePlate = licensePlate;
         this.activityType = activityType;
         this.dateTime = dateTime;
         this.truckStatus = truckStatus;
-        this.appointment = appointment;
     }
 }

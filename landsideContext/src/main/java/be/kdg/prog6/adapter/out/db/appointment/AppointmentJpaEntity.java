@@ -2,9 +2,8 @@ package be.kdg.prog6.adapter.out.db.appointment;
 
 import be.kdg.prog6.adapter.out.db.appointmentActivity.AppointmentActivityJpaEntity;
 import be.kdg.prog6.adapter.out.db.schedule.ScheduleJpaEntity;
-import be.kdg.prog6.adapter.out.db.seller.SellerJPAEntity;
+import be.kdg.prog6.adapter.out.db.seller.SellerJpaEntity;
 import be.kdg.prog6.adapter.out.db.truckweight.TruckWeightJpaEntity;
-import be.kdg.prog6.domain.WarehouseNumber;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,7 +49,7 @@ public class AppointmentJpaEntity {
     private List<TruckWeightJpaEntity> recordedTruckWeight;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private SellerJPAEntity seller;
+    private SellerJpaEntity seller;
 
     public AppointmentJpaEntity(UUID appointmentId, String licensePlate, String materialType, LocalDateTime appointmentDateTime, String warehouseNumber, String status) {
         this.appointmentId = appointmentId;
@@ -60,10 +59,6 @@ public class AppointmentJpaEntity {
         this.appointmentEndDateTime = appointmentDateTime.plusHours(1);
         this.warehouseNumber = warehouseNumber;
         this.status = status;
-    }
-
-    public AppointmentJpaEntity(UUID appointmentId) {
-        this.appointmentId = appointmentId;
     }
 
     public AppointmentJpaEntity() {

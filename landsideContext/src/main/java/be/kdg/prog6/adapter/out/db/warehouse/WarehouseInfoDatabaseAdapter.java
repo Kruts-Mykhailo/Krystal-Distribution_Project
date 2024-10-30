@@ -2,7 +2,7 @@ package be.kdg.prog6.adapter.out.db.warehouse;
 
 import be.kdg.prog6.adapter.exceptions.SellerNotFoundException;
 import be.kdg.prog6.adapter.exceptions.WarehouseNotFoundException;
-import be.kdg.prog6.adapter.out.db.seller.SellerJPAEntity;
+import be.kdg.prog6.adapter.out.db.seller.SellerJpaEntity;
 import be.kdg.prog6.adapter.out.db.seller.SellerJpaRepository;
 import be.kdg.prog6.domain.MaterialType;
 import be.kdg.prog6.domain.Seller;
@@ -31,8 +31,8 @@ public class WarehouseInfoDatabaseAdapter implements WarehouseProjectionFoundPor
                         () -> new WarehouseNotFoundException("Warehouse not found for seller %s and material type %s"
                                 .formatted(sellerId.id(), materialType.name()))
                 );
-        SellerJPAEntity sellerJPA = sellerJpaRepository.findById(sellerId.id())
-                .orElseThrow(() -> new SellerNotFoundException("Seller %s not found".formatted(sellerId.id())));
+        SellerJpaEntity sellerJPA = sellerJpaRepository.getReferenceById(sellerId.id());
+
         warehouseInfoJpa.setSeller(sellerJPA);
 
         return WarehouseInfoConverter.convert(warehouseInfoJpa);
@@ -49,9 +49,15 @@ public class WarehouseInfoDatabaseAdapter implements WarehouseProjectionFoundPor
                 );
     }
 
-
     @Override
-    public void update(WarehouseInfo warehouseInfo) {
-        warehouseInfoJpaRepository.save(WarehouseInfoConverter.convert(warehouseInfo));
+    public void updateCapacity(WarehouseInfo warehouseInfo) {
+        WarehouseInfoJpaEntity warehouseInfoJpa = warehouseInfoJpaRepository
+                .findByWarehouseNumberFetched(warehouseInfo.warehouseNumber().number())
+                .orElseThrow(() -> new WarehouseNotFoundException(
+                        "Warehouse %s not found".formatted(warehouseInfo.warehouseNumber().number())));
+
+        warehouseInfoJpa.setInitialCapacity(warehouseInfo.warehouseCapacity());
+
+        warehouseInfoJpaRepository.save(warehouseInfoJpa);
     }
 }

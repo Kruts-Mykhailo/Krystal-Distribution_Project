@@ -5,7 +5,9 @@ import be.kdg.prog6.adapter.out.db.appointmentActivity.AppointmentActivityConver
 import be.kdg.prog6.adapter.out.db.appointmentActivity.AppointmentActivityJpaEntity;
 import be.kdg.prog6.adapter.out.db.appointmentActivity.AppointmentActivityJpaRepository;
 import be.kdg.prog6.adapter.out.db.schedule.ScheduleJpaEntity;
-import be.kdg.prog6.adapter.out.db.seller.SellerJPAEntity;
+import be.kdg.prog6.adapter.out.db.schedule.ScheduleJpaRepository;
+import be.kdg.prog6.adapter.out.db.seller.SellerJpaEntity;
+import be.kdg.prog6.adapter.out.db.seller.SellerJpaRepository;
 import be.kdg.prog6.domain.*;
 import be.kdg.prog6.port.out.AppointmentCreatedPort;
 import be.kdg.prog6.port.out.AppointmentFoundPort;
@@ -23,17 +25,24 @@ public class AppointmentAdapter implements AppointmentCreatedPort, AppointmentUp
 
     private final AppointmentJpaRepository appointmentJpaRepository;
     private final AppointmentActivityJpaRepository appointmentActivityJpaRepository;
+    private final ScheduleJpaRepository scheduleJpaRepository;
+    private final SellerJpaRepository sellerJpaRepository;
 
-    public AppointmentAdapter(AppointmentJpaRepository appointmentJpaRepository, AppointmentActivityJpaRepository appointmentActivityJpaRepository) {
+    public AppointmentAdapter(AppointmentJpaRepository appointmentJpaRepository, AppointmentActivityJpaRepository appointmentActivityJpaRepository, ScheduleJpaRepository scheduleJpaRepository, SellerJpaRepository sellerJpaRepository) {
         this.appointmentJpaRepository = appointmentJpaRepository;
         this.appointmentActivityJpaRepository = appointmentActivityJpaRepository;
+        this.scheduleJpaRepository = scheduleJpaRepository;
+        this.sellerJpaRepository = sellerJpaRepository;
     }
 
     @Override
     public void saveAppointment(Appointment appointment, UUID scheduleId) {
         AppointmentJpaEntity appointmentJpaEntity = AppointmentConverter.toJpaEntity(appointment);
-        appointmentJpaEntity.setSchedule(new ScheduleJpaEntity(scheduleId));
-        appointmentJpaEntity.setSeller(new SellerJPAEntity(appointment.getSeller().getSellerId().id()));
+        SellerJpaEntity sellerJpaEntity = sellerJpaRepository.getReferenceById(appointment.getSeller().getSellerId().id());
+        ScheduleJpaEntity scheduleJpaEntity = scheduleJpaRepository.getReferenceById(scheduleId);
+
+        appointmentJpaEntity.setSchedule(scheduleJpaEntity);
+        appointmentJpaEntity.setSeller(sellerJpaEntity);
         appointmentJpaRepository.save(appointmentJpaEntity);
     }
 
@@ -49,10 +58,12 @@ public class AppointmentAdapter implements AppointmentCreatedPort, AppointmentUp
 
         List<AppointmentActivityJpaEntity> activities = appointment.getAppointmentActivities()
                 .stream()
-                .map(ac -> AppointmentActivityConverter.toJpaEntity(ac, savedAppointment))
+                .map(AppointmentActivityConverter::toJpa)
                 .collect(Collectors.toList());
-        appointmentActivityJpaRepository.saveAll(activities);
 
+        activities.forEach(a -> a.setAppointment(savedAppointment));
+
+        appointmentActivityJpaRepository.saveAll(activities);
     }
 
 

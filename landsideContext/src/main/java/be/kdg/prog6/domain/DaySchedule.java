@@ -27,12 +27,6 @@ public class DaySchedule {
         this.truckAmountPerWindow = TRUCK_AMOUNT_DEFAULT;
     }
 
-    public DaySchedule(UUID id, LocalDate scheduleDate) {
-        this.id = id;
-        this.scheduleDate = scheduleDate;
-        this.appointments = new ArrayList<>();
-        this.truckAmountPerWindow = TRUCK_AMOUNT_DEFAULT;
-    }
 
     public UUID getId() {
         return id;

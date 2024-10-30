@@ -131,8 +131,8 @@ public class Appointment {
         addActivity(ActivityType.PASS_WEIGHING_BRIDGE, TruckArrivalStatus.ON_SITE, eventTime);
     }
 
-    public void dumpPayload(LocalDateTime eventTime) {
-        addActivity(ActivityType.DUMP_LOAD, TruckArrivalStatus.ON_SITE, eventTime);
+    public void dumpPayload() {
+        addActivity(ActivityType.DUMP_LOAD, TruckArrivalStatus.ON_SITE, LocalDateTime.now());
     }
 
     public void leaveByWeighingBridge(LocalDateTime eventTime) {

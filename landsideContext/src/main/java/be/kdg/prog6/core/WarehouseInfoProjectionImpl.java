@@ -8,8 +8,6 @@ import be.kdg.prog6.port.out.WarehouseProjectionFoundPort;
 import be.kdg.prog6.port.out.WarehouseProjectionUpdatedPort;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 public class WarehouseInfoProjectionImpl implements WarehouseInfoProjector {
 
@@ -25,6 +23,6 @@ public class WarehouseInfoProjectionImpl implements WarehouseInfoProjector {
     public void project(WarehouseNumber warehouseNumber, Double value, OperationType operationType) {
         WarehouseInfo warehouseInfo = warehouseProjectionFoundPort.getWarehouseByNumber(warehouseNumber);
         warehouseInfo.updateCapacity(value, operationType);
-        warehouseProjectionUpdatedPort.update(warehouseInfo);
+        warehouseProjectionUpdatedPort.updateCapacity(warehouseInfo);
     }
 }

@@ -25,10 +25,6 @@ public class ScheduleJpaEntity {
     @OneToMany(mappedBy = "schedule")
     private List<AppointmentJpaEntity> appointmentJpaEntities;
 
-    public ScheduleJpaEntity(UUID id) {
-        this.scheduleId = id;
-    }
-
     public ScheduleJpaEntity() {
 
     }

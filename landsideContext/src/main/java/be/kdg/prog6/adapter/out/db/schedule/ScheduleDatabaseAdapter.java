@@ -7,6 +7,7 @@ import be.kdg.prog6.port.out.ScheduleUpdatedPort;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ public class ScheduleDatabaseAdapter implements ScheduleUpdatedPort, ScheduleFou
         ScheduleJpaEntity schedule;
         if (scheduleJpaEntity.isEmpty()) {
             schedule = scheduleJpaRepository.save(new ScheduleJpaEntity(date));
-            return new DaySchedule(schedule.getScheduleId(), schedule.getScheduleDate());
+            return new DaySchedule(schedule.getScheduleId(), schedule.getScheduleDate(), new ArrayList<>());
         }
         schedule = scheduleJpaEntity.get();
         List<Appointment> appointments = schedule.getAppointmentJpaEntities()

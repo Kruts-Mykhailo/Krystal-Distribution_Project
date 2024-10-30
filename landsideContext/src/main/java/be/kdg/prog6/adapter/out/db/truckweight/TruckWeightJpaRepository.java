@@ -10,5 +10,5 @@ import java.util.UUID;
 
 @Repository
 public interface TruckWeightJpaRepository extends JpaRepository<TruckWeightJpaEntity, UUID> {
-    TruckWeightJpaEntity findByAppointment(AppointmentJpaEntity appointment);
+    Optional<TruckWeightJpaEntity> findByAppointmentAppointmentId(UUID appointmentId);
 }
