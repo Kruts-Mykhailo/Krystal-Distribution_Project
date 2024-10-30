@@ -19,7 +19,7 @@ Authorization: Bearer {{access_token}}
 {
   "licensePlate": "A-111JD-F",
   "materialType": "GYPSUM",
-  "scheduleDateTime": "2024-10-31T14:00:00"
+  "scheduleDateTime": "2024-10-31T00:00:00"
 }
 
 ### Get arrivals by date
@@ -48,7 +48,7 @@ Authorization: Bearer {{access_token}}
 
 {}
 
-### POST Test truck docking to conveyour belt to drop payload
+### POST Test truck docking to conveyor belt to drop payload
 POST http://localhost:8091/lsc/conveyorBelt/A-111JD-F
 Content-Type: application/json
 Authorization: Bearer {{access_token}}

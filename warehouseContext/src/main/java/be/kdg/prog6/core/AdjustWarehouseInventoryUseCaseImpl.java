@@ -39,7 +39,7 @@ public class AdjustWarehouseInventoryUseCaseImpl implements AdjustWarehouseInven
     public void savePayloadRecord(AdjustInventoryCommand command) {
         Warehouse warehouse = warehouseFoundPort.getWarehouseByNumber(command.warehouseNumber());
 
-        Optional<PayloadActivity> activity = warehouse.isZeroWeightActivityPresent(command.sendTime());
+        Optional<PayloadActivity> activity = warehouse.isZeroWeightActivityPresent();
 
         if (activity.isPresent()) {
             PayloadActivity payloadActivity = activity.get();

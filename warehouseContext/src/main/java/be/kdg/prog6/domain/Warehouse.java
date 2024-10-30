@@ -1,6 +1,7 @@
 package be.kdg.prog6.domain;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,10 +64,10 @@ public class Warehouse {
         return new MaterialAmount(currentAmount.amount() + loadedAmountFromActivity, LocalDateTime.now());
     }
 
-    public Optional<PayloadActivity> isZeroWeightActivityPresent(LocalDateTime activityDateTime) {
+    public Optional<PayloadActivity> isZeroWeightActivityPresent() {
         return  activityRecords.stream()
-                        .filter(activity -> activity.getAmount() == 0.0
-                                && activity.getEventDateTime().equals(activityDateTime))
+                        .sorted(Comparator.comparing(PayloadActivity::getEventDateTime).reversed())
+                        .filter(activity -> activity.getAmount() == 0.0)
                         .findFirst();
     }
 
