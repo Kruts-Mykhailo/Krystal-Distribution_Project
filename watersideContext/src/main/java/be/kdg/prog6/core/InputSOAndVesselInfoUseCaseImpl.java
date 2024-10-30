@@ -27,13 +27,7 @@ public class InputSOAndVesselInfoUseCaseImpl implements InputSOAndVesselInfoUseC
         ShipmentOrder shipmentOrder = new ShipmentOrder(
                 new PONumber(infoCommand.poRefernceNumber()),
                 infoCommand.customerEnterpriseNumber(),
-                infoCommand.vesselNumber(),
-                LocalDate.now(),
-                null,
-                new IO(),
-                new BO(),
-                false,
-                ShipmentOrder.ShipmentStatus.OUTSTANDING
+                infoCommand.vesselNumber()
         );
         saveSOPort.saveSO(shipmentOrder);
         log.info("Ship {} has arrived", shipmentOrder.getVesselNumber());

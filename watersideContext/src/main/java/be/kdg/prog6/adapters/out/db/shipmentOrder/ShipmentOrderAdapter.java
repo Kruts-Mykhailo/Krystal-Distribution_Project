@@ -1,7 +1,6 @@
 package be.kdg.prog6.adapters.out.db.shipmentOrder;
 
 import be.kdg.prog6.adapters.exceptions.ShipmentOrderNotFoundException;
-import be.kdg.prog6.adapters.exceptions.VesselAlreadyLeftException;
 import be.kdg.prog6.domain.ShipmentOrder;
 import be.kdg.prog6.ports.out.FindSOPort;
 import be.kdg.prog6.ports.out.SaveSOPort;
@@ -29,8 +28,8 @@ public class ShipmentOrderAdapter implements SaveSOPort, FindSOPort, UpdateSOPor
     }
 
     @Override
-    public ShipmentOrder findShipmentOrderByVesselNumber(String vesselNumber) {
-        ShipmentOrderJpaEntity shipmentOrderJpaEntity = soRepository.findOrderByVesselNumberFetched(vesselNumber)
+    public ShipmentOrder getByVesselNumberAndNotStatus(String vesselNumber, ShipmentOrder.ShipmentStatus statusNot) {
+        ShipmentOrderJpaEntity shipmentOrderJpaEntity = soRepository.findByVesselNumberAndNotStatusFetched(vesselNumber, statusNot.name())
                 .orElseThrow(() -> new ShipmentOrderNotFoundException("No shipment order found for vessel number " + vesselNumber));
         return ShipmentOrderConverter.toShipmentOrderEntity(shipmentOrderJpaEntity);
     }
@@ -45,7 +44,7 @@ public class ShipmentOrderAdapter implements SaveSOPort, FindSOPort, UpdateSOPor
 
     @Override
     public List<ShipmentOrder> findAllWithoutIO() {
-        return soRepository.findAllByIOFetched()
+        return soRepository.findAllByEmptyIOCustom()
                 .stream()
                 .map(ShipmentOrderConverter::toShipmentOrderEntity)
                 .collect(Collectors.toList());

@@ -13,15 +13,15 @@ public interface ShipmentOrderJpaEntityRepository extends JpaRepository<Shipment
 
     @Query("select s from ShipmentOrderJpaEntity  s " +
     "where s.vesselNumber = :vesselNumber " +
-    "and s.shipmentStatus != 'LEFT_PORT' ")
-    Optional<ShipmentOrderJpaEntity> findOrderByVesselNumberFetched(String vesselNumber);
+    "and s.shipmentStatus != :shipmentStatus ")
+    Optional<ShipmentOrderJpaEntity> findByVesselNumberAndNotStatusFetched(String vesselNumber, String shipmentStatus);
 
     List<ShipmentOrderJpaEntity> findAllByBunkeringOperationDate(LocalDate bunkeringOperationDate);
 
     @Query("select s from ShipmentOrderJpaEntity s " +
     "where s.inspectionOperationDate = null " +
     "and s.inspectorSignature = null")
-    List<ShipmentOrderJpaEntity> findAllByIOFetched();
+    List<ShipmentOrderJpaEntity> findAllByEmptyIOCustom();
 
     List<ShipmentOrderJpaEntity> findAllByShipmentStatusIsNot(String shipmentStatus);
 }

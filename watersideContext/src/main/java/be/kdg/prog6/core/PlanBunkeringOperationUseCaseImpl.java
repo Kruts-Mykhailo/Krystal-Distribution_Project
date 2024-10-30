@@ -34,14 +34,13 @@ public class PlanBunkeringOperationUseCaseImpl implements PlanBunkeringOperation
         if (findSOPort.findAllShipmentOrderByBunkeringOperationDate(command.date()).size() == BO.DAY_LIMIT) {
             throw new BunkeringOperationDayLimitException("Bunkering operation day limit exceeded. Pick another date.");
         }
-        ShipmentOrder shipmentOrder = findSOPort.findShipmentOrderByVesselNumber(command.vesselNumber());
+        ShipmentOrder shipmentOrder = findSOPort.getByVesselNumberAndNotStatus(command.vesselNumber(), ShipmentOrder.ShipmentStatus.LEFT_PORT);
 
-        if (shipmentOrder.getShipmentStatus() == ShipmentOrder.ShipmentStatus.LEFT_PORT) {
-            throw new VesselAlreadyLeftException("Vessel %s already left the site".formatted(command.vesselNumber()));
-        }
+        shipmentOrder.didVesselLeave();
 
         shipmentOrder.scheduleBO(command.date());
         updateSOPort.updateShipmentOrder(shipmentOrder);
+
         log.info("Bunkering operation for vessel {} is scheduled for {} ", command.vesselNumber(), command.date());
 
         if (shipmentOrder.canVesselLeave()) {

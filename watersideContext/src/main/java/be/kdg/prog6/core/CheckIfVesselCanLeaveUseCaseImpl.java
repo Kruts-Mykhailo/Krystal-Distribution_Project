@@ -1,6 +1,5 @@
 package be.kdg.prog6.core;
 
-import be.kdg.prog6.adapters.exceptions.VesselAlreadyLeftException;
 import be.kdg.prog6.domain.ShipmentOrder;
 import be.kdg.prog6.ports.in.CheckIfVesselCanLeaveUseCase;
 import be.kdg.prog6.ports.out.*;
@@ -19,7 +18,7 @@ public class CheckIfVesselCanLeaveUseCaseImpl implements CheckIfVesselCanLeaveUs
     @Override
     @Transactional
     public ShipmentOrder checkIfVesselCanLeave(String vesselNumber) {
-        ShipmentOrder shipmentOrder = findSOPort.findShipmentOrderByVesselNumber(vesselNumber);
+        ShipmentOrder shipmentOrder = findSOPort.getByVesselNumberAndNotStatus(vesselNumber, ShipmentOrder.ShipmentStatus.LEFT_PORT);
         shipmentOrder.didVesselLeave();
         return shipmentOrder;
     }

@@ -28,6 +28,18 @@ public class ShipmentOrder {
         this.shipmentStatus = shipmentStatus;
     }
 
+    public ShipmentOrder(PONumber poReferenceNumber, String customerEnterpriseNumber, String vesselNumber) {
+        this.poReferenceNumber = poReferenceNumber;
+        this.customerEnterpriseNumber = customerEnterpriseNumber;
+        this.vesselNumber = vesselNumber;
+        this.arrivalDate = LocalDate.now();
+        this.departureDate = LocalDate.now();
+        this.inspectionOperation = new IO();
+        this.bunkeringOperation = new BO();
+        this.isMatchedWithPO = false;
+        this.shipmentStatus = ShipmentStatus.OUTSTANDING;
+    }
+
     public void matchPurchaseOrder() {
         this.isMatchedWithPO = true;
     }
@@ -38,7 +50,9 @@ public class ShipmentOrder {
     }
 
     public void didVesselLeave() {
-        throw new VesselAlreadyLeftException("Vessel %s already left the site".formatted(vesselNumber));
+        if (shipmentStatus.equals(ShipmentStatus.LEFT_PORT)) {
+            throw new VesselAlreadyLeftException("Vessel %s already left the site".formatted(vesselNumber));
+        }
     }
 
     public boolean canVesselLeave() {

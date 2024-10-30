@@ -1,6 +1,5 @@
 package be.kdg.prog6.core;
 
-import be.kdg.prog6.adapters.exceptions.VesselAlreadyLeftException;
 import be.kdg.prog6.domain.ShipmentOrder;
 import be.kdg.prog6.ports.in.CompleteVesselInspectionUseCase;
 import be.kdg.prog6.ports.in.VesselInspectionCommand;
@@ -30,7 +29,7 @@ public class CompleteVesselInspectionUseCaseImpl implements CompleteVesselInspec
     @Override
     @Transactional
     public void completeVesselInspection(VesselInspectionCommand command) {
-        ShipmentOrder shipmentOrder = findSOPort.findShipmentOrderByVesselNumber(command.vesselNumber());
+        ShipmentOrder shipmentOrder = findSOPort.getByVesselNumberAndNotStatus(command.vesselNumber(), ShipmentOrder.ShipmentStatus.LEFT_PORT);
         shipmentOrder.didVesselLeave();
         shipmentOrder.completeIO(command.inspectionDate(), command.inspectorSignature());
 

@@ -28,23 +28,19 @@ public class VesselController {
         this.checkIfVesselCanLeaveUseCase = checkIfVesselCanLeaveUseCase;
     }
 
-    @PostMapping("/{vesselNumber}")
-    public ResponseEntity<?> matchSOAndPOForVessel(
-            @PathVariable String vesselNumber,
-            @RequestParam(value = "matchSoPo", required = false, defaultValue = "false") boolean matchSoPo,
-            @RequestParam(value = "checkToLeave", required = false, defaultValue = "false") boolean checkToLeave) {
 
-        if (matchSoPo) {
-            matchSOAndPOUseCase.matchSOAndPO(vesselNumber);
-            return ResponseEntity.ok().body("SO and PO matched for vessel " + vesselNumber);
-        }
-        if (checkToLeave) {
-            ShipmentOrder shipmentOrder = checkIfVesselCanLeaveUseCase.checkIfVesselCanLeave(vesselNumber);
-            return ResponseEntity.ok().body(VesselStatusDTOConverter.convert(shipmentOrder));
-        }
-
-        return ResponseEntity.ok().body("Processed for vessel " + vesselNumber);
+    @PostMapping("/{vesselNumber}/matchOrders")
+    public ResponseEntity<?> matchSoPo(@PathVariable String vesselNumber){
+        matchSOAndPOUseCase.matchSOAndPO(vesselNumber);
+        return ResponseEntity.ok().body("SO and PO matched for vessel " + vesselNumber);
     }
+
+    @PostMapping("/{vesselNumber}")
+    public ResponseEntity<?> checkIfVesselCanLeave(@PathVariable String vesselNumber) {
+        ShipmentOrder shipmentOrder = checkIfVesselCanLeaveUseCase.checkIfVesselCanLeave(vesselNumber);
+        return ResponseEntity.ok().body(VesselStatusDTOConverter.convert(shipmentOrder));
+    }
+
 
     @PostMapping("/{vesselNumber}/bunkeringOperations/{date}")
     public ResponseEntity<?> scheduleBunkeringOperation(@PathVariable String vesselNumber, @PathVariable LocalDate date){
