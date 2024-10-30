@@ -19,12 +19,12 @@ public class LandsidePublisher implements ProjectWarehouseInfoPort {
     }
 
     @Override
-    public void projectWarehouseCapacity(WarehouseNumber number, Double capacity, ActivityType activityType) {
+    public void projectWarehouseCapacity(WarehouseCapacityChangeEvent event) {
         String routingKey = String.format("warehouse.%s.capacity.changed", UUID.randomUUID());
         this.rabbitTemplate.convertAndSend(
                 MQTopology.WAREHOUSE_FULLNESS_EXCHANGE,
                 routingKey,
-                new WarehouseCapacityChangeEvent(number.number(), capacity, activityType.name())
+                event
         );
     }
 }

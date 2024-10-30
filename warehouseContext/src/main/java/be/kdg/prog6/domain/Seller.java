@@ -20,6 +20,10 @@ public class Seller {
         this.name = name;
     }
 
+    public Seller(SellerId sellerId) {
+        this.sellerId = sellerId;
+    }
+
     public SellerId getSellerId() {
         return sellerId;
     }

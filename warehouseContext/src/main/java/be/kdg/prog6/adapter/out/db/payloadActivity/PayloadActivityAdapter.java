@@ -9,9 +9,6 @@ import be.kdg.prog6.port.out.PayloadActivityUpdatedPort;
 import be.kdg.prog6.port.out.PayloadActivitySavedPort;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
-
 @Component
 public class PayloadActivityAdapter implements PayloadActivitySavedPort, PayloadActivityUpdatedPort, PayloadActivityFoundPort {
 
@@ -44,12 +41,4 @@ public class PayloadActivityAdapter implements PayloadActivitySavedPort, Payload
         payloadActivityJpaRepository.save(payloadActivityJpaEntity);
     }
 
-    @Override
-    public Optional<PayloadActivity> getActivityByWarehouseAndArrivalTimeAndAmount(WarehouseNumber number, LocalDateTime arrivalDateTime, Double amount) {
-        return payloadActivityJpaRepository.findFirstByWarehouseAndAmountAndRecordTime(
-                    number.number(),
-                    amount,
-                    arrivalDateTime
-                ).stream().findFirst().map(PayloadConverter::toPayloadActivity);
-    }
 }

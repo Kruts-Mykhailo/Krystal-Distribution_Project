@@ -2,6 +2,7 @@ package be.kdg.prog6.adapter.out.db.purchaseOrder;
 
 
 import be.kdg.prog6.adapter.out.db.orderLine.OrderLineJpaEntity;
+import be.kdg.prog6.adapter.out.db.seller.SellerJpaEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,9 +21,6 @@ public class PurchaseOrderJpaEntity {
     private String poNumber;
 
     @Column
-    private UUID sellerId;
-
-    @Column
     private String orderStatus;
 
     @Column
@@ -31,12 +29,14 @@ public class PurchaseOrderJpaEntity {
     @OneToMany(mappedBy = "purchaseOrder")
     private List<OrderLineJpaEntity> orderLines;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private SellerJpaEntity seller;
+
     public PurchaseOrderJpaEntity() {
     }
 
-    public PurchaseOrderJpaEntity(String poNumber, UUID sellerId, String orderStatus, LocalDateTime receivedDateTime) {
+    public PurchaseOrderJpaEntity(String poNumber, String orderStatus, LocalDateTime receivedDateTime) {
         this.poNumber = poNumber;
-        this.sellerId = sellerId;
         this.orderStatus = orderStatus;
         this.receivedDateTime = receivedDateTime;
     }

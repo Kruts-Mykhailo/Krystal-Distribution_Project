@@ -6,14 +6,14 @@ import java.util.Objects;
 
 
 public final class PurchaseOrder {
-    private final Seller.SellerId sellerId;
+    private Seller seller;
     private final List<OrderLine> orderLines;
     private final PONumber poNumber;
     private OrderStatus status;
     private final LocalDateTime receivedDateTime;
 
-    public PurchaseOrder(Seller.SellerId sellerId, List<OrderLine> orderLines, PONumber poNumber, OrderStatus status, LocalDateTime receivedDateTime) {
-        this.sellerId = sellerId;
+    public PurchaseOrder(Seller seller, List<OrderLine> orderLines, PONumber poNumber, OrderStatus status, LocalDateTime receivedDateTime) {
+        this.seller = seller;
         this.orderLines = orderLines;
         this.poNumber = poNumber;
         this.status = status;
@@ -32,8 +32,12 @@ public final class PurchaseOrder {
         this.status = OrderStatus.FILLED;
     }
 
-    public Seller.SellerId sellerId() {
-        return sellerId;
+    public void matchOrder() {
+        this.status = OrderStatus.MATCHED;
+    }
+
+    public Seller getSeller() {
+        return seller;
     }
 
     public List<OrderLine> orderLines() {
@@ -52,12 +56,16 @@ public final class PurchaseOrder {
         return receivedDateTime;
     }
 
+    public void setSeller(Seller seller) {
+        this.seller = seller;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
         var that = (PurchaseOrder) obj;
-        return Objects.equals(this.sellerId, that.sellerId) &&
+        return Objects.equals(this.seller, that.seller) &&
                 Objects.equals(this.orderLines, that.orderLines) &&
                 Objects.equals(this.poNumber, that.poNumber) &&
                 Objects.equals(this.status, that.status);
@@ -65,13 +73,13 @@ public final class PurchaseOrder {
 
     @Override
     public int hashCode() {
-        return Objects.hash(sellerId, orderLines, poNumber, status);
+        return Objects.hash(seller, orderLines, poNumber, status);
     }
 
     @Override
     public String toString() {
         return "PurchaseOrder[" +
-                "sellerId=" + sellerId + ", " +
+                "sellerId=" + seller + ", " +
                 "orderLines=" + orderLines + ", " +
                 "poNumber=" + poNumber + ", " +
                 "status=" + status + ']';

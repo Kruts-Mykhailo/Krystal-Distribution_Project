@@ -26,7 +26,7 @@ public class POListener {
     @RabbitListener(queues = PURCHASE_ORDER_QUEUE, messageConverter = "jackson2JsonMessageConverter")
     public void receivePurchaseOrder(PurchaseOrderCreatedEvent receivedEvent) {
         PurchaseOrder purchaseOrder = new PurchaseOrder(
-                new Seller.SellerId(receivedEvent.getPurchaseOrder().getSellerParty().getUuid()),
+                new Seller(new Seller.SellerId(receivedEvent.getPurchaseOrder().getSellerParty().getUuid())),
                 receivedEvent.getPurchaseOrder().getOrderLines()
                         .stream()
                         .map(ol -> new OrderLine(

@@ -3,6 +3,7 @@ package be.kdg.prog6.adapter.out.db.purchaseOrder;
 import be.kdg.prog6.adapter.exceptions.PurchaseOrderNotFoundException;
 import be.kdg.prog6.adapter.out.db.orderLine.OrderLineConverter;
 import be.kdg.prog6.adapter.out.db.orderLine.OrderLineJpaRepository;
+import be.kdg.prog6.adapter.out.db.seller.SellerJpaEntity;
 import be.kdg.prog6.domain.*;
 import be.kdg.prog6.port.out.PurchaseOrderFoundPort;
 import be.kdg.prog6.port.out.PurchaseOrderSavedPort;
@@ -32,12 +33,12 @@ public class PurchaseOrderAdapter implements PurchaseOrderUpdatedPort, PurchaseO
 
         List<OrderLine> orderLines = OrderLineConverter.toOrderLineList(purchaseOrderJpaEntity.getOrderLines());
 
-        return PurchaseOrderConverter.toPurchaseOrder(purchaseOrderJpaEntity, orderLines);
+        return PurchaseOrderConverter.fromJpaFetched(purchaseOrderJpaEntity, orderLines);
     }
 
     @Override
     public List<PurchaseOrder> getAllPurchaseOrders() {
-        return purchaseOrderJpaRepository.findAll()
+        return purchaseOrderJpaRepository.findAllWithSellerFetched()
                 .stream()
                 .map(PurchaseOrderConverter::toPurchaseOrder)
                 .collect(Collectors.toList());
@@ -45,24 +46,16 @@ public class PurchaseOrderAdapter implements PurchaseOrderUpdatedPort, PurchaseO
 
     @Override
     public void savePurchaseOrder(PurchaseOrder purchaseOrder) {
-        PurchaseOrderJpaEntity purchaseOrderJpaEntity =
-                purchaseOrderJpaRepository.save(PurchaseOrderConverter.toPurchaseOrderJpaEntity(purchaseOrder));
+        PurchaseOrderJpaEntity purchaseOrderJpaEntity = PurchaseOrderConverter.toPurchaseOrderJpaEntity(purchaseOrder);
+        purchaseOrderJpaEntity.setSeller(new SellerJpaEntity(purchaseOrder.getSeller().getSellerId().id()));
+        purchaseOrderJpaEntity = purchaseOrderJpaRepository.save(purchaseOrderJpaEntity);
 
         orderLineJpaRepository.saveAll(OrderLineConverter
                 .toOrderLineJpaEntityList(purchaseOrder.orderLines(),purchaseOrderJpaEntity.getPoNumber()));
     }
 
     @Override
-    public void update(PurchaseOrder purchaseOrder, PurchaseOrder.OrderStatus status) {
-        PurchaseOrderJpaEntity purchaseOrderJpaEntity = purchaseOrderJpaRepository.findById(purchaseOrder.poNumber().number())
-                .orElseThrow(() -> new PurchaseOrderNotFoundException(
-                        "Purchase order %s not found".formatted(purchaseOrder.poNumber())));
-        purchaseOrderJpaEntity.setOrderStatus(status.name());
-        purchaseOrderJpaRepository.save(purchaseOrderJpaEntity);
-    }
-
-    @Override
-    public void update(PurchaseOrder purchaseOrder) {
+    public void updateStatus(PurchaseOrder purchaseOrder) {
         PurchaseOrderJpaEntity purchaseOrderJpaEntity = purchaseOrderJpaRepository.findById(purchaseOrder.poNumber().number())
                 .orElseThrow(() -> new PurchaseOrderNotFoundException(
                         "Purchase order %s not found".formatted(purchaseOrder.poNumber())));

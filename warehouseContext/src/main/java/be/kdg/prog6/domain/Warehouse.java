@@ -2,6 +2,7 @@ package be.kdg.prog6.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public class Warehouse {
     private WarehouseNumber warehouseNumber;
@@ -42,6 +43,13 @@ public class Warehouse {
 
     public MaterialAmount getWarehouseMaterialAmount() {
         return new MaterialAmount(activityRecords.stream().mapToDouble(PayloadActivity::payload).sum(), LocalDateTime.now());
+    }
+
+    public Optional<PayloadActivity> isZeroWeightActivityPresent(LocalDateTime activityDateTime) {
+        return  activityRecords.stream()
+                        .filter(activity -> activity.getAmount() == 0.0
+                                && activity.getEventDateTime().equals(activityDateTime))
+                        .findFirst();
     }
 
 }

@@ -1,5 +1,6 @@
 package be.kdg.prog6.adapter.out.db.seller;
 
+import be.kdg.prog6.adapter.out.db.purchaseOrder.PurchaseOrderJpaEntity;
 import be.kdg.prog6.adapter.out.db.warehouse.WarehouseJpaEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -23,6 +24,9 @@ public class SellerJpaEntity {
 
     @OneToMany(mappedBy = "seller")
     private List<WarehouseJpaEntity> warehouses;
+
+    @OneToMany(mappedBy = "seller")
+    private List<PurchaseOrderJpaEntity> purchaseOrders;
 
     public SellerJpaEntity() {
 

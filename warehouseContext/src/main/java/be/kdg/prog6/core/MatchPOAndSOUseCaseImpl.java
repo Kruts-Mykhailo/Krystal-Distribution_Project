@@ -24,7 +24,8 @@ public class MatchPOAndSOUseCaseImpl implements MatchPOAndSOUseCase {
     public void matchOrders(PONumber poNumber) {
         PurchaseOrder purchaseOrder = purchaseOrderFoundPort.getByPurchaseOrderNumber(poNumber.number());
         if (purchaseOrder.isOutstanding()) {
-            purchaseOrderUpdatedPort.update(purchaseOrder, PurchaseOrder.OrderStatus.MATCHED);
+            purchaseOrder.matchOrder();
+            purchaseOrderUpdatedPort.updateStatus(purchaseOrder);
         }
 
     }

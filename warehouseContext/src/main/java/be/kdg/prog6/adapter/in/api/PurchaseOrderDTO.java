@@ -14,14 +14,14 @@ import java.util.UUID;
 public class PurchaseOrderDTO {
     private String orderStatus;
     private String poNumber;
-    private UUID sellerId;
+    private String sellerName;
     private LocalDateTime receivedDateTime;
 
-    public PurchaseOrderDTO(String orderStatus, String poNumber, UUID sellerId, LocalDateTime receivedDateTime) {
+    public PurchaseOrderDTO(String orderStatus, String poNumber, LocalDateTime receivedDateTime, String sellerName) {
         this.orderStatus = orderStatus;
         this.poNumber = poNumber;
-        this.sellerId = sellerId;
         this.receivedDateTime = receivedDateTime;
+        this.sellerName = sellerName;
     }
 
 }

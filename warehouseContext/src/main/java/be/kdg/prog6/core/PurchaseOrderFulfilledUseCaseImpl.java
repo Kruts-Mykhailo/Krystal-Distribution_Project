@@ -2,6 +2,7 @@ package be.kdg.prog6.core;
 
 import be.kdg.prog6.domain.*;
 import be.kdg.prog6.events.CalculateCommissionForPurchaseOrderEvent;
+import be.kdg.prog6.events.WarehouseCapacityChangeEvent;
 import be.kdg.prog6.port.in.PurchaseOrderFulfilledUseCase;
 import be.kdg.prog6.port.out.*;
 import jakarta.transaction.Transactional;
@@ -38,7 +39,7 @@ public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilled
                 Double amount = orderLine.getAmount();
 
                 Warehouse warehouse = warehouseFoundPort.getWarehouseByOwnerIdAndMaterialType(
-                        purchaseOrder.sellerId(),
+                        purchaseOrder.getSeller().getSellerId(),
                         orderLine.materialType()
                 );
                 PayloadPurchase event = new PayloadPurchase(
@@ -47,16 +48,17 @@ public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilled
                 );
                 payloadActivitySavedPort.savePayloadActivity(event, warehouse.getWarehouseNumber());
                 projectWarehouseInfoPort.projectWarehouseCapacity(
-                        warehouse.getWarehouseNumber(),
-                        amount,
-                        ActivityType.PURCHASE
+                        new WarehouseCapacityChangeEvent(
+                                warehouse.getWarehouseNumber().number(),
+                                amount,
+                                ActivityType.PURCHASE.name())
                 );
             }
             purchaseOrder.fillOrder();
-            purchaseOrderUpdatedPort.update(purchaseOrder);
+            purchaseOrderUpdatedPort.updateStatus(purchaseOrder);
             commissionInfoPort.sendInfoForCommission(new CalculateCommissionForPurchaseOrderEvent(
                     purchaseOrder.orderLines(),
-                    purchaseOrder.sellerId().id(),
+                    purchaseOrder.getSeller().getSellerId().id(),
                     purchaseOrder.poNumber().number()
             ));
         }

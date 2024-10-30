@@ -23,7 +23,7 @@ public class PurchaseOrderController {
     public ResponseEntity<List<PurchaseOrderDTO>> getAllPurchaseOrders() {
 
         List<PurchaseOrder> purchaseOrders = checkPurchaseOrdersStatusesUseCase.getAllPurchaseOrders();
-        List<PurchaseOrderDTO> purchaseOrderDTOS = purchaseOrders.stream().map(PurchaseOrderConverter::convert).toList();
+        List<PurchaseOrderDTO> purchaseOrderDTOS = purchaseOrders.stream().map(PurchaseOrderDTOConverter::convert).toList();
         if (purchaseOrderDTOS.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

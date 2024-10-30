@@ -6,11 +6,11 @@ import java.util.Arrays;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public record WarehouseInfoDTO (String warehouseNumber, UUID sellerId, Double payloadAmount, Double maxCapacity, String materialType){
+public record WarehouseInfoDTO (String warehouseNumber, String seller, Double payloadAmount, Double maxCapacity, String materialType){
     public static WarehouseInfoDTO from (Warehouse warehouse) {
         return new WarehouseInfoDTO(
                 warehouse.getWarehouseNumber().number(),
-                warehouse.getSeller().getSellerId().id(),
+                warehouse.getSeller().getName(),
                 warehouse.getWarehouseMaterialAmount().amount(),
                 warehouse.getMaxCapacity(),
                 Arrays.stream(warehouse.getMaterialType().name().toLowerCase().split("_"))
