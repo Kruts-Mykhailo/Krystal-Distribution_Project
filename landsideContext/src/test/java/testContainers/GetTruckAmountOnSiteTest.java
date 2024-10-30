@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -43,12 +44,14 @@ public class GetTruckAmountOnSiteTest extends AbstractDatabaseTest{
                         MaterialType.GYPSUM,
                         dateTime,
                         new WarehouseNumber("W-01"),
-                        TruckArrivalStatus.ARRIVED_LATE),
+                        TruckArrivalStatus.ARRIVED_LATE,
+                        new Seller(new Seller.SellerId(UUID.randomUUID()), "test")),
                 new Appointment(new LicensePlate("XXX-002"),
                         MaterialType.PETROULEUM_COKE,
                         dateTime,
                         new WarehouseNumber("W-01"),
-                        TruckArrivalStatus.ON_SITE)
+                        TruckArrivalStatus.ON_SITE,
+                        new Seller(new Seller.SellerId(UUID.randomUUID()), "test"))
         ));
 
         // Act

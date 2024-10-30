@@ -24,7 +24,11 @@ public abstract class AbstractDatabaseTest {
     private static final MySQLContainer<?> DATABASE;
 
     static {
-        DATABASE = new MySQLContainer<>("mysql:8.0.30");
+        DATABASE = new MySQLContainer<>("mysql:8.0.30")
+                .withUsername("root")
+                .withPassword("password")
+                .withPrivilegedMode(true);
+        DATABASE.withInitScript("initScript.sql");
         DATABASE.start();
     }
 
@@ -39,14 +43,13 @@ public abstract class AbstractDatabaseTest {
         public void initialize(ConfigurableApplicationContext applicationContext) {
             TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
                     applicationContext,
-                    "spring.datasource.url=" + DATABASE.getJdbcUrl(),
+                    "spring.datasource.url=" + DATABASE.getJdbcUrl() + "?currentSchema=landside",
                     "spring.datasource.username=" + DATABASE.getUsername(),
                     "spring.datasource.password=" + DATABASE.getPassword(),
                     "spring.sql.init.mode=always",
-                    "logging.level.root=DEBUG",
-                    "logging.level.org.hibernate.SQL=DEBUG",
-                    "logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE" // Optional for better insights
-            );
+                    "spring.jpa.properties.hibernate.default_schema=landside",
+                    "spring.jpa.generate-ddl=true"
+                  );
         }
     }
 }

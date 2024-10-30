@@ -1,5 +1,7 @@
 package be.kdg.prog6.domain;
 
+import be.kdg.prog6.adapter.exceptions.AppointmentCannotBeScheduledException;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -46,15 +48,21 @@ public class DaySchedule {
         return trucksScheduled < truckAmountPerWindow;
     }
 
-    public Optional<Appointment> scheduleAppointment(LocalDateTime scheduleDateTime,
+    public Appointment scheduleAppointment(LocalDateTime scheduleDateTime,
                                                      LicensePlate truckLicensePlate,
                                                      MaterialType materialType,
-                                                     WarehouseNumber warehouseNumber) {
-        if (isTimeWindowAvailable(scheduleDateTime)) {
-            return Optional.of(new Appointment(truckLicensePlate, materialType, scheduleDateTime, warehouseNumber, TruckArrivalStatus.SCHEDULED));
+                                                     WarehouseNumber warehouseNumber,
+                                                     Seller seller) {
+        if (!isTimeWindowAvailable(scheduleDateTime)) {
+            throw new AppointmentCannotBeScheduledException(
+                    String.format("Appointment cannot be scheduled for %s", scheduleDateTime));
         }
-        return Optional.empty();
-
+        return new Appointment(truckLicensePlate,
+                materialType,
+                scheduleDateTime,
+                warehouseNumber,
+                TruckArrivalStatus.SCHEDULED,
+                seller);
     }
 
     public int getTruckAmountPerWindow() {

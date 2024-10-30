@@ -1,5 +1,6 @@
 package be.kdg.prog6.adapter.out.db.warehouse;
 
+import be.kdg.prog6.adapter.out.db.seller.SellerConverter;
 import be.kdg.prog6.domain.MaterialType;
 import be.kdg.prog6.domain.Seller;
 import be.kdg.prog6.domain.WarehouseInfo;
@@ -12,7 +13,8 @@ public class WarehouseInfoConverter {
                 new Seller.SellerId(warehouseInfoJpa.getSellerId()),
                 new WarehouseNumber(warehouseInfoJpa.getWarehouseNumber()),
                 warehouseInfoJpa.getInitialCapacity(),
-                warehouseInfoJpa.getMaxCapacity());
+                warehouseInfoJpa.getMaxCapacity(),
+                SellerConverter.fromJpa(warehouseInfoJpa.getSeller()));
     }
 
     public static WarehouseInfoJpaEntity convert(WarehouseInfo warehouseInfo) {

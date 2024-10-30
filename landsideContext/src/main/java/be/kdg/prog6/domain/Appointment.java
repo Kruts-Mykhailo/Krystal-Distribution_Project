@@ -14,8 +14,10 @@ public class Appointment {
     private WarehouseNumber warehouseNumber;
     private TruckArrivalStatus truckArrivalStatus;
     private final List<AppointmentActivity> appointmentActivities;
+    private final Seller seller;
 
-    public Appointment(LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime scheduledArrivalTime, WarehouseNumber warehouseNumber, TruckArrivalStatus truckArrivalStatus) {
+    public Appointment(LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime scheduledArrivalTime, WarehouseNumber warehouseNumber, TruckArrivalStatus truckArrivalStatus, Seller seller) {
+        this.seller = seller;
         this.id = UUID.randomUUID();
         this.truckLicensePlate = truckLicensePlate;
         this.materialType = materialType;
@@ -25,7 +27,7 @@ public class Appointment {
         this.appointmentActivities = new ArrayList<>();
     }
 
-    public Appointment(UUID id, LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime scheduledArrivalTime, WarehouseNumber warehouseNumber, TruckArrivalStatus truckArrivalStatus, List<AppointmentActivity> appointmentActivities) {
+    public Appointment(UUID id, LicensePlate truckLicensePlate, MaterialType materialType, LocalDateTime scheduledArrivalTime, WarehouseNumber warehouseNumber, TruckArrivalStatus truckArrivalStatus, List<AppointmentActivity> appointmentActivities, Seller seller) {
         this.id = id;
         this.truckLicensePlate = truckLicensePlate;
         this.materialType = materialType;
@@ -33,6 +35,7 @@ public class Appointment {
         this.warehouseNumber = warehouseNumber;
         this.truckArrivalStatus = truckArrivalStatus;
         this.appointmentActivities = appointmentActivities == null ? new ArrayList<>() : appointmentActivities;
+        this.seller = seller;
     }
 
     public UUID getId() {
@@ -41,6 +44,10 @@ public class Appointment {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public Seller getSeller() {
+        return seller;
     }
 
     public TruckArrivalStatus getTruckArrivalStatus() {

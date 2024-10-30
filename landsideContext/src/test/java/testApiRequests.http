@@ -19,11 +19,11 @@ Authorization: Bearer {{access_token}}
 {
   "licensePlate": "A-111JD-F",
   "materialType": "GYPSUM",
-  "scheduleDateTime": "2024-10-30T00:00:00"
+  "scheduleDateTime": "2024-10-30T14:00:00"
 }
 
 ### Get arrivals by date
-GET http://localhost:8091/lsc/trucks/2024-10-29
+GET http://localhost:8091/lsc/trucks/2024-10-30
 Authorization: Bearer {{access_token}}
 
 ### Get all trucks on site

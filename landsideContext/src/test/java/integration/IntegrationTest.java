@@ -4,6 +4,8 @@ import be.kdg.prog6.Main;
 import be.kdg.prog6.adapter.out.db.appointment.AppointmentConverter;
 import be.kdg.prog6.adapter.out.db.appointment.AppointmentJpaEntity;
 import be.kdg.prog6.adapter.out.db.appointment.AppointmentJpaRepository;
+import be.kdg.prog6.adapter.out.db.seller.SellerConverter;
+import be.kdg.prog6.adapter.out.db.seller.SellerJpaRepository;
 import be.kdg.prog6.domain.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -38,17 +41,23 @@ public class IntegrationTest {
     @Autowired
     private AppointmentJpaRepository appointmentJpaRepository;
 
+    @Autowired
+    private SellerJpaRepository sellerJpaRepository;
+
     private AppointmentJpaEntity appointment;
 
     @BeforeEach
     public void setup() {
+        Seller seller = new Seller(new Seller.SellerId(UUID.randomUUID()), "test");
         Appointment tempAppointment = new Appointment(
                 new LicensePlate("X-999-111"),
                 MaterialType.CEMENT,
                 LocalDateTime.now(),
                 new WarehouseNumber("W-01"),
-                TruckArrivalStatus.ON_SITE);
+                TruckArrivalStatus.ON_SITE,
+                seller);
         appointment = AppointmentConverter.toJpaEntity(tempAppointment);
+        sellerJpaRepository.save(SellerConverter.toJpa(seller));
         appointment = appointmentJpaRepository.save(appointment);
     }
 

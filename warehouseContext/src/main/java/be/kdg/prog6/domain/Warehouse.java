@@ -44,13 +44,4 @@ public class Warehouse {
         return new MaterialAmount(activityRecords.stream().mapToDouble(PayloadActivity::payload).sum(), LocalDateTime.now());
     }
 
-    public PayloadActivity addActivityRecord(LocalDateTime activityTime, Double payloadAmount, ActivityType activityType) {
-        PayloadActivity activityRecord = switch (activityType) {
-            case DELIVERY -> new PayloadPurchaseEvent(payloadAmount, activityTime);
-            case PURCHASE -> new PayloadDeliveryEvent(payloadAmount, activityTime);
-
-        };
-        activityRecords.add(activityRecord);
-        return activityRecord;
-    }
 }

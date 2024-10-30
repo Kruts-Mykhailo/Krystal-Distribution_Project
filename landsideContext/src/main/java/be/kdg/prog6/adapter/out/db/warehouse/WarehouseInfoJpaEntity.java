@@ -1,5 +1,6 @@
 package be.kdg.prog6.adapter.out.db.warehouse;
 
+import be.kdg.prog6.adapter.out.db.seller.SellerJPAEntity;
 import be.kdg.prog6.domain.WarehouseNumber;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @Entity
-@Table(name = "warehouses")
+@Table(name = "warehouses", catalog = "landside")
 public class WarehouseInfoJpaEntity {
 
     @Id
@@ -33,6 +34,9 @@ public class WarehouseInfoJpaEntity {
     @Column(nullable = false)
     private Double maxCapacity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private SellerJPAEntity seller;
+
     public WarehouseInfoJpaEntity() {
     }
 
@@ -42,5 +46,6 @@ public class WarehouseInfoJpaEntity {
         this.materialType = materialType;
         this.sellerId = sellerId;
         this.warehouseNumber = warehouseNumber;
+
     }
 }

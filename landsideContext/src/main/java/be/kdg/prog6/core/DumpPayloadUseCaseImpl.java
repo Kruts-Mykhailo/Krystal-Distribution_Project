@@ -36,7 +36,7 @@ public class DumpPayloadUseCaseImpl implements DumpPayloadUseCase {
                 TruckArrivalStatus.SCHEDULED);
 
         appointment.dumpPayload(LocalDateTime.now());
-        appointmentUpdatedPort.update(appointment);
+        appointmentUpdatedPort.updateStatus(appointment);
         createPdtPort.sendPdt(new PayloadDeliveredEvent(
                 appointment.getWarehouseNumber().number(),
                 LocalDateTime.now(),

@@ -2,6 +2,7 @@ package be.kdg.prog6.adapter.out.db.appointment;
 
 import be.kdg.prog6.adapter.out.db.appointmentActivity.AppointmentActivityJpaEntity;
 import be.kdg.prog6.adapter.out.db.schedule.ScheduleJpaEntity;
+import be.kdg.prog6.adapter.out.db.seller.SellerJPAEntity;
 import be.kdg.prog6.adapter.out.db.truckweight.TruckWeightJpaEntity;
 import be.kdg.prog6.domain.WarehouseNumber;
 import jakarta.persistence.*;
@@ -47,6 +48,9 @@ public class AppointmentJpaEntity {
 
     @OneToMany(mappedBy = "appointment")
     private List<TruckWeightJpaEntity> recordedTruckWeight;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private SellerJPAEntity seller;
 
     public AppointmentJpaEntity(UUID appointmentId, String licensePlate, String materialType, LocalDateTime appointmentDateTime, String warehouseNumber, String status) {
         this.appointmentId = appointmentId;

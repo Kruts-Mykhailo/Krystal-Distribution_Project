@@ -9,14 +9,16 @@ public final class WarehouseInfo {
     private final WarehouseNumber warehouseNumber;
     private Double warehouseCapacity;
     private final Double maxAmount;
+    private final Seller seller;
 
 
-    public WarehouseInfo(MaterialType materialType, Seller.SellerId sellerId, WarehouseNumber warehouseNumber, Double warehouseCapacity, Double maxAmount) {
+    public WarehouseInfo(MaterialType materialType, Seller.SellerId sellerId, WarehouseNumber warehouseNumber, Double warehouseCapacity, Double maxAmount, Seller seller) {
         this.materialType = materialType;
         this.sellerId = sellerId;
         this.warehouseNumber = warehouseNumber;
         this.warehouseCapacity = warehouseCapacity;
         this.maxAmount = maxAmount;
+        this.seller = seller;
     }
 
     public void updateCapacity(Double amount, OperationType operationType) {
@@ -53,6 +55,9 @@ public final class WarehouseInfo {
         return maxAmount;
     }
 
+    public Seller getSeller() {
+        return seller;
+    }
 
     @Override
     public boolean equals(Object obj) {

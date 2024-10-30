@@ -1,6 +1,5 @@
 package be.kdg.prog6.core;
 
-import be.kdg.prog6.adapter.exceptions.AppointmentNotFoundException;
 import be.kdg.prog6.domain.Appointment;
 import be.kdg.prog6.domain.TruckArrivalStatus;
 import be.kdg.prog6.domain.TruckWeightRecord;
@@ -42,7 +41,7 @@ public class EnterWeighingBridgeUseCaseImpl implements EnterWeighingBridgeUseCas
                 passBridgeCommand.weight(),
                 LocalDateTime.now()
         );
-        appointmentUpdatedPort.update(appointment);
+        appointmentUpdatedPort.updateStatus(appointment);
         truckWeightSavedPort.saveTruckWeight(truckWeightRecord, appointment.getId());
 
         logger.info(String.format(

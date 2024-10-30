@@ -1,5 +1,6 @@
 package be.kdg.prog6.adapter.out.db.appointment;
 
+import be.kdg.prog6.adapter.out.db.seller.SellerConverter;
 import be.kdg.prog6.domain.*;
 
 import java.util.stream.Collectors;
@@ -20,7 +21,8 @@ public class AppointmentConverter {
                         ActivityType.valueOf(ac.getActivityType()),
                         ac.getDateTime(),
                         TruckArrivalStatus.valueOf(ac.getTruckStatus())
-                )).collect(Collectors.toList())
+                )).collect(Collectors.toList()),
+                SellerConverter.fromJpa(a.getSeller())
         );
     }
 

@@ -25,11 +25,14 @@ public interface AppointmentJpaRepository extends JpaRepository<AppointmentJpaEn
 
     @Query("select a from AppointmentJpaEntity a " +
     "left join fetch a.activities " +
-    "where a.licensePlate = :licensePlate and a.status != :status")
+    "left join fetch a.seller " +
+    "where a.licensePlate = :licensePlate and a.status != :status ")
     Optional<AppointmentJpaEntity> findByLicensePlateAndNotStatusFetched(String licensePlate, String status);
 
-
-    List<AppointmentJpaEntity> findAllByAppointmentDateTimeBetween(LocalDateTime from, LocalDateTime to);
+    @Query("select a from AppointmentJpaEntity a " +
+    "left join fetch a.seller " +
+    "where a.appointmentDateTime >= :from and a.appointmentDateTime <= :to ")
+    List<AppointmentJpaEntity> findAllByAppointmentDateTimeBetweenFetched(LocalDateTime from, LocalDateTime to);
 
     List<AppointmentJpaEntity> findAllByStatusIn(List<String> statuses);
 

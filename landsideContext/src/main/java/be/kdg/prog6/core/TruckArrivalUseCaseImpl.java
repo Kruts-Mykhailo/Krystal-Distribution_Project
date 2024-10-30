@@ -1,6 +1,5 @@
 package be.kdg.prog6.core;
 
-import be.kdg.prog6.adapter.exceptions.AppointmentNotFoundException;
 import be.kdg.prog6.domain.*;
 import be.kdg.prog6.port.in.TruckArrivalCommand;
 import be.kdg.prog6.port.in.TruckArrivalUseCase;
@@ -34,7 +33,7 @@ public class TruckArrivalUseCaseImpl implements TruckArrivalUseCase {
         Appointment appointment = appointmentFoundPort.getAppointmentByArrivalTime(licensePlate, arrivalTime);
 
         appointment.truckArrived(arrivalTime);
-        appointmentUpdatedPort.update(appointment);
+        appointmentUpdatedPort.updateStatus(appointment);
 
         logger.info(String.format("Truck %s arrived to facility at %s", licensePlate.licensePlate(), arrivalTime));
 

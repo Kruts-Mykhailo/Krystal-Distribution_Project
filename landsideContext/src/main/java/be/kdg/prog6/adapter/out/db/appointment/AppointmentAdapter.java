@@ -5,6 +5,7 @@ import be.kdg.prog6.adapter.out.db.appointmentActivity.AppointmentActivityConver
 import be.kdg.prog6.adapter.out.db.appointmentActivity.AppointmentActivityJpaEntity;
 import be.kdg.prog6.adapter.out.db.appointmentActivity.AppointmentActivityJpaRepository;
 import be.kdg.prog6.adapter.out.db.schedule.ScheduleJpaEntity;
+import be.kdg.prog6.adapter.out.db.seller.SellerJPAEntity;
 import be.kdg.prog6.domain.*;
 import be.kdg.prog6.port.out.AppointmentCreatedPort;
 import be.kdg.prog6.port.out.AppointmentFoundPort;
@@ -32,11 +33,12 @@ public class AppointmentAdapter implements AppointmentCreatedPort, AppointmentUp
     public void saveAppointment(Appointment appointment, UUID scheduleId) {
         AppointmentJpaEntity appointmentJpaEntity = AppointmentConverter.toJpaEntity(appointment);
         appointmentJpaEntity.setSchedule(new ScheduleJpaEntity(scheduleId));
+        appointmentJpaEntity.setSeller(new SellerJPAEntity(appointment.getSeller().getSellerId().id()));
         appointmentJpaRepository.save(appointmentJpaEntity);
     }
 
     @Override
-    public void update(Appointment appointment) {
+    public void updateStatus(Appointment appointment) {
         AppointmentJpaEntity foundAppointment = appointmentJpaRepository.findById(appointment.getId())
                 .orElseThrow(() -> new AppointmentNotFoundException(
                         "Appointment %s not found".formatted(appointment.getId())));
@@ -96,7 +98,7 @@ public class AppointmentAdapter implements AppointmentCreatedPort, AppointmentUp
     @Override
     public List<Appointment> getAllTruckAppointmentsByDate(LocalDate when) {
         return appointmentJpaRepository
-                .findAllByAppointmentDateTimeBetween(when.atStartOfDay(), when.plusDays(1).atStartOfDay())
+                .findAllByAppointmentDateTimeBetweenFetched(when.atStartOfDay(), when.plusDays(1).atStartOfDay())
                 .stream()
                 .map(AppointmentConverter::toAppointment)
                 .collect(Collectors.toList());
