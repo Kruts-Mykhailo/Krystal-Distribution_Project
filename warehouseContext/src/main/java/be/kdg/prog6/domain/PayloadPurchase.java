@@ -1,11 +1,12 @@
 package be.kdg.prog6.domain;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
-public final class PayloadDeliveryEvent extends PayloadActivity {
-    public PayloadDeliveryEvent(Double amount, LocalDateTime eventDateTime) {
-        super(eventDateTime, ActivityType.DELIVERY, amount);
+public final class PayloadPurchase extends PayloadActivity {
+
+    public PayloadPurchase(Double amount, LocalDateTime eventDateTime) {
+        super(eventDateTime, ActivityType.PURCHASE, amount);
+
     }
 
     @Override
@@ -21,6 +22,6 @@ public final class PayloadDeliveryEvent extends PayloadActivity {
 
     @Override
     public Double payload() {
-        return this.getAmount();
+        return -Math.abs(this.getAmount());
     }
 }

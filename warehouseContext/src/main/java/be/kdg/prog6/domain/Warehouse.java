@@ -5,13 +5,13 @@ import java.util.List;
 
 public class Warehouse {
     private WarehouseNumber warehouseNumber;
-    private final Seller.SellerId ownerId;
+    private final Seller seller;
     private MaterialType materialType;
     private final List<PayloadActivity> activityRecords;
 
-    public Warehouse(WarehouseNumber warehouseNumber, Seller.SellerId ownerId, MaterialType materialType, List<PayloadActivity> activityRecords) {
+    public Warehouse(WarehouseNumber warehouseNumber, Seller seller, MaterialType materialType, List<PayloadActivity> activityRecords) {
         this.warehouseNumber = warehouseNumber;
-        this.ownerId = ownerId;
+        this.seller = seller;
         this.materialType = materialType;
         this.activityRecords = activityRecords;
     }
@@ -28,8 +28,8 @@ public class Warehouse {
         this.warehouseNumber = warehouseNumber;
     }
 
-    public Seller.SellerId getOwnerId() {
-        return ownerId;
+    public Seller getSeller() {
+        return seller;
     }
 
     public MaterialType getMaterialType() {

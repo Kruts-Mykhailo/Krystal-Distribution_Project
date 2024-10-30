@@ -23,7 +23,7 @@ public class WarehouseAdapter implements WarehouseFoundPort {
     @Override
     public Warehouse getWarehouseByOwnerIdAndMaterialType(Seller.SellerId id, MaterialType materialType) {
         return warehouseJpaRepository
-                .findByOwnerIdAndMaterialType(id.id(), materialType.name())
+                .findBySellerIdAndMaterialType(id.id(), materialType.name())
                 .map(WarehouseConverter::toWarehouse)
                 .orElseThrow(() -> new WarehouseNotFoundException("Warehouse not found"));
     }

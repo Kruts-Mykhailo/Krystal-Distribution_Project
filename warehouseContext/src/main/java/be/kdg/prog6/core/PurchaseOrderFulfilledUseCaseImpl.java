@@ -41,7 +41,7 @@ public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilled
                         purchaseOrder.sellerId(),
                         orderLine.materialType()
                 );
-                PayloadPurchaseEvent event = new PayloadPurchaseEvent(
+                PayloadPurchase event = new PayloadPurchase(
                         amount,
                         LocalDateTime.now()
                 );

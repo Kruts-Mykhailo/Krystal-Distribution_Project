@@ -2,7 +2,7 @@ package be.kdg.prog6.core;
 
 import be.kdg.prog6.domain.ActivityType;
 import be.kdg.prog6.domain.PayloadActivity;
-import be.kdg.prog6.domain.PayloadDeliveryEvent;
+import be.kdg.prog6.domain.PayloadDelivery;
 import be.kdg.prog6.domain.Warehouse;
 import be.kdg.prog6.events.StorageChangeEvent;
 import be.kdg.prog6.port.in.AdjustInventoryCommand;
@@ -55,14 +55,14 @@ public class AdjustWarehouseInventoryUseCaseImpl implements AdjustWarehouseInven
 
             invoicingStorageRecordUpdatedPort.send(
                     new StorageChangeEvent(
-                            warehouse.getOwnerId().id(),
+                            warehouse.getSeller().getSellerId().id(),
                             command.netWeight(),
                             command.sendTime(),
                             warehouse.getMaterialType().name()));
 
         } else {
            payloadActivitySavedPort.savePayloadActivity(
-                   new PayloadDeliveryEvent(
+                   new PayloadDelivery(
                            command.netWeight(),
                            command.sendTime()),
                    command.warehouseNumber());

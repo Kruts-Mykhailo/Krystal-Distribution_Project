@@ -1,9 +1,6 @@
 package be.kdg.prog6.adapter.in.api;
 
-import be.kdg.prog6.domain.MaterialType;
-import be.kdg.prog6.domain.Seller;
 import be.kdg.prog6.domain.Warehouse;
-import be.kdg.prog6.domain.WarehouseNumber;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -13,7 +10,7 @@ public record WarehouseInfoDTO (String warehouseNumber, UUID sellerId, Double pa
     public static WarehouseInfoDTO from (Warehouse warehouse) {
         return new WarehouseInfoDTO(
                 warehouse.getWarehouseNumber().number(),
-                warehouse.getOwnerId().id(),
+                warehouse.getSeller().getSellerId().id(),
                 warehouse.getWarehouseMaterialAmount().amount(),
                 warehouse.getMaxCapacity(),
                 Arrays.stream(warehouse.getMaterialType().name().toLowerCase().split("_"))

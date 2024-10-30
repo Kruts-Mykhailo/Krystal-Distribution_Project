@@ -1,15 +1,12 @@
 package be.kdg.prog6.adapter.out.db.warehouse;
 
 import be.kdg.prog6.adapter.out.db.payloadActivity.PayloadActivityJpaEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import be.kdg.prog6.adapter.out.db.seller.SellerJpaEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -21,11 +18,11 @@ public class WarehouseJpaEntity {
     private String warehouseNumber;
 
     private String materialType;
-
-    private UUID ownerId;
-
     @OneToMany(mappedBy = "warehouse")
     private List<PayloadActivityJpaEntity> payloadActivityJpaEntities;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private SellerJpaEntity seller;
 
 
     public WarehouseJpaEntity() {
