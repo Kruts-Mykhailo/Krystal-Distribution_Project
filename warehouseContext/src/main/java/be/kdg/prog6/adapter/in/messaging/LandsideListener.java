@@ -2,7 +2,7 @@ package be.kdg.prog6.adapter.in.messaging;
 
 import be.kdg.prog6.domain.WarehouseNumber;
 import be.kdg.prog6.events.PayloadDeliveredEvent;
-import be.kdg.prog6.port.in.AdjustInventoryCommand;
+import be.kdg.prog6.events.AdjustInventoryEvent;
 import be.kdg.prog6.port.in.AdjustWarehouseInventoryUseCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class LandsideListener {
                 )
         );
         adjustWarehouseInventoryUseCase.savePayloadRecord(
-                new AdjustInventoryCommand(
+                new AdjustInventoryEvent(
                         new WarehouseNumber(pdtReceivedEvent.warehouseNumber()),
                         pdtReceivedEvent.sendTime(),
                         pdtReceivedEvent.netWeight()));

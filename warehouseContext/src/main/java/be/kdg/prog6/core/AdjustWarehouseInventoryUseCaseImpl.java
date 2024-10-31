@@ -6,7 +6,7 @@ import be.kdg.prog6.domain.PayloadDelivery;
 import be.kdg.prog6.domain.Warehouse;
 import be.kdg.prog6.events.StorageChangeEvent;
 import be.kdg.prog6.events.WarehouseCapacityChangeEvent;
-import be.kdg.prog6.port.in.AdjustInventoryCommand;
+import be.kdg.prog6.events.AdjustInventoryEvent;
 import be.kdg.prog6.port.in.AdjustWarehouseInventoryUseCase;
 import be.kdg.prog6.port.out.*;
 import jakarta.transaction.Transactional;
@@ -36,7 +36,7 @@ public class AdjustWarehouseInventoryUseCaseImpl implements AdjustWarehouseInven
 
     @Override
     @Transactional
-    public void savePayloadRecord(AdjustInventoryCommand command) {
+    public void savePayloadRecord(AdjustInventoryEvent command) {
         Warehouse warehouse = warehouseFoundPort.getWarehouseByNumber(command.warehouseNumber());
 
         Optional<PayloadActivity> activity = warehouse.isZeroWeightActivityPresent();

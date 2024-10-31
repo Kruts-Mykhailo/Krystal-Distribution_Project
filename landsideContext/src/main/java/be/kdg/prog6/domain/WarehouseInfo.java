@@ -1,5 +1,7 @@
 package be.kdg.prog6.domain;
 
+import be.kdg.prog6.adapter.exceptions.WarehouseHasFullCapacityException;
+
 import java.util.Objects;
 import java.util.UUID;
 
@@ -31,8 +33,13 @@ public final class WarehouseInfo {
     }
 
 
-    public boolean isFullCapacity() {
-        return warehouseCapacity >= maxAmount * 0.80;
+    public void isFullCapacity() {
+        if (warehouseCapacity >= maxAmount * 0.80) {
+            throw new WarehouseHasFullCapacityException(
+                    String.format("Warehouse %s has full capacity", this.warehouseNumber.number()));
+
+        }
+
     }
 
     public MaterialType materialType() {
