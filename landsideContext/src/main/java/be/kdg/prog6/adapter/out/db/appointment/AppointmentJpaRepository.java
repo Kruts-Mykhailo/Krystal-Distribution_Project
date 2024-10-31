@@ -26,8 +26,8 @@ public interface AppointmentJpaRepository extends JpaRepository<AppointmentJpaEn
     @Query("select a from AppointmentJpaEntity a " +
     "left join fetch a.activities " +
     "left join fetch a.seller " +
-    "where a.licensePlate = :licensePlate and a.status != :status ")
-    Optional<AppointmentJpaEntity> findByLicensePlateAndNotStatusFetched(String licensePlate, String status);
+    "where a.licensePlate = :licensePlate and a.status not in :statuses ")
+    Optional<AppointmentJpaEntity> findByLicensePlateAndNotStatusFetched(String licensePlate, List<String> statuses);
 
     @Query("select a from AppointmentJpaEntity a " +
     "left join fetch a.seller " +

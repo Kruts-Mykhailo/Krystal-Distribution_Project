@@ -137,6 +137,7 @@ public class Appointment {
 
     public void leaveByWeighingBridge(LocalDateTime eventTime) {
         addActivity(ActivityType.PASS_WEIGHING_BRIDGE, TruckArrivalStatus.LEFT_SITE, eventTime);
+        this.truckArrivalStatus = TruckArrivalStatus.LEFT_SITE;
     }
 
 

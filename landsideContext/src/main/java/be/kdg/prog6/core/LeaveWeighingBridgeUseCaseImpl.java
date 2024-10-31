@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.logging.Logger;
 
 
@@ -34,7 +35,9 @@ public class LeaveWeighingBridgeUseCaseImpl implements LeaveWeighingBridgeUseCas
     @Override
     @Transactional
     public WBT leaveWeighingBridge(PassBridgeCommand passBridgeCommand) {
-        Appointment appointment = appointmentFoundPort.getByLicensePlateAndNotStatus(passBridgeCommand.licensePlate(), TruckArrivalStatus.SCHEDULED);
+        Appointment appointment = appointmentFoundPort.getByLicensePlateAndStatusNotIn(
+                passBridgeCommand.licensePlate(),
+                List.of(TruckArrivalStatus.SCHEDULED, TruckArrivalStatus.LEFT_SITE));
         appointment.leaveByWeighingBridge(LocalDateTime.now());
 
         TruckWeightRecord truckWeightRecord = new TruckWeightRecord(
@@ -44,7 +47,6 @@ public class LeaveWeighingBridgeUseCaseImpl implements LeaveWeighingBridgeUseCas
         );
         TruckWeightRecord enterWeightRecord = truckWeightRecordFoundPort.getTruckWeightRecord(appointment.getId());
         Double netWeight = enterWeightRecord.weight() - truckWeightRecord.weight();
-
         truckWeightSavedPort.saveTruckWeight(truckWeightRecord, appointment.getId());
         appointmentUpdatedPort.updateStatus(appointment);
         createPdtPort.sendPdt(new PayloadDeliveredEvent(

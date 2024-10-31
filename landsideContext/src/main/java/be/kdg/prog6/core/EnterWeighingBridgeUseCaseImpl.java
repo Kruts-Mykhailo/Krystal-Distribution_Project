@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Service
@@ -31,9 +32,9 @@ public class EnterWeighingBridgeUseCaseImpl implements EnterWeighingBridgeUseCas
     @Override
     @Transactional
     public void enterWeighingBridge(PassBridgeCommand passBridgeCommand) {
-        Appointment appointment = appointmentFoundPort.getByLicensePlateAndNotStatus(
+        Appointment appointment = appointmentFoundPort.getByLicensePlateAndStatusNotIn(
                 passBridgeCommand.licensePlate(),
-                TruckArrivalStatus.SCHEDULED);
+                List.of(TruckArrivalStatus.SCHEDULED, TruckArrivalStatus.LEFT_SITE));
 
         appointment.enterByWeighingBridge(passBridgeCommand.time());
         TruckWeightRecord truckWeightRecord = new TruckWeightRecord(

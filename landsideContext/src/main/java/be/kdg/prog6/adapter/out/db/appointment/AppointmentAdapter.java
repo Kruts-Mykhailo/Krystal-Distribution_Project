@@ -98,9 +98,14 @@ public class AppointmentAdapter implements AppointmentCreatedPort, AppointmentUp
     }
 
     @Override
-    public Appointment getByLicensePlateAndNotStatus(LicensePlate licensePlate, TruckArrivalStatus status) {
+    public Appointment getByLicensePlateAndStatusNotIn(LicensePlate licensePlate, List<TruckArrivalStatus> statuses) {
         return appointmentJpaRepository
-                .findByLicensePlateAndNotStatusFetched(licensePlate.licensePlate(), status.name())
+                .findByLicensePlateAndNotStatusFetched(
+                        licensePlate.licensePlate(),
+                        statuses
+                                .stream()
+                                .map(TruckArrivalStatus::name)
+                                .toList())
                 .map(AppointmentConverter::toAppointment)
                 .orElseThrow(() -> new AppointmentNotFoundException(
                         "Appointment for %s could not be found".formatted(licensePlate.licensePlate())));

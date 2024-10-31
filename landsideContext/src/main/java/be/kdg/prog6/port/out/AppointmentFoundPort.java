@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AppointmentFoundPort {
-    Appointment getByLicensePlateAndNotStatus(LicensePlate licensePlate, TruckArrivalStatus status);
+    Appointment getByLicensePlateAndStatusNotIn(LicensePlate licensePlate, List<TruckArrivalStatus> status);
     List<Appointment> getAllTruckAppointmentsByDate(LocalDate when);
     List<Appointment> getAllAppointmentsByStatusIn(List<TruckArrivalStatus> status);
     Appointment getAppointmentByArrivalTime(LicensePlate licensePlate, LocalDateTime arrivalTime);

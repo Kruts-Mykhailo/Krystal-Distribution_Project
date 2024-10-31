@@ -35,28 +35,28 @@ GET localhost:8091/lsc/schedules
 Authorization: Bearer {{access_token}}
 
 ### POST Test license plate on gate recognition
-POST http://localhost:8091/lsc/gate/A-111JD-F/arrive
+POST http://localhost:8091/lsc/gate/B-111-DF/arrive
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 {}
 
 ### POST Test pass weighing bridge (enter operation)
-POST http://localhost:8091/lsc/bridge/A-111JD-F/1600/true
+POST http://localhost:8091/lsc/bridge/B-111-DF/1600/true
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 {}
 
 ### POST Test truck docking to conveyor belt to drop payload
-POST http://localhost:8091/lsc/conveyorBelt/A-111JD-F
+POST http://localhost:8091/lsc/conveyorBelt/B-111-DF
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 {}
 
 ### POST Test truck pass weighing bridge (leave operation)
-POST http://localhost:8091/lsc/bridge/A-111JD-F/300/false
+POST http://localhost:8091/lsc/bridge/B-111-DF/300/false
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 

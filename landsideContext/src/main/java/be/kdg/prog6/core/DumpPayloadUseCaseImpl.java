@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Service
@@ -31,9 +32,9 @@ public class DumpPayloadUseCaseImpl implements DumpPayloadUseCase {
     @Override
     @Transactional
     public Appointment dumpPayload(LicensePlate licensePlate) {
-        Appointment appointment = appointmentFoundPort.getByLicensePlateAndNotStatus(
+        Appointment appointment = appointmentFoundPort.getByLicensePlateAndStatusNotIn(
                 licensePlate,
-                TruckArrivalStatus.SCHEDULED);
+                List.of(TruckArrivalStatus.SCHEDULED, TruckArrivalStatus.LEFT_SITE));
 
         appointment.dumpPayload();
         appointmentUpdatedPort.updateStatus(appointment);

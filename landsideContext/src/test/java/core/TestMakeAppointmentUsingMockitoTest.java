@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -73,7 +74,9 @@ public class TestMakeAppointmentUsingMockitoTest {
 
         // Act
         Appointment appointment = makeAppointmentUseCase.makeAppointment(command);
-        Appointment foundAppointment = appointmentFoundPort.getByLicensePlateAndNotStatus(licensePlate, TruckArrivalStatus.ON_SITE);
+        Appointment foundAppointment = appointmentFoundPort.getByLicensePlateAndStatusNotIn(
+                licensePlate,
+                List.of(TruckArrivalStatus.SCHEDULED, TruckArrivalStatus.LEFT_SITE));
 
 
         // Assert
