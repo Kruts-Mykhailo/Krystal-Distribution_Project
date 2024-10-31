@@ -26,15 +26,11 @@ public class ConveyorController {
     @PostMapping("/{licensePlate}")
     public ResponseEntity<PdtCopyDTO> truckDumpPayload(@PathVariable String licensePlate) {
         Appointment updatedAppointment = dumpPayloadUseCase.dumpPayload(new LicensePlate(licensePlate));
-
-        Random random = new Random();
-        int dockNumber = random.nextInt(10000);
-
         return ResponseEntity.ok(new PdtCopyDTO(
                 updatedAppointment.getWarehouseNumber().number(),
                 LocalDateTime.now(),
                 updatedAppointment.getMaterialType().name(),
-                dockNumber));
+                updatedAppointment.getAssignedDockNumber()));
 
     }
 }

@@ -3,6 +3,7 @@ package be.kdg.prog6.domain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class Appointment {
@@ -97,7 +98,6 @@ public class Appointment {
         }
     }
 
-
     private TruckArrivalStatus updateArrivalStatus(LocalDateTime arrivalTime) {
         return arrivalTime.isAfter(this.scheduledArrivalTime) &&
                 arrivalTime.isBefore(this.scheduledArrivalTime.plusHours(1))
@@ -140,6 +140,15 @@ public class Appointment {
         this.truckArrivalStatus = TruckArrivalStatus.LEFT_SITE;
     }
 
+    public Integer getAssignedDockNumber() {
+        Random random = new Random();
+        return random.nextInt(10000);
+    }
+
+    public Integer getWeighingBridgeNumber() {
+        Random random = new Random();
+        return random.nextInt(10000);
+    }
 
 
 

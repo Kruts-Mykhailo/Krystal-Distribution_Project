@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Random;
 import java.util.logging.Logger;
 
 @Service
@@ -26,7 +27,7 @@ public class TruckArrivalUseCaseImpl implements TruckArrivalUseCase {
 
     @Override
     @Transactional
-    public void arriveToFacility(TruckArrivalCommand truckArrivalCommand) {
+    public Integer arriveToFacility(TruckArrivalCommand truckArrivalCommand) {
         LicensePlate licensePlate = truckArrivalCommand.licensePlate();
         LocalDateTime arrivalTime = truckArrivalCommand.arrivalTime();
 
@@ -36,6 +37,8 @@ public class TruckArrivalUseCaseImpl implements TruckArrivalUseCase {
         appointmentUpdatedPort.updateStatus(appointment);
 
         logger.info(String.format("Truck %s arrived to facility at %s", licensePlate.licensePlate(), arrivalTime));
+
+       return appointment.getWeighingBridgeNumber();
 
 
     }

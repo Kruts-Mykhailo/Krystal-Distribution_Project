@@ -33,10 +33,8 @@ public class GateController {
                 new LicensePlate(licensePlate),
                 LocalDateTime.now()
         );
-        truckArrivalUseCase.arriveToFacility(truckArrivalCommand);
+        Integer weighingBridgeNumber = truckArrivalUseCase.arriveToFacility(truckArrivalCommand);
 
-        Random random = new Random();
-        int weighingBridgeNumber = random.nextInt(10000);
 
         return ResponseEntity.ok(
                 String.format("Truck %s arrived to facility at %s. Weighing bridge number: %d",
