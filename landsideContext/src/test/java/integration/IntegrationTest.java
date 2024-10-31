@@ -5,6 +5,7 @@ import be.kdg.prog6.adapter.out.db.appointment.AppointmentConverter;
 import be.kdg.prog6.adapter.out.db.appointment.AppointmentJpaEntity;
 import be.kdg.prog6.adapter.out.db.appointment.AppointmentJpaRepository;
 import be.kdg.prog6.adapter.out.db.seller.SellerConverter;
+import be.kdg.prog6.adapter.out.db.seller.SellerJpaEntity;
 import be.kdg.prog6.adapter.out.db.seller.SellerJpaRepository;
 import be.kdg.prog6.domain.*;
 import org.junit.jupiter.api.AfterEach;
@@ -49,6 +50,7 @@ public class IntegrationTest {
     @BeforeEach
     public void setup() {
         Seller seller = new Seller(new Seller.SellerId(UUID.randomUUID()), "test");
+        SellerJpaEntity sellerJpaEntity = sellerJpaRepository.save(SellerConverter.toJpa(seller));
         Appointment tempAppointment = new Appointment(
                 new LicensePlate("X-999-111"),
                 MaterialType.CEMENT,
@@ -57,19 +59,18 @@ public class IntegrationTest {
                 TruckArrivalStatus.ON_SITE,
                 seller);
         appointment = AppointmentConverter.toJpaEntity(tempAppointment);
-        sellerJpaRepository.save(SellerConverter.toJpa(seller));
+        appointment.setSeller(sellerJpaEntity);
         appointment = appointmentJpaRepository.save(appointment);
     }
 
 
     @Test
-    void shouldReturnAppointmentON_SITE() throws Exception{
+    void shouldReturnAppointmentsON_SITE() throws Exception{
         // Arrange
-        String licensePlate = "X-999-111";
 
         // Act
         final ResultActions result = mockMvc
-                .perform(get(String.format("/trucks/%s", licensePlate))
+                .perform(get("/trucks")
                 .with(jwt().authorities(new SimpleGrantedAuthority("user"))));
 
 
@@ -78,7 +79,7 @@ public class IntegrationTest {
 
         // Assert
         result.andExpect(status().isOk())
-                .andExpect(jsonPath("$.currentStatus").value("ON_SITE"));
+                .andExpect(jsonPath("$.amount").value(1));
     }
 
     @AfterEach
