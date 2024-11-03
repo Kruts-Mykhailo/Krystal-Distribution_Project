@@ -5,43 +5,29 @@ Content-Type: application/json
 {
   "purchaseOrderNumber": "PO123456",
   "customerEnterpriseNumber": "ENT789012",
-  "orderLines": [
-    {
-      "weight": 1,
-      "materialType": "GP",
-      "uom": "kt"
-    }
-  ],
   "departureDate": "2024-11-06"
 }
 
 ### POST input vessel and shipment order info
-POST http://localhost:8094/wsc/arrivals/V1654423445
+POST http://localhost:8094/wsc/arrivals/V1654
 Content-Type: application/json
 
 {
-  "purchaseOrderNumber": "PO345345",
+  "purchaseOrderNumber": "PO7891",
   "customerEnterpriseNumber": "ENT789012",
-  "orderLines": [
-    {
-      "weight": 1,
-      "materialType": "GP",
-      "uom": "kt"
-    }
-  ],
-  "departureDate": "2024-10-16"
+  "departureDate": "2024-11-16"
 }
 
 
 ### POST match SO and PO
-POST http://localhost:8094/wsc/vessels/V12345/matchOrders
+POST http://localhost:8094/wsc/vessels/V1654/matchOrders
 
 ### POST plan bunkering operation
-POST http://localhost:8094/wsc/vessels/V12345/bunkeringOperations/2024-11-04
+POST http://localhost:8094/wsc/vessels/V1654/bunkeringOperations/2024-11-04
 
 
 ### POST complete vesel inspection
-POST http://localhost:8094/wsc/vessels/V12345/inspectionOperations/Mykhailo-Kruts
+POST http://localhost:8094/wsc/vessels/V1654/inspectionOperations/Mykhailo-Kruts
 
 ### POST check if vessel can leave
 POST http://localhost:8094/wsc/vessels/V12345
