@@ -19,6 +19,6 @@ public class GetWarehouseInfoUseCaseImpl implements GetWarehouseInfoUseCase {
     @Override
     @Transactional
     public Warehouse getWarehouseInfo(WarehouseNumber warehouseNumber) {
-        return warehouseFoundPort.getWarehouseByNumber(warehouseNumber);
+        return warehouseFoundPort.getWarehouseByNumberAfterSnapshot(warehouseNumber);
     }
 }

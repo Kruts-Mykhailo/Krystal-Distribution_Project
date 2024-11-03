@@ -37,7 +37,7 @@ public class AdjustWarehouseInventoryUseCaseImpl implements AdjustWarehouseInven
     @Override
     @Transactional
     public void savePayloadRecord(AdjustInventoryEvent command) {
-        Warehouse warehouse = warehouseFoundPort.getWarehouseByNumber(command.warehouseNumber());
+        Warehouse warehouse = warehouseFoundPort.getWarehouseByNumberAfterSnapshot(command.warehouseNumber());
 
         Optional<PayloadActivity> activity = warehouse.isZeroWeightActivityPresent();
 

@@ -24,7 +24,7 @@ public class RecordWarehouseStateUseCaseImpl implements RecordWarehouseStateUseC
 
     @Override
     public void snapshot(WarehouseNumber warehouseNumber) {
-        Warehouse warehouse = warehouseFoundPort.getWarehouseByNumber(warehouseNumber);
+        Warehouse warehouse = warehouseFoundPort.getWarehouseByNumberAfterSnapshot(warehouseNumber);
         warehouse.snapshot();
         warehouseUpdatedPort.updateSnapshot(warehouse);
         logger.info("Record snapshot for warehouse {}", warehouseNumber);

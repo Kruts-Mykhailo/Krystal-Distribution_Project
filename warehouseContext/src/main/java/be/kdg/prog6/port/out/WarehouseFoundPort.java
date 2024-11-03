@@ -6,10 +6,9 @@ import be.kdg.prog6.domain.Warehouse;
 import be.kdg.prog6.domain.WarehouseNumber;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface WarehouseFoundPort {
     Warehouse getWarehouseByOwnerIdAndMaterialType(Seller.SellerId id, MaterialType materialType);
-    Warehouse getWarehouseByNumber(WarehouseNumber number);
-    List<Warehouse> getAllWarehouses();
+    Warehouse getWarehouseByNumberAfterSnapshot(WarehouseNumber number);
+    List<Warehouse> getAllWarehousesAfterSnapshot();
 }

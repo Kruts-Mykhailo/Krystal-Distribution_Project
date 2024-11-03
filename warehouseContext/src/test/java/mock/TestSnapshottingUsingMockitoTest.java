@@ -12,8 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -48,13 +46,13 @@ public class TestSnapshottingUsingMockitoTest {
     public void shouldRecordSnapshot() {
         // Arrange
         WarehouseNumber warehouseNumber = new WarehouseNumber("W-01");
-        when(warehouseFoundPort.getWarehouseByNumber(warehouseNumber)).thenReturn(warehouse);
+        when(warehouseFoundPort.getWarehouseByNumberAfterSnapshot(warehouseNumber)).thenReturn(warehouse);
 
         // Act
         recordWarehouseStateUseCase.snapshot(warehouseNumber);
 
         // Assert
-        verify(warehouseFoundPort, times(1)).getWarehouseByNumber(warehouseNumber);
+        verify(warehouseFoundPort, times(1)).getWarehouseByNumberAfterSnapshot(warehouseNumber);
         verify(warehouse, times(1)).snapshot();
         verify(warehouseUpdatedPort, times(1)).updateSnapshot(warehouse);
     }

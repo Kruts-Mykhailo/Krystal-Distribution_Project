@@ -31,7 +31,7 @@ public class WarehouseAdapter implements WarehouseFoundPort, WarehouseUpdatedPor
     }
 
     @Override
-    public Warehouse getWarehouseByNumber(WarehouseNumber warehouseNumber) {
+    public Warehouse getWarehouseByNumberAfterSnapshot(WarehouseNumber warehouseNumber) {
         WarehouseJpaEntity warehouseJpaEntity = warehouseJpaRepository.findByWarehouseNumberFetched(warehouseNumber.number())
                 .orElseThrow(() -> new WarehouseNotFoundException(
                         "Warehouse with number %s not found.".formatted(warehouseNumber.number())));
@@ -44,7 +44,7 @@ public class WarehouseAdapter implements WarehouseFoundPort, WarehouseUpdatedPor
     }
 
     @Override
-    public List<Warehouse> getAllWarehouses() {
+    public List<Warehouse> getAllWarehousesAfterSnapshot() {
         return warehouseJpaRepository.findAllFetchedSeller()
                 .stream()
                 .map(w -> {

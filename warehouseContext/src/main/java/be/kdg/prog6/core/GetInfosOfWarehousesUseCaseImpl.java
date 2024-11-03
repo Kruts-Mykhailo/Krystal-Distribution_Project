@@ -20,6 +20,6 @@ public class GetInfosOfWarehousesUseCaseImpl implements GetInfosOfWarehousesUseC
     @Override
     @Transactional
     public List<Warehouse> getInfosOfWarehouses() {
-        return warehouseFoundPort.getAllWarehouses();
+        return warehouseFoundPort.getAllWarehousesAfterSnapshot();
     }
 }
