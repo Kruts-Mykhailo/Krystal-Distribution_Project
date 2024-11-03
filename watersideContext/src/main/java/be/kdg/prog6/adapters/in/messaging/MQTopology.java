@@ -40,7 +40,7 @@ public class MQTopology {
         return BindingBuilder.
                 bind(fulfillOrderStatusQueue).
                 to(exchange).
-                with("status.#.matched");
+                with("status.#.fulfilled");
     }
 
 

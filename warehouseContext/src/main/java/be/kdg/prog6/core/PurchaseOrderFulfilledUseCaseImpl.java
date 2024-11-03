@@ -57,7 +57,13 @@ public class PurchaseOrderFulfilledUseCaseImpl implements PurchaseOrderFulfilled
             purchaseOrder.fillOrder();
             purchaseOrderUpdatedPort.updateStatus(purchaseOrder);
             commissionInfoPort.sendInfoForCommission(new CalculateCommissionForPurchaseOrderEvent(
-                    purchaseOrder.orderLines(),
+                    purchaseOrder.orderLines()
+                            .stream()
+                            .map(orderLine -> new CalculateCommissionForPurchaseOrderEvent.CommissionOrderLine(
+                                    orderLine.materialType().name(),
+                                    orderLine.quantity(),
+                                    orderLine.uom().getCode()
+                            )).toList(),
                     purchaseOrder.getSeller().getSellerId().id(),
                     purchaseOrder.poNumber().number()
             ));

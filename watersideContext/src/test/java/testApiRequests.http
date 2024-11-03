@@ -12,7 +12,7 @@ Content-Type: application/json
       "uom": "kt"
     }
   ],
-  "departureDate": "2024-11-01"
+  "departureDate": "2024-11-06"
 }
 
 ### POST input vessel and shipment order info
@@ -37,7 +37,7 @@ Content-Type: application/json
 POST http://localhost:8094/wsc/vessels/V12345/matchOrders
 
 ### POST plan bunkering operation
-POST http://localhost:8094/wsc/vessels/V12345/bunkeringOperations/2024-11-01
+POST http://localhost:8094/wsc/vessels/V12345/bunkeringOperations/2024-11-04
 
 
 ### POST complete vesel inspection

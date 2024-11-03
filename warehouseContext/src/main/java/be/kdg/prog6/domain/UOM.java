@@ -15,6 +15,10 @@ public enum UOM {
         return measureCoefficient;
     }
 
+    public String getCode() {
+        return code;
+    }
+
     public static UOM fromCode(String code) {
         for (UOM uom : UOM.values()) {
             if (uom.code.equals(code)) {
